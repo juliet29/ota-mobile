@@ -31,7 +31,7 @@ function Feed({ navigation }: HomeStackNavProps<"Feed">) {
         }}
         //   TODO: figue out the issue with the key exractor
         keyExtractor={(product, idx) => product + idx}
-        data={Array.from(Array(50), () => faker.name.firstName())}
+        data={Array.from(Array(50), () => faker.commerce.product())}
       />
     </Center>
   );
