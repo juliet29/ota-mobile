@@ -12,6 +12,7 @@ import { Center } from "./Center";
 import { AuthNavProps, AuthParamList } from "./AuthParamList";
 import { AuthStack } from "./AuthStack";
 import { AuthContext } from "./AuthProvider";
+import { AppTabs } from "./AppTabs";
 
 interface RoutesProps {}
 
@@ -43,7 +44,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
   }
   return (
     <NavigationContainer>
-      <AuthStack />
+      {user ? <AppTabs /> : <AuthStack />}
     </NavigationContainer>
   );
 };
