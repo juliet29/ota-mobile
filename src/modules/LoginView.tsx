@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { View, Text } from "react-native";
-import { Center } from "./Center";
+import { Center } from "../global-ui/Center";
 import { TextInput, Button } from "react-native-paper";
 import styled from "styled-components/native";
-import { AuthNavProps } from "./AuthParamList";
-import { AuthContext } from "./AuthProvider";
-import { Wrapper, StyledColumnView, LineBreak } from "./ReusedUI";
+import { AuthNavProps } from "../navigation/AuthParamList";
+import { AuthContext } from "../AuthProvider";
+import { Wrapper, StyledColumnView, LineBreak } from "../global-ui/ReusedUI";
 
 interface LoginViewProps {}
 

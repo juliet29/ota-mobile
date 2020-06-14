@@ -8,11 +8,11 @@ import {
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
-import { Center } from "./Center";
-import { AuthNavProps, AuthParamList } from "./AuthParamList";
-import { AuthStack } from "./AuthStack";
+import { Center } from "./global-ui/Center";
+import { AuthNavProps, AuthParamList } from "./navigation/AuthParamList";
+import { AuthStack } from "./navigation/AuthStack";
 import { AuthContext } from "./AuthProvider";
-import { AppTabs } from "./AppTabs";
+import { AppTabs } from "./navigation/AppTabs";
 
 interface RoutesProps {}
 
