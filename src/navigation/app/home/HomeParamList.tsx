@@ -1,6 +1,6 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
-import { PostParamList } from "./PostParamList";
+import { PostParamList } from "../shared/PostParamList";
 
 export type HomeParamList = {
   Feed: undefined;

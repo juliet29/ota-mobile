@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { Center } from "../global-ui/Center";
+import { Center } from "../../../global-ui/Center";
 import { Text, Button, FlatList } from "react-native";
 import faker from "faker";
 import { HomeStackNavProps, HomeParamList } from "./HomeParamList";
 import { StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { AuthContext } from "../AuthProvider";
+import { AuthContext } from "../../../AuthProvider";
 
 interface HomeStackProps {}
 

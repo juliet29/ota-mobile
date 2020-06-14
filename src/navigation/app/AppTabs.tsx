@@ -2,8 +2,8 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AppParamList } from "./AppParamList";
 import { TabActions } from "@react-navigation/native";
-import { HomeStack } from "./HomeStack";
-import { CreatePostStack } from "./CreatePostStack";
+import { HomeStack } from "./home/HomeStack";
+import { CreatePostStack } from "./create-post/CreatePostStack";
 
 interface AppTabsProps {}
 

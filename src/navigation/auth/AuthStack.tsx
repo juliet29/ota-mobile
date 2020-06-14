@@ -1,11 +1,8 @@
-import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AuthParamList, AuthNavProps } from "./AuthParamList";
-import { Center } from "../global-ui/Center";
-import { Button, Text } from "react-native";
-import { AuthContext } from "../AuthProvider";
-import { LoginView } from "../modules/LoginView";
-import { RegisterView } from "../modules/RegisterView";
+import React from "react";
+import { LoginView } from "../../modules/LoginView";
+import { RegisterView } from "../../modules/RegisterView";
+import { AuthParamList } from "./AuthParamList";
 
 interface AuthStackProps {}
 

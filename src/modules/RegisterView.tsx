@@ -4,7 +4,7 @@ import { Center } from "../global-ui/Center";
 import { TextInput, Button } from "react-native-paper";
 import { AuthContext } from "../AuthProvider";
 import { Wrapper, StyledColumnView, LineBreak } from "../global-ui/ReusedUI";
-import { AuthNavProps } from "../navigation/AuthParamList";
+import { AuthNavProps } from "../navigation/auth/AuthParamList";
 
 interface RegisterViewProps {}
 

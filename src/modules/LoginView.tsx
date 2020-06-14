@@ -1,11 +1,8 @@
 import React, { useContext } from "react";
-import { View, Text } from "react-native";
-import { Center } from "../global-ui/Center";
-import { TextInput, Button } from "react-native-paper";
-import styled from "styled-components/native";
-import { AuthNavProps } from "../navigation/AuthParamList";
+import { Button, TextInput } from "react-native-paper";
 import { AuthContext } from "../AuthProvider";
-import { Wrapper, StyledColumnView, LineBreak } from "../global-ui/ReusedUI";
+import { LineBreak, StyledColumnView, Wrapper } from "../global-ui/ReusedUI";
+import { AuthNavProps } from "../navigation/auth/AuthParamList";
 
 interface LoginViewProps {}
 
@@ -21,6 +18,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
           mode="contained"
           onPress={() => {
             login();
+            console.log("sign in button pressed");
           }}>
           SIGN IN
         </Button>
