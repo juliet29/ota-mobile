@@ -5,36 +5,26 @@ import { TextInput, Button } from "react-native-paper";
 import styled from "styled-components/native";
 import { AuthNavProps } from "./AuthParamList";
 import { AuthContext } from "./AuthProvider";
+import { Wrapper, StyledColumnView, LineBreak } from "./ReusedUI";
 
 interface LoginViewProps {}
-
-const Wrapper = styled.View`
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 30px;
-  margin-top: 250px;
-  margin-bottom: 250px;
-`;
-
-// const StyledTextInput = styled(TextInput)`
-//   margin-bottom: 20px;
-//   border-radius: 50px;
-// `;
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   const { login } = useContext(AuthContext);
   return (
     <Wrapper>
-      <TextInput label="Email" mode="outlined" />
-      <TextInput label="Password" mode="outlined" />
-      <Button
-        mode="contained"
-        onPress={() => {
-          login();
-        }}>
-        SIGN IN
-      </Button>
+      <StyledColumnView>
+        <TextInput label="Email" mode="outlined" />
+        <TextInput label="Password" mode="outlined" />
+        <LineBreak />
+        <Button
+          mode="contained"
+          onPress={() => {
+            login();
+          }}>
+          SIGN IN
+        </Button>
+      </StyledColumnView>
 
       <Button
         mode="outlined"
