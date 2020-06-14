@@ -4,6 +4,8 @@ import { AuthParamList, AuthNavProps } from "./AuthParamList";
 import { Center } from "./Center";
 import { Button, Text } from "react-native";
 import { AuthContext } from "./AuthProvider";
+import { LoginView } from "./LoginView";
+import { RegisterView } from "./RegisterView";
 
 interface AuthStackProps {}
 
@@ -22,8 +24,8 @@ function Login({ navigation }: AuthNavProps<"Login">) {
       />
       <Button
         title="go to register"
-        onPress={() => {
-          navigation.navigate("Register");
+          onPress={() => {
+          navigation.navigate("Register")
         }}
       />
     </Center>
@@ -53,12 +55,12 @@ export const AuthStack: React.FC<AuthStackProps> = ({}) => {
       <Stack.Screen
         options={{ headerTitle: "Sign In" }}
         name="Login"
-        component={Login}
+        component={LoginView}
       />
       <Stack.Screen
         options={{ headerTitle: "Sign Up" }}
         name="Register"
-        component={Register}
+        component={RegisterView}
       />
     </Stack.Navigator>
   );
