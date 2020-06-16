@@ -23,30 +23,29 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // TODO: fix type
   const onSubmit = (data: any) => {
     Alert.alert("Form Data", JSON.stringify(data));
+    //login()
   };
 
   useEffect(() => {
-    register({ name: "test" });
+    register({ name: "Email" });
+    register({ name: "Password" });
   }, [register]);
 
   return (
     <Wrapper>
-      <TextInput2
-        placeholder="just a test"
-        onChangeText={(text) => setValue("test", text, true)}
-      />
-      {errors.test && <Text>This is req</Text>}
-      <Button2 title="Submit" onPress={handleSubmit(onSubmit)} />
       <StyledColumnView>
-        <TextInput label="Email" mode="outlined" />
-        <TextInput label="Password" mode="outlined" />
+        <TextInput
+          label="Email"
+          mode="outlined"
+          onChangeText={(text) => setValue("Email", text)}
+        />
+        <TextInput
+          label="Password"
+          mode="outlined"
+          onChangeText={(text) => setValue("Password", text)}
+        />
         <LineBreak />
-        <Button
-          mode="contained"
-          onPress={() => {
-            login();
-            console.log("sign in button pressed");
-          }}>
+        <Button mode="contained" onPress={handleSubmit(onSubmit)}>
           SIGN IN
         </Button>
       </StyledColumnView>
