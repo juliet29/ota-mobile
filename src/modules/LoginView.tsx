@@ -22,13 +22,13 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   const { register, setValue, handleSubmit, errors } = useForm();
   // TODO: fix type
   const onSubmit = (data: any) => {
-    Alert.alert("Form Data", JSON.stringify(data));
-    //login()
+    console.log("Form Data", JSON.stringify(data));
+    login();
   };
 
   useEffect(() => {
-    register({ name: "Email" });
-    register({ name: "Password" });
+    register({ name: "Email" }, { required: true });
+    register({ name: "Password" }, { required: true });
   }, [register]);
 
   return (
@@ -39,11 +39,13 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
           mode="outlined"
           onChangeText={(text) => setValue("Email", text)}
         />
+        {errors.Email && <Text>Email is required</Text>}
         <TextInput
           label="Password"
           mode="outlined"
           onChangeText={(text) => setValue("Password", text)}
         />
+        {errors.Password && <Text>Password is required</Text>}
         <LineBreak />
         <Button mode="contained" onPress={handleSubmit(onSubmit)}>
           SIGN IN
