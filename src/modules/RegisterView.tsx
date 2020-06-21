@@ -1,17 +1,10 @@
-import { gql } from "apollo-boost";
-import React, { useEffect } from "react";
-import { Button, TextInput } from "react-native-paper";
+import { ErrorMessage, Formik, Field } from "formik";
+import React from "react";
+import { Button, TextInput, HelperText } from "react-native-paper";
+import { useRegisterMutation } from "../generated/apolloComponents";
 import { LineBreak, StyledColumnView, Wrapper } from "../global-ui/ReusedUI";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
-import {
-  useRegisterMutation,
-  RegisterInput,
-} from "../generated/apolloComponents";
-import { useForm } from "react-hook-form";
-import { useMutation, RenderPromises } from "@apollo/react-hooks";
-import { REGISTER } from "../graphql/user/mutations/register";
-import { Formik } from "Formik";
-import { ValuesOfCorrectTypeRule } from "graphql";
+import { InputField, validationSchema, MyTextField } from "./InputField";
 
 interface RegisterViewProps {}
 
@@ -26,7 +19,7 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
 
   async function submitRegisterUser(formData: any) {
     try {
-      const res = await registerUser({
+      const response = await registerUser({
         variables: {
           data: {
             // username: formData.username,
@@ -37,28 +30,21 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
           },
         },
       });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      console.log("Success");
+      console.log(response);
+    } catch (err) {
+      // TODO  handle sever errors at top level
+      console.log(err);
     }
   }
 
   return (
     <Formik
-      initialValues={{ email: "" }}
-      onSubmit={(values) => submitRegisterUser(values)}>
-      {({ handleChange, handleBlur, handleSubmit, values }) => (
+      initialValues={{ firstName: "" }}
+      onSubmit={(values) => submitRegisterUser(values)}
+      validationSchema={validationSchema}>
+      {({ handleSubmit }) => (
         <Wrapper>
-          <StyledColumnView>
-            <TextInput
-              label="email"
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              value={values.email}
-            />
-          </StyledColumnView>
-          <LineBreak />
+          <MyTextField label="hello" name="firstName" />
 
           <Button onPress={handleSubmit as any}>Submit</Button>
         </Wrapper>
