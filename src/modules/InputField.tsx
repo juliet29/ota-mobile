@@ -33,5 +33,7 @@ export const MyTextField: React.FC<FieldAttributes<{}> & any> = ({
 };
 
 export const validationSchema = yup.object({
-  firstName: yup.string().required().min(2),
+  username: yup.string().required().min(5),
+  email: yup.string().required().email(),
+  password: yup.string().required().min(5),
 });
