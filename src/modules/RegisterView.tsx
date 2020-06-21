@@ -29,7 +29,7 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
   };
 
   // register mutation
-  const [registerUser, { loading, error }] = useMutation(REGISTER);
+  const [registerUser, { loading, error }] = useRegisterMutation();
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
@@ -62,7 +62,7 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
         data: {
           username: "hiwasgood",
           password: "password",
-          email: "fake3@email.com",
+          email: "fake4@email.com",
         },
       },
     });
