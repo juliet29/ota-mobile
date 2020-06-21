@@ -10,25 +10,35 @@ import {
   Wrapper,
 } from "../styled-components/ReusedUI";
 import { LoginValidationSchema } from "../utils/FormValidationSchemas";
+import { useLoginMutation } from "../generated-components/apolloComponents";
 
 interface LoginViewProps {}
+interface submitLoginUserProps {
+  email: string;
+  password: string;
+}
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
   const { login } = useContext(AuthContext);
+  const [loginUser, { loading, error }] = useLoginMutation();
 
-  async function submitLoginUser(data: any) {
-    console.log(data);
-    console.log("hi");
-    return true;
+  async function submitLoginUser({ email, password }: submitLoginUserProps) {
+    try {
+      const response = await loginUser({ variables: { email, password } });
+      // TODO: throw user not found error on backend
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
     <Wrapper>
       <Formik
         initialValues={{ password: "", email: "" }}
-        onSubmit={(values) => {
-          submitLoginUser(values);
+        onSubmit={({ email, password }) => {
+          submitLoginUser({ email, password });
         }}
         validationSchema={LoginValidationSchema}>
         {({ handleSubmit }) => (
