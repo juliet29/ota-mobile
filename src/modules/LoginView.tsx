@@ -31,6 +31,8 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
     } catch (err) {
       console.log(err);
     }
+    console.log("done");
+    login();
   }
 
   return (

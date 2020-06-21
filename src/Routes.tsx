@@ -26,6 +26,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
       .then((userString) => {
         if (userString) {
           // TODO: decode the userString
+          console.log("in the use effect");
           login();
         }
         setLoading(false);
