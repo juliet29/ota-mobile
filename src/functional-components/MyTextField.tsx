@@ -4,7 +4,6 @@ import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
 export const MyTextField: React.FC<FieldAttributes<{}> & any> = ({
-  errName,
   label,
   ...props
 }) => {

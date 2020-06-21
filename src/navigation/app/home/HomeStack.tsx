@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
-import { Center } from "../../../styled-components/Center";
 import { Text, Button, FlatList } from "react-native";
-import faker from "faker";
+import { FeedView } from "../../../modules/FeedView";
 import { HomeStackNavProps, HomeParamList } from "./HomeParamList";
 import { StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -11,32 +10,7 @@ import { AuthContext } from "../../../AuthProvider";
 interface HomeStackProps {}
 
 const Stack = createStackNavigator<HomeParamList>();
-
-function Feed({ navigation }: HomeStackNavProps<"Feed">) {
-  return (
-    <Center>
-      <FlatList
-        style={{ width: "100%" }}
-        renderItem={({ item }) => {
-          return (
-            <Button
-              title={item}
-              onPress={() => {
-                navigation.navigate("Post", {
-                  name: item,
-                });
-              }}
-            />
-          );
-        }}
-        //   TODO: figue out the issue with the key exractor
-        keyExtractor={(product, idx) => product + idx}
-        data={Array.from(Array(50), () => faker.commerce.product())}
-      />
-    </Center>
-  );
-}
-
+// more things will go here!!!
 export const HomeStack: React.FC<HomeStackProps> = ({}) => {
   const { logout } = useContext(AuthContext);
   return (
@@ -56,7 +30,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
             );
           },
         }}
-        component={Feed}
+        component={FeedView}
       />
     </Stack.Navigator>
   );

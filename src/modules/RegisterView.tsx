@@ -5,7 +5,7 @@ import {
   RegisterInput,
   useRegisterMutation,
 } from "../generated-components/apolloComponents";
-import { Wrapper } from "../styled-components/ReusedUI";
+import { Wrapper, StyledColumnView } from "../styled-components/ReusedUI";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
 import { MyTextField } from "../functional-components/MyTextField";
 import { RegisterValidationSchema } from "../utils/FormValidationSchemas";
@@ -43,11 +43,20 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
       validationSchema={RegisterValidationSchema}>
       {({ handleSubmit }) => (
         <Wrapper>
-          <MyTextField label="Username" name="username" />
-          <MyTextField label="Email" name="email" />
-          <MyTextField label="Password" name="password" />
+          <StyledColumnView>
+            <MyTextField label="Username" name="username" />
+            <MyTextField label="Email" name="email" />
+            <MyTextField label="Password" name="password" />
+            <Button onPress={handleSubmit as any}>REGISTER</Button>
+          </StyledColumnView>
 
-          <Button onPress={handleSubmit as any}>REGISTER</Button>
+          <Button
+            mode="text"
+            onPress={() => {
+              navigation.navigate("Login");
+            }}>
+            Back to Login Page
+          </Button>
         </Wrapper>
       )}
     </Formik>
