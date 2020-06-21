@@ -19,6 +19,7 @@
     "apollo-boost": "^0.4.9",
     "apollo-link-http": "^1.5.17",
     "expo": "~37.0.3",
+    "expo-constants": "^9.0.0",
     "faker": "^4.1.0",
     "graphql": "^15.1.0",
     "react": "~16.9.0",

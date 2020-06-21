@@ -1,20 +1,40 @@
-// import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import ApolloClient from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import React from "react";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import { AuthProvider } from "./AuthProvider";
+import { Routes } from "./Routes";
+interface ProvidersProps {}
 
-// const client = new ApolloClient({
-//   uri: "https://48p1r2roz4.sse.codesandbox.io",
-//   //uri: "http://localhost:4000/graphql",
-// });
+const theme = {
+  ...DefaultTheme,
+  roundness: 30,
+  // colors: {
+  //   ...DefaultTheme.colors,
+  //   primary: "#3498db",
+  //   accent: "#f1c40f",
+  // },
+};
 
-// import { gql } from "apollo-boost";
+const host = "http://localhost:4000/graphql";
 
-// client
-//   .query({
-//     query: gql`
-//       {
-//         rates(currency: "USD") {
-//           currency
-//         }
-//       }
-//     `,
-//   })
-//   .then((result) => console.log(result));
+export const client = new ApolloClient({
+  link: new HttpLink({
+    uri: host,
+  }),
+  cache: new InMemoryCache(),
+});
+
+export const Providers: React.FC<ProvidersProps> = ({}) => {
+  return (
+    <ApolloProvider client={client}>
+      <PaperProvider theme={theme}>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </PaperProvider>
+    </ApolloProvider>
+  );
+};

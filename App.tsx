@@ -1,5 +1,5 @@
 import { Routes } from "./src/Routes";
-import { Providers } from "./src/Providers";
+import { Providers } from "./src";
 
 export default Providers;
 
