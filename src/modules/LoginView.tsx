@@ -1,56 +1,47 @@
-import React, { useContext, useEffect } from "react";
-import { Button, TextInput } from "react-native-paper";
+import { Formik } from "formik";
+import React, { useContext } from "react";
+import { Button } from "react-native-paper";
 import { AuthContext } from "../AuthProvider";
-import { LineBreak, StyledColumnView, Wrapper } from "../global-ui/ReusedUI";
+import { MyTextField } from "../functional-components/MyTextField";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
-import { useForm, Controller } from "react-hook-form";
 import {
-  View,
-  Alert,
-  Text,
-  Button as Button2,
-  TextInput as TextInput2,
-} from "react-native";
-import { seedValue } from "faker";
+  LineBreak,
+  StyledColumnView,
+  Wrapper,
+} from "../styled-components/ReusedUI";
+import { LoginValidationSchema } from "../utils/FormValidationSchemas";
 
 interface LoginViewProps {}
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
   const { login } = useContext(AuthContext);
-  // react hook form
-  const { register, setValue, handleSubmit, errors } = useForm();
-  // TODO: fix type
-  const onSubmit = (data: any) => {
-    console.log("Form Data", JSON.stringify(data));
-    login();
-  };
 
-  useEffect(() => {
-    register({ name: "Email" }, { required: true });
-    register({ name: "Password" }, { required: true });
-  }, [register]);
+  async function submitLoginUser(data: any) {
+    console.log(data);
+    console.log("hi");
+    return true;
+  }
 
   return (
     <Wrapper>
-      <StyledColumnView>
-        <TextInput
-          label="Email"
-          mode="outlined"
-          onChangeText={(text) => setValue("Email", text)}
-        />
-        {errors.Email && <Text>Email is required</Text>}
-        <TextInput
-          label="Password"
-          mode="outlined"
-          onChangeText={(text) => setValue("Password", text)}
-        />
-        {errors.Password && <Text>Password is required</Text>}
-        <LineBreak />
-        <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-          SIGN IN
-        </Button>
-      </StyledColumnView>
+      <Formik
+        initialValues={{ password: "", email: "" }}
+        onSubmit={(values) => {
+          submitLoginUser(values);
+        }}
+        validationSchema={LoginValidationSchema}>
+        {({ handleSubmit }) => (
+          <StyledColumnView>
+            <MyTextField label="Email" name="email" />
+            <MyTextField label="Password" name="password" />
+            <LineBreak />
+            <Button mode="contained" onPress={handleSubmit}>
+              SIGN IN
+            </Button>
+          </StyledColumnView>
+        )}
+      </Formik>
 
       <Button
         mode="outlined"

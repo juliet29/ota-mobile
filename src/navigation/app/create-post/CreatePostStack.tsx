@@ -1,5 +1,5 @@
 import React from "react";
-import { Center } from "../../../global-ui/Center";
+import { Center } from "../../../styled-components/Center";
 import { Text } from "react-native";
 
 interface CreatePostStackProps {}

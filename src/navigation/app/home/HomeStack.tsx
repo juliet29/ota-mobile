@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Center } from "../../../global-ui/Center";
+import { Center } from "../../../styled-components/Center";
 import { Text, Button, FlatList } from "react-native";
 import faker from "faker";
 import { HomeStackNavProps, HomeParamList } from "./HomeParamList";

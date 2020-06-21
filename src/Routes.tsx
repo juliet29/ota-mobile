@@ -8,7 +8,7 @@ import {
   AsyncStorage,
   ActivityIndicator,
 } from "react-native";
-import { Center } from "./global-ui/Center";
+import { Center } from "./styled-components/Center";
 import { AuthNavProps, AuthParamList } from "./navigation/auth/AuthParamList";
 import { AuthStack } from "./navigation/auth/AuthStack";
 import { AuthContext } from "./AuthProvider";

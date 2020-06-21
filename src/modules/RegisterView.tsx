@@ -1,21 +1,20 @@
-import { ErrorMessage, Formik, Field } from "formik";
+import { Formik } from "formik";
 import React from "react";
-import { Button, TextInput, HelperText } from "react-native-paper";
+import { Button } from "react-native-paper";
 import {
-  useRegisterMutation,
   RegisterInput,
-} from "../generated/apolloComponents";
-import { LineBreak, StyledColumnView, Wrapper } from "../global-ui/ReusedUI";
+  useRegisterMutation,
+} from "../generated-components/apolloComponents";
+import { Wrapper } from "../styled-components/ReusedUI";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
-import { InputField, validationSchema, MyTextField } from "./InputField";
+import { MyTextField } from "../functional-components/MyTextField";
+import { RegisterValidationSchema } from "../utils/FormValidationSchemas";
 
 interface RegisterViewProps {}
 
 export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
   navigation,
-  route,
 }) => {
-  // register mutation
   const [registerUser, { loading, error }] = useRegisterMutation();
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -29,23 +28,26 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
       });
       console.log(response);
     } catch (err) {
-      // TODO  handle sever errors at top level
+      // TODO  handle server errors at top level
       console.log(err);
     }
+    navigation.navigate("Login");
   }
 
   return (
     <Formik
       initialValues={{ username: "", password: "", email: "" }}
-      onSubmit={(values) => submitRegisterUser(values)}
-      validationSchema={validationSchema}>
+      onSubmit={(values) => {
+        submitRegisterUser(values);
+      }}
+      validationSchema={RegisterValidationSchema}>
       {({ handleSubmit }) => (
         <Wrapper>
           <MyTextField label="Username" name="username" />
           <MyTextField label="Email" name="email" />
           <MyTextField label="Password" name="password" />
 
-          <Button onPress={handleSubmit as any}>Submit</Button>
+          <Button onPress={handleSubmit as any}>REGISTER</Button>
         </Wrapper>
       )}
     </Formik>
