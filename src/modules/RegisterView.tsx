@@ -8,8 +8,10 @@ import {
   RegisterInput,
 } from "../generated/apolloComponents";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, RenderPromises } from "@apollo/react-hooks";
 import { REGISTER } from "../graphql/user/mutations/register";
+import { Formik } from "Formik";
+import { ValuesOfCorrectTypeRule } from "graphql";
 
 interface RegisterViewProps {}
 
@@ -17,87 +19,50 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
   navigation,
   route,
 }) => {
-  // form stuff
-  // const { register, setValue, handleSubmit, errors } = useForm();
-
-  const testVar = {
-    data: {
-      username: "hiwasgood",
-      password: "password",
-      email: "fake@email.com",
-    },
-  };
-
   // register mutation
   const [registerUser, { loading, error }] = useRegisterMutation();
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  // TODO define what happens on submit
-  // const onSubmit = (formData: any) => {
-  //   console.log("submitted!");
-  //   // registerUser({
-  //   //   variables: {
-  //   //     data: {
-  //   //       username: formData.username,
-  //   //       password: formData.password,
-  //   //       email: formData.email,
-  //   //     },
-  //   //   },
-  //   // });
-  //   // actually log in so can get a cookie :)
-  //   // navigation.navigate("Login");
-  // };
-
-  // how the form updates + validation
-  // useEffect(() => {
-  //   register({ name: "username" });
-  //   register({ name: "email" });
-  //   register({ name: "password" });
-  //   register({ name: "passwordConfirm" });
-  // }, [register]);
-  async function createNewUser() {
-    const res = await registerUser({
-      variables: {
-        data: {
-          username: "hiwasgood",
-          password: "password",
-          email: "fake4@email.com",
+  async function submitRegisterUser(formData: any) {
+    try {
+      const res = await registerUser({
+        variables: {
+          data: {
+            // username: formData.username,
+            // password: formData.password,
+            email: formData.email,
+            username: "xcfvgbhjnkmfghjk",
+            password: "dfghjklcvbnm,",
+          },
         },
-      },
-    });
-    return res;
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      console.log("Success");
+    }
   }
 
   return (
-    <Wrapper>
-      <Button onPress={createNewUser}>TEST</Button>
-      {/* <StyledColumnView>
-        <TextInput
-          label="Username"
-          mode="outlined"
-          onChangeText={(text) => setValue("username", text)}
-        />
-        <TextInput
-          label="Email"
-          mode="outlined"
-          onChangeText={(text) => setValue("email", text)}
-        />
-        <TextInput
-          label="Password"
-          mode="outlined"
-          onChangeText={(text) => setValue("password", text)}
-        />
-        <TextInput
-          label="Confirm Password"
-          mode="outlined"
-          onChangeText={(text) => setValue("passwordConfirm", text)}
-        />
-        <LineBreak />
-        <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-          SIGN UP
-        </Button>
-      </StyledColumnView> */}
-    </Wrapper>
+    <Formik
+      initialValues={{ email: "" }}
+      onSubmit={(values) => submitRegisterUser(values)}>
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <Wrapper>
+          <StyledColumnView>
+            <TextInput
+              label="email"
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+            />
+          </StyledColumnView>
+          <LineBreak />
+
+          <Button onPress={handleSubmit as any}>Submit</Button>
+        </Wrapper>
+      )}
+    </Formik>
   );
 };
