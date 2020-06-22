@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var FB_ID = \"1647259942119049\";","map":{"version":3,"sources":["/Users/julietnu/Desktop/onTheAux/ota-mobile-v1/src/utils/Keys.ts"],"names":["FB_ID"],"mappings":"AAAA,OAAO,IAAMA,KAAK,GAAG,kBAAd","sourcesContent":["export const FB_ID = \"1647259942119049\";\n"]},"metadata":{},"sourceType":"module"}

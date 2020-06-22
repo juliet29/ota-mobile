@@ -4,13 +4,13 @@ import ApolloClient from "apollo-client";
 import { HttpLink } from "apollo-link-http";
 import React from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import { AuthProvider } from "./AuthProvider";
-import { Routes } from "./Routes";
+import { AuthProvider } from "./utils/AuthProvider";
+import { Routes } from "./utils/Routes";
 interface ProvidersProps {}
 
 const theme = {
   ...DefaultTheme,
-  roundness: 30,
+  // roundness: 10,
   // colors: {
   //   ...DefaultTheme.colors,
   //   primary: "#3498db",
@@ -23,6 +23,7 @@ const host = "http://localhost:4000/graphql";
 export const client = new ApolloClient({
   link: new HttpLink({
     uri: host,
+    credentials: "include",
   }),
   cache: new InMemoryCache(),
 });

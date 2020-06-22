@@ -5,7 +5,7 @@ import { HomeStackNavProps, HomeParamList } from "./HomeParamList";
 import { StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { AuthContext } from "../../../AuthProvider";
+import { AuthContext } from "../../../utils/AuthProvider";
 
 interface HomeStackProps {}
 

@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import React, { useContext } from "react";
 import { Button } from "react-native-paper";
-import { AuthContext } from "../AuthProvider";
+import { AuthContext } from "../utils/AuthProvider";
 import { MyTextField } from "../functional-components/MyTextField";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
 import {
@@ -11,6 +11,8 @@ import {
 } from "../styled-components/ReusedUI";
 import { LoginValidationSchema } from "../utils/FormValidationSchemas";
 import { useLoginMutation } from "../generated-components/apolloComponents";
+import FacebookAuthButton from "../functional-components/FacebookAuthButton";
+import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
 
 interface LoginViewProps {}
 interface submitLoginUserProps {
@@ -55,13 +57,8 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         )}
       </Formik>
 
-      <Button
-        mode="outlined"
-        onPress={() => {
-          console.log("Facebook button press");
-        }}>
-        Continue with Facebook
-      </Button>
+      <FacebookAuthButton />
+      <SpotifyAuthButton />
 
       <Button
         mode="text"
