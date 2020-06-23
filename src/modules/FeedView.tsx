@@ -58,6 +58,3 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
     />
   );
 };
-
-{
-}
