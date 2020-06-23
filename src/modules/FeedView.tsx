@@ -1,7 +1,7 @@
 import React from "react";
 import { Center } from "../styled-components/Center";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-import { Button, Card, Title, Paragraph } from "react-native-paper";
+import { Button, Card, Title, Paragraph, Subheading } from "react-native-paper";
 import { HomeStackNavProps } from "../navigation/app/home/HomeParamList";
 import faker from "faker";
 import { useGetPostsQuery } from "../generated-components/apolloComponents";
@@ -47,7 +47,9 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
           <Card>
             <Card.Content>
               <Title>{item.user.username}</Title>
+              <Subheading>{item.timeSubmitted}</Subheading>
               <Paragraph>{item.text}</Paragraph>
+              <Paragraph>{item.link}</Paragraph>
             </Card.Content>
           </Card>
         </StyledColumnView>
@@ -55,13 +57,7 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
       keyExtractor={(item) => item.id}
     />
   );
-
-  // <Text>{data.getPosts.map((k) => k.text)}</Text>;
 };
 
 {
-  /* <Text>
-<Text> {item.id} </Text>
-<Text> {item.text} </Text>
-</Text> */
 }
