@@ -22,6 +22,7 @@
     "apollo-link-http": "^1.5.17",
     "expo": "~37.0.3",
     "expo-auth-session": "^1.2.1",
+    "expo-cli": "^3.21.9",
     "expo-constants": "^9.0.0",
     "expo-facebook": "~8.1.0",
     "faker": "^4.1.0",
