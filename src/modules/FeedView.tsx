@@ -17,7 +17,7 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   }
   if (error || !data) {
     console.log(error);
-    return <div>Error...</div>;
+    return <div>Error..</div>;
   }
 
   return (
