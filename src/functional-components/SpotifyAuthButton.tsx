@@ -1,4 +1,8 @@
-import { useAuthRequest, makeRedirectUri } from "expo-auth-session";
+import {
+  useAuthRequest,
+  makeRedirectUri,
+  getRedirectUrl,
+} from "expo-auth-session";
 import { Button } from "react-native-paper";
 import * as WebBrowser from "expo-web-browser";
 import { SPOTIFY_ID } from "../utils/Keys";
@@ -20,6 +24,7 @@ export default function SpotifyAuthButton() {
       // In order to follow the "Authorization Code Flow" to fetch token after authorizationEndpoint
       // this must be set to false
       usePKCE: false,
+
       // For usage in managed apps using the proxy
       redirectUri: makeRedirectUri({
         // For usage in bare and standalone

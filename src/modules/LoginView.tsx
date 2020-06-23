@@ -58,6 +58,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
       </Formik>
 
       <FacebookAuthButton />
+      {/* only works in Safari for whatever reason */}
       <SpotifyAuthButton />
 
       <Button
