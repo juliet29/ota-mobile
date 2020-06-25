@@ -1,11 +1,13 @@
-import React from "react";
-import { Wrapper, StyledColumnView } from "../styled-components/ReusedUI";
-import { Text } from "react-native";
 import { Formik } from "formik";
-import { MyTextField } from "../functional-components/MyTextField";
+import React from "react";
 import { Button } from "react-native-paper";
+import { MyTextField } from "../functional-components/MyTextField";
+import {
+  GetPostsDocument,
+  useCreatePostMutation,
+} from "../generated-components/apolloComponents";
+import { StyledColumnView, Wrapper } from "../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../utils/FormValidationSchemas";
-import { useCreatePostMutation } from "../generated-components/apolloComponents";
 
 interface CreatePostViewProps {}
 
@@ -18,7 +20,10 @@ export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
   async function submitCreatePost({ text, link }: submitCreatePostProps) {
     try {
-      const response = await createPost({ variables: { text, link } });
+      const response = await createPost({
+        variables: { text, link },
+        refetchQueries: [{ query: GetPostsDocument }],
+      });
       console.log(response);
     } catch (err) {
       console.log(err);
