@@ -1,4 +1,4 @@
-import { Formik, FormikProps, ErrorMessage } from "formik";
+import { Formik, FormikProps, ErrorMessage, Field } from "formik";
 import React, { useContext } from "react";
 import { Button, Title, TextInput, HelperText } from "react-native-paper";
 import { AuthContext } from "../utils/AuthProvider";
@@ -10,9 +10,13 @@ import {
   Wrapper,
 } from "../styled-components/ReusedUI";
 import { LoginValidationSchema } from "../utils/FormValidationSchemas";
-import { useLoginMutation } from "../generated-components/apolloComponents";
+import {
+  useLoginMutation,
+  LoginMutationVariables,
+} from "../generated-components/apolloComponents";
 import FacebookAuthButton from "../functional-components/FacebookAuthButton";
 import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
+import { setAccessToken } from "../utils/accessToken";
 
 interface LoginViewProps {}
 interface submitLoginUserProps {
@@ -22,28 +26,21 @@ interface submitLoginUserProps {
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
-  const { login } = useContext(AuthContext);
-  // const [loginUser, { loading, error }] = useLoginMutation();
 
-  // async function submitLoginUser({ email, password }: submitLoginUserProps) {
-  //   try {
-  //     const response = await loginUser({ variables: { email, password } });
-  //     console.log(response);
-  //     if (response.data?.login === null) {
-  //       console.log("hi");
-  //       return (
-  //         <Wrapper>
-  //           <Title>User not Found</Title>
-  //         </Wrapper>
-  //       );
-  //     }
-  //     // TODO: throw user not found error on backend
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  //   console.log("done");
+  const [loginUser, { loading, error }] = useLoginMutation();
 
-  // }
+  async function submitLoginUser({ email, password }: LoginMutationVariables) {
+    console.log("not already here");
+    try {
+      const response = await loginUser({ variables: { email, password } });
+      console.log(response);
+      if (response && response.data && response.data.login) {
+        setAccessToken(response.data.login.accessToken);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <Wrapper>
@@ -51,11 +48,13 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         initialValues={{ password: "", email: "" }}
         onSubmit={({ email, password }) => {
           console.log("signin button press");
-          login({ email, password }, false);
+          submitLoginUser({ email, password });
         }}
         validationSchema={LoginValidationSchema}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <StyledColumnView>
+            {/* <Field name="email" label="" component={MyTextField} /> */}
+
             <TextInput
               label="Email"
               onChangeText={handleChange("email")}

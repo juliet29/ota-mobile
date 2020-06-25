@@ -13,41 +13,17 @@ import { AuthNavProps, AuthParamList } from "../navigation/auth/AuthParamList";
 import { AuthStack } from "../navigation/auth/AuthStack";
 import { AuthContext } from "./AuthProvider";
 import { AppTabs } from "../navigation/app/AppTabs";
+import { getAccessToken } from "./accessToken";
 
 interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = ({}) => {
   const { user, login } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // check if user is logged in or not
-    // TODO: revise this with new state management system
-    AsyncStorage.getItem("user")
-      .then((userString) => {
-        if (userString) {
-          // TODO: actually get user from new state management
-          console.log("checking if user is logged in");
-
-          login({ email: "fakeEmail", password: "fakePassword" }, true);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  if (loading) {
-    return (
-      <Center>
-        <ActivityIndicator size="large" />
-      </Center>
-    );
-  }
+  const accessToken = getAccessToken();
   return (
     <NavigationContainer>
-      {user ? <AppTabs /> : <AuthStack />}
+      {accessToken ? <AppTabs /> : <AuthStack />}
     </NavigationContainer>
   );
 };

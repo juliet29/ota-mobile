@@ -5,16 +5,17 @@ import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./utils/AuthProvider";
 import { Routes } from "./utils/Routes";
 import { getAccessToken } from "./utils/accessToken";
+import { AppWithHeaders } from "./utils/AppWithHeaders";
 
 interface ProvidersProps {}
 
 const theme = {
   ...DefaultTheme,
 };
-const host: string = "https://peaceful-oasis-92942.herokuapp.com/graphql";
-console.log(host);
-//const host = "http://localhost:4000/graphql";
+// const host: string = "https://peaceful-oasis-92942.herokuapp.com/graphql";
 
+const host = "http://localhost:4000/graphql";
+console.log(host);
 // const httpLink = new HttpLink({
 //   uri: host,
 //   credentials: "include",
@@ -40,9 +41,7 @@ export const Providers: React.FC<ProvidersProps> = ({}) => {
   return (
     <ApolloProvider client={client}>
       <PaperProvider theme={theme}>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
+        <AppWithHeaders />
       </PaperProvider>
     </ApolloProvider>
   );

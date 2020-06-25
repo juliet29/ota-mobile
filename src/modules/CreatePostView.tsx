@@ -1,6 +1,6 @@
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import React from "react";
-import { Button } from "react-native-paper";
+import { Button, TextInput, HelperText } from "react-native-paper";
 import { MyTextField } from "../functional-components/MyTextField";
 import {
   GetPostsDocument,
@@ -39,10 +39,28 @@ export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
           submitCreatePost({ text, link });
         }}
         validationSchema={CreatePostValidationSchema}>
-        {({ handleSubmit }) => (
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
           <StyledColumnView>
-            <MyTextField label="text" name="text" />
-            <MyTextField label="link" name="link" />
+            <TextInput
+              label="Text"
+              onChangeText={handleChange("text")}
+              onBlur={handleBlur("text")}
+              value={values.text}
+            />
+            <HelperText>
+              <ErrorMessage name="text" />
+            </HelperText>
+
+            <TextInput
+              label="Text"
+              onChangeText={handleChange("link")}
+              onBlur={handleBlur("link")}
+              value={values.link}
+            />
+            <HelperText>
+              <ErrorMessage name="link" />
+            </HelperText>
+
             <Button mode="contained" onPress={handleSubmit}>
               CREATE POST
             </Button>
