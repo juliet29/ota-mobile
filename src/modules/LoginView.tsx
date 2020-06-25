@@ -17,6 +17,7 @@ import {
 import FacebookAuthButton from "../functional-components/FacebookAuthButton";
 import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
 import { setAccessToken } from "../utils/accessToken";
+import { LoginFailed } from "./LoginFailed";
 
 interface LoginViewProps {}
 interface submitLoginUserProps {
@@ -30,7 +31,6 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   const [loginUser, { loading, error }] = useLoginMutation();
 
   async function submitLoginUser({ email, password }: LoginMutationVariables) {
-    console.log("not already here");
     try {
       const response = await loginUser({ variables: { email, password } });
       console.log(response);
@@ -39,7 +39,12 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
       }
     } catch (err) {
       console.log(err);
+      return null;
     }
+  }
+
+  if (error) {
+    navigation.navigate("LoginFailed");
   }
 
   return (

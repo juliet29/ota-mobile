@@ -1,8 +1,7 @@
-import React from "react";
-import { Routes } from "../../src/utils/Routes";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native-paper";
 import { setAccessToken } from "../../src/utils/accessToken";
-import { Title, Card, ActivityIndicator } from "react-native-paper";
+import { Routes } from "../../src/utils/Routes";
 import { Wrapper } from "../styled-components/ReusedUI";
 
 // get a refresh token on each app load

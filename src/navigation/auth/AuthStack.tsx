@@ -3,6 +3,7 @@ import React from "react";
 import { LoginView } from "../../modules/LoginView";
 import { RegisterView } from "../../modules/RegisterView";
 import { AuthParamList } from "./AuthParamList";
+import { LoginFailed } from "../../modules/LoginFailed";
 
 interface AuthStackProps {}
 
@@ -14,16 +15,10 @@ export const AuthStack: React.FC<AuthStackProps> = ({}) => {
       screenOptions={{ header: () => null }}
       initialRouteName="Login">
       {/* TODO: remove these headerTitles */}
-      <Stack.Screen
-        options={{ headerTitle: "Sign In" }}
-        name="Login"
-        component={LoginView}
-      />
-      <Stack.Screen
-        options={{ headerTitle: "Sign Up" }}
-        name="Register"
-        component={RegisterView}
-      />
+      <Stack.Screen name="Login" component={LoginView} />
+      <Stack.Screen name="Register" component={RegisterView} />
+      <Stack.Screen name="LoginFailed" component={LoginFailed} />
+      {/* <Stack.Screen name="RegisterFailed" component={RegisterView} /> */}
     </Stack.Navigator>
   );
 };
