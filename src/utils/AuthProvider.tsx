@@ -6,6 +6,7 @@ import {
 } from "../generated-components/apolloComponents";
 import { Card, Title } from "react-native-paper";
 import { LoginFailed } from "../modules/LoginFailed";
+import { setAccessToken } from "./accessToken";
 
 type User = null | { username: string };
 
@@ -34,19 +35,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     alreadyHere: boolean
   ) {
     if (!alreadyHere) {
+      console.log("not already here");
       try {
         const response = await loginUser({ variables: { email, password } });
         console.log(response);
-        if (response.data?.login === null) {
-          console.log("user not found ");
-          return null;
+        if (response && response.data && response.data.login) {
+          setAccessToken(response.data.login.accessToken);
         }
+
         // TODO: throw user not found error on backend
       } catch (err) {
         console.log(err);
       }
     }
-
+    console.log("already here");
     const fakeUser = { username: "bob" };
     setUser(fakeUser);
     AsyncStorage.setItem("user", JSON.stringify(fakeUser));

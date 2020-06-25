@@ -1,6 +1,6 @@
-import { Formik, FormikProps } from "formik";
+import { Formik, FormikProps, ErrorMessage } from "formik";
 import React, { useContext } from "react";
-import { Button, Title } from "react-native-paper";
+import { Button, Title, TextInput, HelperText } from "react-native-paper";
 import { AuthContext } from "../utils/AuthProvider";
 import { MyTextField } from "../functional-components/MyTextField";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
@@ -50,20 +50,34 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
       <Formik
         initialValues={{ password: "", email: "" }}
         onSubmit={({ email, password }) => {
+          console.log("signin button press");
           login({ email, password }, false);
         }}
         validationSchema={LoginValidationSchema}>
-        {(props: FormikProps<submitLoginUserProps>) => (
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
           <StyledColumnView>
-            <MyTextField
+            <TextInput
               label="Email"
-              name="email"
-              onChangeText={props.handleChange("email")}
-              onBlur={props.handleBlur("email")}
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
             />
-            <MyTextField label="Password" name="password" />
+            <HelperText>
+              <ErrorMessage name="email" />
+            </HelperText>
+
+            <TextInput
+              label="Password"
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
+            />
+            <HelperText>
+              <ErrorMessage name="password" />
+            </HelperText>
+
             <LineBreak />
-            <Button mode="contained" onPress={props.handleSubmit}>
+            <Button mode="contained" onPress={handleSubmit}>
               SIGN IN
             </Button>
           </StyledColumnView>

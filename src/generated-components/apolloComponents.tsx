@@ -1,11 +1,8 @@
 import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
-import * as React from 'react';
-import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -46,7 +43,7 @@ export type Mutation = {
   changePassword?: Maybe<User>;
   confirmUser: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
-  login?: Maybe<User>;
+  login?: Maybe<LoginResponse>;
   logout: Scalars['Boolean'];
   register: Scalars['Boolean'];
   createPost: Scalars['Boolean'];
@@ -87,6 +84,12 @@ export type MutationCreatePostArgs = {
 export type ChangePassowrdInput = {
   password: Scalars['String'];
   token: Scalars['String'];
+};
+
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+  user: User;
 };
 
 export type RegisterInput = {
@@ -130,8 +133,8 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email'>
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
   )> }
 );
 
@@ -152,12 +155,6 @@ export const CreatePostDocument = gql`
 }
     `;
 export type CreatePostMutationFn = ApolloReactCommon.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
-export type CreatePostComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<CreatePostMutation, CreatePostMutationVariables>, 'mutation'>;
-
-    export const CreatePostComponent = (props: CreatePostComponentProps) => (
-      <ApolloReactComponents.Mutation<CreatePostMutation, CreatePostMutationVariables> mutation={CreatePostDocument} {...props} />
-    );
-    
 
 /**
  * __useCreatePostMutation__
@@ -196,12 +193,6 @@ export const GetPostsDocument = gql`
   }
 }
     `;
-export type GetPostsComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<GetPostsQuery, GetPostsQueryVariables>, 'query'>;
-
-    export const GetPostsComponent = (props: GetPostsComponentProps) => (
-      <ApolloReactComponents.Query<GetPostsQuery, GetPostsQueryVariables> query={GetPostsDocument} {...props} />
-    );
-    
 
 /**
  * __useGetPostsQuery__
@@ -230,19 +221,11 @@ export type GetPostsQueryResult = ApolloReactCommon.QueryResult<GetPostsQuery, G
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
-    id
-    username
-    email
+    accessToken
   }
 }
     `;
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, LoginMutationVariables>;
-export type LoginComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<LoginMutation, LoginMutationVariables>, 'mutation'>;
-
-    export const LoginComponent = (props: LoginComponentProps) => (
-      <ApolloReactComponents.Mutation<LoginMutation, LoginMutationVariables> mutation={LoginDocument} {...props} />
-    );
-    
 
 /**
  * __useLoginMutation__
@@ -274,12 +257,6 @@ export const RegisterDocument = gql`
 }
     `;
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<RegisterMutation, RegisterMutationVariables>;
-export type RegisterComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<RegisterMutation, RegisterMutationVariables>, 'mutation'>;
-
-    export const RegisterComponent = (props: RegisterComponentProps) => (
-      <ApolloReactComponents.Mutation<RegisterMutation, RegisterMutationVariables> mutation={RegisterDocument} {...props} />
-    );
-    
 
 /**
  * __useRegisterMutation__
