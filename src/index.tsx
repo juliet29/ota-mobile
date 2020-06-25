@@ -21,7 +21,7 @@ const theme = {
   // },
 };
 
-const host = "http://localhost:4000/graphql";
+const host = "https://peaceful-oasis-92942.herokuapp.com/graphql"; //"http://localhost:4000/graphql";
 
 // const function goToLogin({navigation}):AuthNavProps {
 //   navigation.navigate("Login");

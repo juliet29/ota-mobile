@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Formik, FormikProps } from "formik";
 import React, { useContext } from "react";
 import { Button, Title } from "react-native-paper";
 import { AuthContext } from "../utils/AuthProvider";
@@ -53,12 +53,17 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
           login({ email, password }, false);
         }}
         validationSchema={LoginValidationSchema}>
-        {({ handleSubmit }) => (
+        {(props: FormikProps<submitLoginUserProps>) => (
           <StyledColumnView>
-            <MyTextField label="Email" name="email" />
+            <MyTextField
+              label="Email"
+              name="email"
+              onChangeText={props.handleChange("email")}
+              onBlur={props.handleBlur("email")}
+            />
             <MyTextField label="Password" name="password" />
             <LineBreak />
-            <Button mode="contained" onPress={handleSubmit}>
+            <Button mode="contained" onPress={props.handleSubmit}>
               SIGN IN
             </Button>
           </StyledColumnView>

@@ -32,11 +32,11 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   const { data, loading, error } = useGetPostsQuery();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Text>Loading...</Text>;
   }
   if (error || !data) {
     console.log(error);
-    return <div>Error..</div>;
+    return <Text>Error..</Text>;
   }
 
   return (
