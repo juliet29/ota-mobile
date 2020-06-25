@@ -21,13 +21,15 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // check if use is logged in or not
+    // check if user is logged in or not
+    // TODO: revise this with new state management system
     AsyncStorage.getItem("user")
       .then((userString) => {
         if (userString) {
-          // TODO: decode the userString
-          console.log("in the use effect");
-          login();
+          // TODO: actually get user from new state management
+          console.log("checking if user is logged in");
+
+          login({ email: "fakeEmail", password: "fakePassword" }, true);
         }
         setLoading(false);
       })

@@ -19,6 +19,7 @@
     "@types/styled-components": "^5.1.0",
     "@types/yup": "^0.29.3",
     "apollo-boost": "^0.4.9",
+    "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
     "expo": "~37.0.3",
     "expo-auth-session": "^1.2.1",

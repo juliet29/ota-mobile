@@ -6,6 +6,9 @@ import React from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { AuthProvider } from "./utils/AuthProvider";
 import { Routes } from "./utils/Routes";
+import { onError } from "apollo-link-error";
+import { AuthNavProps } from "./navigation/auth/AuthParamList";
+
 interface ProvidersProps {}
 
 const theme = {
@@ -20,11 +23,35 @@ const theme = {
 
 const host = "http://localhost:4000/graphql";
 
+// const function goToLogin({navigation}):AuthNavProps {
+//   navigation.navigate("Login");
+// }
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) => {
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      );
+
+      if (message.includes("not authenticated")) {
+        console.log("Not Authenticated");
+
+        //TODO:  send to log in
+      } else {
+        console.log("dispatch");
+      }
+    });
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const httpLink = new HttpLink({
+  uri: host,
+  credentials: "include",
+});
+
 export const client = new ApolloClient({
-  link: new HttpLink({
-    uri: host,
-    credentials: "include",
-  }),
+  link: errorLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

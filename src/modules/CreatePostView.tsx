@@ -19,15 +19,17 @@ interface submitCreatePostProps {
 export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
   async function submitCreatePost({ text, link }: submitCreatePostProps) {
-    try {
-      const response = await createPost({
-        variables: { text, link },
-        refetchQueries: [{ query: GetPostsDocument }],
-      });
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    const response = await createPost({
+      variables: { text, link },
+      refetchQueries: [{ query: GetPostsDocument }],
+    });
+    console.log(response);
+    // }
+
+    // catch (err) {
+    //   console.log(err);
+    // }
   }
   return (
     <Wrapper>
