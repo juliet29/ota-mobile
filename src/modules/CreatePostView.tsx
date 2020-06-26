@@ -52,7 +52,7 @@ export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
             </HelperText>
 
             <TextInput
-              label="Text"
+              label="Link"
               onChangeText={handleChange("link")}
               onBlur={handleBlur("link")}
               value={values.link}

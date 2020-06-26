@@ -10,7 +10,7 @@ export const LoginFailed: React.FC<AuthNavProps<"LoginFailed">> = ({
 }) => {
   return (
     <Wrapper>
-      <Title>User Not Found!</Title>
+      <Title>User Not Found or Register Unsuccesful :( </Title>
 
       <Button
         mode="text"

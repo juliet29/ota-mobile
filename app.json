@@ -2,11 +2,7 @@
   "expo": {
     "name": "ota-mobile",
     "slug": "ota-mobile",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,14 +14,19 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "description": "",
     "githubUrl": "https://github.com/juliet29/ota-mobile"
   },
-  "facebookScheme": "fb<1647259942119049>"
+  "facebookScheme": "fb<1647259942119049>",
+  "ios": {
+    "config": {
+      "googleSignIn": {
+        "reservedClientId": "com.googleusercontent.apps.763328994760-sjs3f5h1ptdi4g4942clrg6su0ohvlt2"
+      }
+    }
+  }
 }

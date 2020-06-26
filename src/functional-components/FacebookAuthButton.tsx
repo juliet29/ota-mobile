@@ -18,7 +18,7 @@ const discovery = {
 const useProxy = Platform.select({ web: false, default: true });
 
 export default function FacebookAuthButton() {
-  const { login } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
 
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -57,7 +57,8 @@ export default function FacebookAuthButton() {
           windowFeatures: { width: 700, height: 600 },
         } as any);
         // redirect to app tabs
-        login();
+        setUser("facebooklogin");
+        // TODO: give access token to user
       }}>
       Sign in with Facebook
     </Button>

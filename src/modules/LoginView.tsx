@@ -16,12 +16,13 @@ import {
 import { setAccessToken } from "../utils/accessToken";
 import { LoginValidationSchema } from "../utils/FormValidationSchemas";
 import { AuthContext } from "../utils/AuthProvider";
+import { GoogleAuthButton } from "../functional-components/GoogleAuthButton";
 
-interface LoginViewProps {}
-interface submitLoginUserProps {
-  email: string;
-  password: string;
-}
+// interface LoginViewProps {}
+// interface submitLoginUserProps {
+//   email: string;
+//   password: string;
+// }
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
@@ -75,6 +76,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
               value={values.password}
+              secureTextEntry={true}
             />
             <HelperText>
               <ErrorMessage name="password" />
@@ -90,7 +92,8 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
 
       <FacebookAuthButton />
       {/* only works in Safari for whatever reason */}
-      <SpotifyAuthButton />
+      {/* <SpotifyAuthButton /> */}
+      <GoogleAuthButton />
 
       <Button
         mode="text"

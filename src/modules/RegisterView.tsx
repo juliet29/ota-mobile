@@ -1,13 +1,17 @@
-import { Formik } from "formik";
+import { Formik, ErrorMessage } from "formik";
 import React from "react";
-import { Button } from "react-native-paper";
+import {
+  Button,
+  TextInput,
+  HelperText,
+  ActivityIndicator,
+} from "react-native-paper";
 import {
   RegisterInput,
   useRegisterMutation,
 } from "../generated-components/apolloComponents";
 import { Wrapper, StyledColumnView } from "../styled-components/ReusedUI";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
-import { MyTextField } from "../functional-components/MyTextField";
 import { RegisterValidationSchema } from "../utils/FormValidationSchemas";
 
 interface RegisterViewProps {}
@@ -16,8 +20,10 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
   navigation,
 }) => {
   const [registerUser, { loading, error }] = useRegisterMutation();
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (loading) return <ActivityIndicator size="large" />;
+  if (error) {
+    navigation.navigate("LoginFailed");
+  }
 
   async function submitRegisterUser(data: RegisterInput) {
     try {
@@ -41,12 +47,40 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
         submitRegisterUser(values);
       }}
       validationSchema={RegisterValidationSchema}>
-      {({ handleSubmit }) => (
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
         <Wrapper>
           <StyledColumnView>
-            <MyTextField label="Username" name="username" />
-            <MyTextField label="Email" name="email" />
-            <MyTextField label="Password" name="password" />
+            <TextInput
+              label="Email"
+              onChangeText={handleChange("email")}
+              onBlur={handleBlur("email")}
+              value={values.email}
+            />
+            <HelperText>
+              <ErrorMessage name="email" />
+            </HelperText>
+
+            <TextInput
+              label="Username"
+              onChangeText={handleChange("username")}
+              onBlur={handleBlur("username")}
+              value={values.username}
+            />
+            <HelperText>
+              <ErrorMessage name="username" />
+            </HelperText>
+
+            <TextInput
+              label="Password"
+              onChangeText={handleChange("password")}
+              onBlur={handleBlur("password")}
+              value={values.password}
+              secureTextEntry={true}
+            />
+            <HelperText>
+              <ErrorMessage name="password" />
+            </HelperText>
+
             <Button onPress={handleSubmit as any}>REGISTER</Button>
           </StyledColumnView>
 

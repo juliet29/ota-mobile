@@ -5,6 +5,11 @@ import { Routes } from "../../src/utils/Routes";
 import { Wrapper } from "../styled-components/ReusedUI";
 import { AuthContext } from "./AuthProvider";
 
+import getEnvVars from "../../environment";
+// @ts-ignore
+const { apiUrl } = getEnvVars();
+console.log(`my url in app w headers is ${apiUrl}`);
+
 // get a refresh token on each app load
 interface Props {}
 
@@ -15,7 +20,7 @@ export const AppWithHeaders: React.FC<Props> = () => {
   // "https://peaceful-oasis-92942.herokuapp.com/refresh_token"
 
   useEffect(() => {
-    fetch("http://localhost:4000/refresh_token", {
+    fetch(`${apiUrl}/refresh_token`, {
       method: "POST",
       credentials: "include",
     }).then(async (x) => {
