@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import * as Google from "expo-google-app-auth";
-import { GOOGLE_IOS_CLIENT_ID } from "../utils/Keys";
+import { GOOGLE_IOS_CLIENT_ID, GOOGLE_ANDROID_CLIENT_ID } from "../utils/Keys";
 import { Button } from "react-native-paper";
 import { AuthContext } from "../utils/AuthProvider";
 
@@ -12,7 +12,8 @@ export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({}) => {
     try {
       const result = await Google.logInAsync({
         iosClientId: GOOGLE_IOS_CLIENT_ID,
-        androidClientId: `<YOUR_ANDROID_CLIENT_ID_FOR_EXPO>`,
+        androidClientId: GOOGLE_ANDROID_CLIENT_ID,
+        //TODO make work for web
       });
 
       if (result.type === "success") {
