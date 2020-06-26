@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { AppTabs } from "../navigation/app/AppTabs";
 import { AuthStack } from "../navigation/auth/AuthStack";
 import { Center } from "../styled-components/Center";

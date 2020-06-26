@@ -6,13 +6,13 @@ import { StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../../utils/AuthProvider";
+import { LogoutButton } from "../../../functional-components/LogoutButton";
 
 interface HomeStackProps {}
 
 const Stack = createStackNavigator<HomeParamList>();
 // more things will go here!!!
 export const HomeStack: React.FC<HomeStackProps> = ({}) => {
-  const { logout } = useContext(AuthContext);
   return (
     <Stack.Navigator initialRouteName="Feed">
       {/* {addProductRoutes(Stack)} */}
@@ -20,14 +20,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
         name="Feed"
         options={{
           headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  logout();
-                }}>
-                <Text>Logout</Text>
-              </TouchableOpacity>
-            );
+            return <LogoutButton />;
           },
         }}
         component={FeedView}

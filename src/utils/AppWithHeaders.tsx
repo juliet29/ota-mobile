@@ -11,6 +11,8 @@ interface Props {}
 export const AppWithHeaders: React.FC<Props> = () => {
   const [loading, setLoading] = useState(true);
   const { setUser } = useContext(AuthContext);
+  //"http://localhost:4000/refresh_token"
+  // "https://peaceful-oasis-92942.herokuapp.com/refresh_token"
 
   useEffect(() => {
     fetch("http://localhost:4000/refresh_token", {
