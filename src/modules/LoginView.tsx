@@ -54,6 +54,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         initialValues={{ password: "", email: "" }}
         onSubmit={({ email, password }) => {
           console.log("signin button press");
+          email = email.toLowerCase();
           submitLoginUser({ email, password });
         }}
         validationSchema={LoginValidationSchema}>
@@ -65,7 +66,8 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
               label="Email"
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
-              value={values.email}
+              // TODO: CHANGE ON SERVER
+              value={values.email.toLowerCase()}
             />
             <HelperText>
               <ErrorMessage name="email" />

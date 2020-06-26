@@ -42,9 +42,15 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
 
   return (
     <Formik
-      initialValues={{ username: "", password: "", email: "" }}
-      onSubmit={(values) => {
-        submitRegisterUser(values);
+      initialValues={{
+        username: "",
+        password: "",
+        email: "",
+        confirmPassword: "",
+      }}
+      onSubmit={({ username, password, email }) => {
+        email = email.toLowerCase();
+        submitRegisterUser({ username, password, email });
       }}
       validationSchema={RegisterValidationSchema}>
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -79,6 +85,17 @@ export const RegisterView: React.FC<AuthNavProps<"Register">> = ({
             />
             <HelperText>
               <ErrorMessage name="password" />
+            </HelperText>
+
+            <TextInput
+              label="Confirm Password"
+              onChangeText={handleChange("confirmPassword")}
+              onBlur={handleBlur("confirmPassword")}
+              value={values.confirmPassword}
+              secureTextEntry={true}
+            />
+            <HelperText>
+              <ErrorMessage name="confirmPassword" />
             </HelperText>
 
             <Button onPress={handleSubmit as any}>REGISTER</Button>
