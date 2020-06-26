@@ -1,23 +1,21 @@
-import { Formik, FormikProps, ErrorMessage, Field } from "formik";
+import { ErrorMessage, Formik } from "formik";
 import React, { useContext } from "react";
-import { Button, Title, TextInput, HelperText } from "react-native-paper";
-import { AuthContext } from "../utils/AuthProvider";
-import { MyTextField } from "../functional-components/MyTextField";
+import { Button, HelperText, TextInput } from "react-native-paper";
+import FacebookAuthButton from "../functional-components/FacebookAuthButton";
+import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
+import {
+  LoginMutationVariables,
+  useLoginMutation,
+} from "../generated-components/apolloComponents";
 import { AuthNavProps } from "../navigation/auth/AuthParamList";
 import {
   LineBreak,
   StyledColumnView,
   Wrapper,
 } from "../styled-components/ReusedUI";
-import { LoginValidationSchema } from "../utils/FormValidationSchemas";
-import {
-  useLoginMutation,
-  LoginMutationVariables,
-} from "../generated-components/apolloComponents";
-import FacebookAuthButton from "../functional-components/FacebookAuthButton";
-import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
 import { setAccessToken } from "../utils/accessToken";
-import { LoginFailed } from "./LoginFailed";
+import { LoginValidationSchema } from "../utils/FormValidationSchemas";
+import { AuthContext } from "../utils/AuthProvider";
 
 interface LoginViewProps {}
 interface submitLoginUserProps {
@@ -27,7 +25,7 @@ interface submitLoginUserProps {
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
-
+  const { setUser } = useContext(AuthContext);
   const [loginUser, { loading, error }] = useLoginMutation();
 
   async function submitLoginUser({ email, password }: LoginMutationVariables) {
@@ -35,7 +33,9 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
       const response = await loginUser({ variables: { email, password } });
       console.log(response);
       if (response && response.data && response.data.login) {
-        setAccessToken(response.data.login.accessToken);
+        const accessToken = response.data.login.accessToken;
+        setAccessToken(accessToken);
+        setUser(accessToken);
       }
     } catch (err) {
       console.log(err);

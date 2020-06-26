@@ -1,11 +1,10 @@
 import { ApolloProvider } from "@apollo/react-hooks";
 import ApolloClient from "apollo-boost";
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import { AuthProvider } from "./utils/AuthProvider";
-import { Routes } from "./utils/Routes";
 import { getAccessToken } from "./utils/accessToken";
 import { AppWithHeaders } from "./utils/AppWithHeaders";
+import { AuthContext } from "./utils/AuthProvider";
 
 interface ProvidersProps {}
 
@@ -38,11 +37,17 @@ export const client = new ApolloClient({
 });
 
 export const Providers: React.FC<ProvidersProps> = ({}) => {
+  const [user, setUser] = useState(null);
+
+  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+
   return (
-    <ApolloProvider client={client}>
-      <PaperProvider theme={theme}>
-        <AppWithHeaders />
-      </PaperProvider>
-    </ApolloProvider>
+    <AuthContext.Provider value={value as any}>
+      <ApolloProvider client={client}>
+        <PaperProvider theme={theme}>
+          <AppWithHeaders />
+        </PaperProvider>
+      </ApolloProvider>
+    </AuthContext.Provider>
   );
 };
