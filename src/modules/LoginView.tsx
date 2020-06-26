@@ -90,10 +90,13 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         )}
       </Formik>
 
-      <FacebookAuthButton />
-      {/* only works in Safari for whatever reason */}
-      {/* <SpotifyAuthButton /> */}
-      <GoogleAuthButton />
+      <StyledColumnView>
+        <FacebookAuthButton />
+        {/* only works in Safari for whatever reason */}
+        {/* <SpotifyAuthButton /> */}
+        <LineBreak />
+        <GoogleAuthButton />
+      </StyledColumnView>
 
       <Button
         mode="text"
