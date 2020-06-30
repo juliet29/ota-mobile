@@ -9,6 +9,7 @@ import {
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
+import { useStoreState } from "../../hooks";
 
 interface CreatePostViewProps {}
 
@@ -19,19 +20,19 @@ interface submitCreatePostProps {
 
 export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
-  async function submitCreatePost({ text, link }: submitCreatePostProps) {
-    // try {
-    const response = await createPost({
-      variables: { text, link },
-      refetchQueries: [{ query: GetPostsDocument }],
-    });
-    console.log(response);
-    // }
+  const postType = useStoreState((state) => state.createPost.postType);
 
-    // catch (err) {
-    //   console.log(err);
-    // }
-  }
+  const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
+    try {
+      const response = await createPost({
+        variables: { text, link },
+        refetchQueries: [{ query: GetPostsDocument }],
+      });
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Wrapper>
       <Formik

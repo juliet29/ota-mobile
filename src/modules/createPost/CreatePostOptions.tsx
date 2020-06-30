@@ -21,8 +21,6 @@ export const CreatePostOptions: React.FC<CreatePostOptionsProps> = ({}) => {
           // TODO: put elsewhere later ...
           contentContainerStyle={{
             zIndex: 10,
-            backgroundColor: "#6202EE",
-            margin: "10px",
           }}>
           <CreatePostModal />
         </Modal>
