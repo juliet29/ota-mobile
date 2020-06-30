@@ -1,5 +1,5 @@
 import React from "react";
-import { CreatePostView } from "../../../modules/CreatePostView";
+import { CreatePostView } from "../../../modules/createPost/CreatePostView";
 
 interface CreatePostStackProps {}
 // more stuff will go here!!!

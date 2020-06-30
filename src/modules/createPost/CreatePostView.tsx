@@ -1,13 +1,14 @@
 import { Formik, ErrorMessage } from "formik";
 import React from "react";
 import { Button, TextInput, HelperText } from "react-native-paper";
-import { MyTextField } from "../functional-components/MyTextField";
+import { MyTextField } from "../../functional-components/MyTextField";
 import {
   GetPostsDocument,
   useCreatePostMutation,
-} from "../generated-components/apolloComponents";
-import { StyledColumnView, Wrapper } from "../styled-components/ReusedUI";
-import { CreatePostValidationSchema } from "../utils/FormValidationSchemas";
+} from "../../generated-components/apolloComponents";
+import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
+import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
+import { CreatePostOptions } from "./CreatePostOptions";
 
 interface CreatePostViewProps {}
 
@@ -60,6 +61,7 @@ export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
             <HelperText>
               <ErrorMessage name="link" />
             </HelperText>
+            <CreatePostOptions />
 
             <Button mode="contained" onPress={handleSubmit}>
               CREATE POST
