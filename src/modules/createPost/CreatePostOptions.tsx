@@ -2,14 +2,18 @@ import React from "react";
 import { Button, Modal, Portal, Text } from "react-native-paper";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostModal } from "./CreatePostModal";
+import { useStoreActions } from "../../state-management/hooks";
 
 interface CreatePostOptionsProps {}
 
 export const CreatePostOptions: React.FC<CreatePostOptionsProps> = ({}) => {
   const [visible, setVisible] = React.useState(false);
 
-  const showModal = () => setVisible(true);
+  const setPostType = useStoreActions(
+    (actions) => actions.createPost.setPostType
+  );
 
+  const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
 
   return (
@@ -25,7 +29,13 @@ export const CreatePostOptions: React.FC<CreatePostOptionsProps> = ({}) => {
           <CreatePostModal />
         </Modal>
       </Portal>
-      <Button onPress={() => showModal()}>Song</Button>
+      <Button
+        onPress={() => {
+          showModal();
+          setPostType("Song");
+        }}>
+        Song
+      </Button>
       <Button>Artist</Button>
       <Button>Album</Button>
     </StyledColumnView>
