@@ -9,7 +9,7 @@ import {
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
-import { useStoreState } from "../../hooks";
+import { useStoreState } from "../../state-management/hooks";
 
 interface CreatePostViewProps {}
 
