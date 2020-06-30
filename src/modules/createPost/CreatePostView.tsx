@@ -21,7 +21,7 @@ interface submitCreatePostProps {
 export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
   const postType = useStoreState((state) => state.createPost.postType);
-  console.log(postType);
+  console.log("my type is ", postType);
 
   const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
     try {
