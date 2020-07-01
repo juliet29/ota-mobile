@@ -19,6 +19,19 @@ export type Query = {
   getCurrentUser?: Maybe<User>;
   hello: Scalars['String'];
   getPosts: Array<Post>;
+  getArtist?: Maybe<Artist>;
+  search?: Maybe<SearchResult>;
+};
+
+
+export type QueryGetArtistArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QuerySearchArgs = {
+  type: Scalars['String'];
+  query: Scalars['String'];
 };
 
 export type User = {
@@ -37,6 +50,23 @@ export type Post = {
   user: User;
 };
 
+
+export type Artist = {
+  __typename?: 'Artist';
+  name: Scalars['String'];
+  popularity: Scalars['Float'];
+  type: Scalars['String'];
+};
+
+export type SearchResult = {
+  __typename?: 'SearchResult';
+  artists: Items;
+};
+
+export type Items = {
+  __typename?: 'Items';
+  items: Array<Artist>;
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -120,6 +150,26 @@ export type GetPostsQuery = (
     & { user: (
       { __typename?: 'User' }
       & Pick<User, 'username'>
+    ) }
+  )> }
+);
+
+export type SearchQueryVariables = Exact<{
+  type: Scalars['String'];
+  query: Scalars['String'];
+}>;
+
+
+export type SearchQuery = (
+  { __typename?: 'Query' }
+  & { search?: Maybe<(
+    { __typename?: 'SearchResult' }
+    & { artists: (
+      { __typename?: 'Items' }
+      & { items: Array<(
+        { __typename?: 'Artist' }
+        & Pick<Artist, 'name'>
+      )> }
     ) }
   )> }
 );
@@ -226,6 +276,44 @@ export function useGetPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsQueryResult = ApolloReactCommon.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
+export const SearchDocument = gql`
+    query search($type: String!, $query: String!) {
+  search(type: $type, query: $query) {
+    artists {
+      items {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchQuery__
+ *
+ * To run a query within a React component, call `useSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchQuery({
+ *   variables: {
+ *      type: // value for 'type'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchQuery, SearchQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchQuery, SearchQueryVariables>(SearchDocument, baseOptions);
+      }
+export function useSearchLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchQuery, SearchQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchQuery, SearchQueryVariables>(SearchDocument, baseOptions);
+        }
+export type SearchQueryHookResult = ReturnType<typeof useSearchQuery>;
+export type SearchLazyQueryHookResult = ReturnType<typeof useSearchLazyQuery>;
+export type SearchQueryResult = ApolloReactCommon.QueryResult<SearchQuery, SearchQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
