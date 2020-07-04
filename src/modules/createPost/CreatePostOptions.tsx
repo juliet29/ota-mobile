@@ -1,11 +1,9 @@
-import React from "react";
-import { Button, Modal, Portal, Text } from "react-native-paper";
-import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
-import { AddContentToPost } from "./AddContentToPost";
-import { useStoreActions } from "../../state-management/hooks";
-import { FlatList } from "react-native-gesture-handler";
-import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { FlatList } from "react-native-gesture-handler";
+import { Button } from "react-native-paper";
+import { useStoreActions } from "../../state-management/hooks";
+import { StyledColumnView } from "../../styled-components/ReusedUI";
 
 interface CreatePostOptionsProps {}
 

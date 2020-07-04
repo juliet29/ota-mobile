@@ -18,7 +18,6 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
         renderItem={(results) => (
           <Card>
             <Headline>{results.item?.name}</Headline>
-            <Caption>{results.item?.type}</Caption>
           </Card>
         )}
       />
@@ -32,7 +31,6 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
         renderItem={(results) => (
           <Card>
             <Headline>{results.item?.name}</Headline>
-            <Caption>{results.item?.artists?.length}</Caption>
             {results.item?.artists?.map((element, ix) => (
               <Caption key={ix}>{element?.name}</Caption>
             ))}
@@ -49,7 +47,10 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
         renderItem={(results) => (
           <Card>
             <Headline>{results.item?.name}</Headline>
-            <Caption>{results.item?.artists}</Caption>
+            {results.item?.artists?.map((element, ix) => (
+              <Caption key={ix}>{element?.name}</Caption>
+            ))}
+            <Caption>Release Date {results.item?.release_date}</Caption>
           </Card>
         )}
       />
