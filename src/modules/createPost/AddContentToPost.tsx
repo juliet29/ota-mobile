@@ -4,12 +4,15 @@ import { Button, Card, Searchbar } from "react-native-paper";
 import { useSearchQuery } from "../../generated-components/apolloComponents";
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
+import { useNavigation } from "@react-navigation/native";
 
 interface AddContentToPostProps {}
 
 export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
+  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = React.useState("");
   const postType = useStoreState((state) => state.createPost.postType);
+  // TODO put in use effect
   const { data, loading, error } = useSearchQuery({
     variables: {
       type: postType,
@@ -45,6 +48,7 @@ export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
           )}
           keyExtractor={(result, index) => result.name + index}
         />
+        <Button onPress={() => navigation.goBack()}>Dismiss</Button>
       </StyledColumnView>
     </Wrapper>
   );
