@@ -7,30 +7,34 @@ import { AppWithHeaders } from "./utils/AppWithHeaders";
 import { AuthContext } from "./utils/AuthProvider";
 import { StoreProvider } from "easy-peasy";
 import store from "./state-management/store";
-
+import {
+  IntrospectionFragmentMatcher,
+  InMemoryCache,
+} from "apollo-cache-inmemory";
+import introspectionQueryResultData from "../fragmentTypes.json";
 import getEnvVars from "../environment";
+
 // @ts-ignore
 const { apiUrl } = getEnvVars();
 console.log(`my url in index is ${apiUrl}`);
 
-interface ProvidersProps {}
-
 const theme = {
   ...DefaultTheme,
 };
-// // const host: string = "https://peaceful-oasis-92942.herokuapp.com/graphql";
 
-// const host = "http://localhost:4000/graphql";
-// console.log(host);
-// // const httpLink = new HttpLink({
-// //   uri: host,
-// //   credentials: "include",
-// // });
+// for queries involving unions in shema
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData,
+});
+
+const cache = new InMemoryCache({ fragmentMatcher });
 
 export const client = new ApolloClient({
+  cache,
   uri: `${apiUrl}/graphql`,
   credentials: "include",
   request: (operation) => {
+    // TODO move to easy-peasy
     const accessToken = getAccessToken();
     console.log(accessToken);
     if (accessToken) {
@@ -42,6 +46,8 @@ export const client = new ApolloClient({
     }
   },
 });
+
+interface ProvidersProps {}
 
 export const Providers: React.FC<ProvidersProps> = ({}) => {
   const [user, setUser] = useState(null);

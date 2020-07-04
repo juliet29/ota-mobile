@@ -17,115 +17,178 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   getCurrentUser?: Maybe<User>;
-  hello: Scalars['String'];
-  getPosts: Array<Post>;
+  hello?: Maybe<Scalars['String']>;
+  getPosts?: Maybe<Array<Maybe<Post>>>;
   getArtist?: Maybe<Artist>;
   search?: Maybe<SearchResult>;
 };
 
 
 export type QueryGetArtistArgs = {
-  id: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
 };
 
 
 export type QuerySearchArgs = {
-  type: Scalars['String'];
-  query: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
-  id: Scalars['ID'];
-  username: Scalars['String'];
-  email: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
 };
 
 export type Post = {
   __typename?: 'Post';
-  id: Scalars['ID'];
-  text: Scalars['String'];
+  id?: Maybe<Scalars['ID']>;
+  text?: Maybe<Scalars['String']>;
   link?: Maybe<Scalars['String']>;
-  timeSubmitted: Scalars['DateTime'];
-  user: User;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  user?: Maybe<User>;
 };
 
 
 export type Artist = {
   __typename?: 'Artist';
-  name: Scalars['String'];
-  popularity: Scalars['Float'];
-  type: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
 };
 
-export type SearchResult = {
-  __typename?: 'SearchResult';
-  artists: Items;
+export type Image = {
+  __typename?: 'Image';
+  url?: Maybe<Scalars['String']>;
+  height?: Maybe<Scalars['Float']>;
+  width?: Maybe<Scalars['Float']>;
 };
 
-export type Items = {
-  __typename?: 'Items';
-  items: Array<Artist>;
+export type ExternalUrl = {
+  __typename?: 'ExternalUrl';
+  spotify?: Maybe<Scalars['String']>;
+};
+
+export type SearchResult = TrackSearchResult | ArtistSearchResult | AlbumSearchResult;
+
+export type TrackSearchResult = {
+  __typename?: 'TrackSearchResult';
+  tracks?: Maybe<TrackItems>;
+};
+
+export type TrackItems = {
+  __typename?: 'TrackItems';
+  items?: Maybe<Array<Maybe<Track>>>;
+};
+
+export type Track = {
+  __typename?: 'Track';
+  id?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  album?: Maybe<Album>;
+  artists?: Maybe<Array<Maybe<Artist>>>;
+  track_number?: Maybe<Scalars['Float']>;
+};
+
+export type Album = {
+  __typename?: 'Album';
+  id?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  release_date?: Maybe<Scalars['String']>;
+  album_type?: Maybe<Scalars['String']>;
+  artists?: Maybe<Array<Maybe<Artist>>>;
+};
+
+export type ArtistSearchResult = {
+  __typename?: 'ArtistSearchResult';
+  artists?: Maybe<ArtistItems>;
+};
+
+export type ArtistItems = {
+  __typename?: 'ArtistItems';
+  items?: Maybe<Array<Maybe<Artist>>>;
+};
+
+export type AlbumSearchResult = {
+  __typename?: 'AlbumSearchResult';
+  albums?: Maybe<AlbumItems>;
+};
+
+export type AlbumItems = {
+  __typename?: 'AlbumItems';
+  items?: Maybe<Array<Maybe<Album>>>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   changePassword?: Maybe<User>;
-  confirmUser: Scalars['Boolean'];
-  forgotPassword: Scalars['Boolean'];
+  confirmUser?: Maybe<Scalars['Boolean']>;
+  forgotPassword?: Maybe<Scalars['Boolean']>;
   login?: Maybe<LoginResponse>;
-  logout: Scalars['Boolean'];
-  register: Scalars['Boolean'];
-  createPost: Scalars['Boolean'];
+  logout?: Maybe<Scalars['Boolean']>;
+  register?: Maybe<Scalars['Boolean']>;
+  createPost?: Maybe<Scalars['Boolean']>;
 };
 
 
 export type MutationChangePasswordArgs = {
-  data: ChangePassowrdInput;
+  data?: Maybe<ChangePassowrdInput>;
 };
 
 
 export type MutationConfirmUserArgs = {
-  token: Scalars['String'];
+  token?: Maybe<Scalars['String']>;
 };
 
 
 export type MutationForgotPasswordArgs = {
-  email: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
 };
 
 
 export type MutationLoginArgs = {
-  password: Scalars['String'];
-  email: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
 };
 
 
 export type MutationRegisterArgs = {
-  data: RegisterInput;
+  data?: Maybe<RegisterInput>;
 };
 
 
 export type MutationCreatePostArgs = {
-  link: Scalars['String'];
-  text: Scalars['String'];
+  link?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
 };
 
 export type ChangePassowrdInput = {
-  password: Scalars['String'];
-  token: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
 };
 
 export type LoginResponse = {
   __typename?: 'LoginResponse';
-  accessToken: Scalars['String'];
-  user: User;
+  accessToken?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type RegisterInput = {
-  password: Scalars['String'];
-  username: Scalars['String'];
-  email: Scalars['String'];
+  password?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
 };
 
 export type CreatePostMutationVariables = Exact<{
@@ -144,33 +207,73 @@ export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetPostsQuery = (
   { __typename?: 'Query' }
-  & { getPosts: Array<(
+  & { getPosts?: Maybe<Array<Maybe<(
     { __typename?: 'Post' }
     & Pick<Post, 'text' | 'link' | 'timeSubmitted' | 'id'>
-    & { user: (
+    & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
-    ) }
-  )> }
+    )> }
+  )>>> }
 );
 
-export type SearchQueryVariables = Exact<{
+export type SearchSpotifyQueryVariables = Exact<{
   type: Scalars['String'];
   query: Scalars['String'];
 }>;
 
 
-export type SearchQuery = (
+export type SearchSpotifyQuery = (
   { __typename?: 'Query' }
   & { search?: Maybe<(
-    { __typename?: 'SearchResult' }
-    & { artists: (
-      { __typename?: 'Items' }
-      & { items: Array<(
+    { __typename?: 'TrackSearchResult' }
+    & { tracks?: Maybe<(
+      { __typename?: 'TrackItems' }
+      & { items?: Maybe<Array<Maybe<(
+        { __typename?: 'Track' }
+        & Pick<Track, 'id' | 'name' | 'type'>
+        & { album?: Maybe<(
+          { __typename?: 'Album' }
+          & Pick<Album, 'name'>
+          & { images?: Maybe<Array<Maybe<(
+            { __typename?: 'Image' }
+            & Pick<Image, 'url'>
+          )>>> }
+        )>, artists?: Maybe<Array<Maybe<(
+          { __typename?: 'Artist' }
+          & Pick<Artist, 'name'>
+        )>>> }
+      )>>> }
+    )> }
+  ) | (
+    { __typename?: 'ArtistSearchResult' }
+    & { artists?: Maybe<(
+      { __typename?: 'ArtistItems' }
+      & { items?: Maybe<Array<Maybe<(
         { __typename?: 'Artist' }
-        & Pick<Artist, 'name'>
-      )> }
-    ) }
+        & Pick<Artist, 'id' | 'type' | 'name'>
+        & { images?: Maybe<Array<Maybe<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'url'>
+        )>>> }
+      )>>> }
+    )> }
+  ) | (
+    { __typename?: 'AlbumSearchResult' }
+    & { albums?: Maybe<(
+      { __typename?: 'AlbumItems' }
+      & { items?: Maybe<Array<Maybe<(
+        { __typename?: 'Album' }
+        & Pick<Album, 'id' | 'name' | 'type' | 'release_date'>
+        & { artists?: Maybe<Array<Maybe<(
+          { __typename?: 'Artist' }
+          & Pick<Artist, 'name'>
+        )>>>, images?: Maybe<Array<Maybe<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'url'>
+        )>>> }
+      )>>> }
+    )> }
   )> }
 );
 
@@ -276,12 +379,53 @@ export function useGetPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsQueryResult = ApolloReactCommon.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
-export const SearchDocument = gql`
-    query search($type: String!, $query: String!) {
+export const SearchSpotifyDocument = gql`
+    query searchSpotify($type: String!, $query: String!) {
   search(type: $type, query: $query) {
-    artists {
-      items {
-        name
+    ... on AlbumSearchResult {
+      albums {
+        items {
+          id
+          name
+          type
+          release_date
+          artists {
+            name
+          }
+          images {
+            url
+          }
+        }
+      }
+    }
+    ... on ArtistSearchResult {
+      artists {
+        items {
+          id
+          type
+          name
+          images {
+            url
+          }
+        }
+      }
+    }
+    ... on TrackSearchResult {
+      tracks {
+        items {
+          id
+          name
+          type
+          album {
+            name
+            images {
+              url
+            }
+          }
+          artists {
+            name
+          }
+        }
       }
     }
   }
@@ -289,31 +433,31 @@ export const SearchDocument = gql`
     `;
 
 /**
- * __useSearchQuery__
+ * __useSearchSpotifyQuery__
  *
- * To run a query within a React component, call `useSearchQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useSearchSpotifyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchSpotifyQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useSearchQuery({
+ * const { data, loading, error } = useSearchSpotifyQuery({
  *   variables: {
  *      type: // value for 'type'
  *      query: // value for 'query'
  *   },
  * });
  */
-export function useSearchQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchQuery, SearchQueryVariables>) {
-        return ApolloReactHooks.useQuery<SearchQuery, SearchQueryVariables>(SearchDocument, baseOptions);
+export function useSearchSpotifyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchSpotifyQuery, SearchSpotifyQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchSpotifyQuery, SearchSpotifyQueryVariables>(SearchSpotifyDocument, baseOptions);
       }
-export function useSearchLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchQuery, SearchQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<SearchQuery, SearchQueryVariables>(SearchDocument, baseOptions);
+export function useSearchSpotifyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchSpotifyQuery, SearchSpotifyQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchSpotifyQuery, SearchSpotifyQueryVariables>(SearchSpotifyDocument, baseOptions);
         }
-export type SearchQueryHookResult = ReturnType<typeof useSearchQuery>;
-export type SearchLazyQueryHookResult = ReturnType<typeof useSearchLazyQuery>;
-export type SearchQueryResult = ApolloReactCommon.QueryResult<SearchQuery, SearchQueryVariables>;
+export type SearchSpotifyQueryHookResult = ReturnType<typeof useSearchSpotifyQuery>;
+export type SearchSpotifyLazyQueryHookResult = ReturnType<typeof useSearchSpotifyLazyQuery>;
+export type SearchSpotifyQueryResult = ApolloReactCommon.QueryResult<SearchSpotifyQuery, SearchSpotifyQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
