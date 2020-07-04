@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Text } from "react-native";
-import { Button, Card, Searchbar } from "react-native-paper";
+import { Button, Card, Searchbar, Headline, Caption } from "react-native-paper";
 import {
   useSearchSpotifyQuery,
   SearchSpotifyQuery,
@@ -9,6 +9,7 @@ import {
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { useNavigation } from "@react-navigation/native";
+import { SearchFlatLists } from "./searchFlatLists";
 
 interface AddContentToPostProps {}
 
@@ -19,26 +20,23 @@ function filterSearchResults(someData: SearchSpotifyQuery) {
     ? someData?.search?.tracks?.items
     : someData?.search?.__typename === "AlbumSearchResult"
     ? someData?.search?.albums?.items
-    : null;
+    : undefined;
 }
 
 export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState("");
   const postType = useStoreState((state) => state.createPost.postType);
-  const refinedSearchQuery = searchQuery.length > 1 ? searchQuery : "";
 
   const { data, loading, error } = useSearchSpotifyQuery({
     variables: {
       type: postType,
-      query: refinedSearchQuery,
+      query: searchQuery,
     },
   });
-  // console.log(data);
-  // console.log(data?.search?.__typename);
 
   const searchResults = data ? filterSearchResults(data) : null;
-  // TODO: handle errors
+  // TODO: dont search if no data
 
   return (
     <Wrapper style={{ backgroundColor: "white" }}>
@@ -55,16 +53,17 @@ export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
         ) : error ? (
           <Text></Text>
         ) : (
-          <FlatList
-            // @ts-ignore
-            //  TODO: fix types here
-            data={searchResults}
-            renderItem={(results) => (
-              <Card>
-                <Button>{results.item?.name}</Button>
-              </Card>
-            )}
-          />
+          <SearchFlatLists data={data} />
+          // <FlatList
+          //   // @ts-ignore
+          //   //  TODO: fix types here
+          //   data={searchResults}
+          //   renderItem={(results) => (
+          //     <Card>
+          //       <Headline>{results.item?.name}</Headline>
+          //     </Card>
+          //   )}
+          // />
         )}
 
         <Button onPress={() => navigation.goBack()}>Dismiss</Button>

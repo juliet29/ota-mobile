@@ -46,15 +46,15 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
         <StyledColumnView>
           <Card>
             <Card.Content>
-              <Title>{item.user.username}</Title>
-              <Subheading>{item.timeSubmitted}</Subheading>
-              <Paragraph>{item.text}</Paragraph>
-              <Paragraph>{item.link}</Paragraph>
+              <Title>{item?.user?.username}</Title>
+              <Subheading>{item?.timeSubmitted}</Subheading>
+              <Paragraph>{item?.text}</Paragraph>
+              <Paragraph>{item?.link}</Paragraph>
             </Card.Content>
           </Card>
         </StyledColumnView>
       )}
-      keyExtractor={(item) => item.id}
+      // keyExtractor={(item) => item?.id}
     />
   );
 };

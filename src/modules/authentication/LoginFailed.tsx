@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Title, Button } from "react-native-paper";
-import { Wrapper } from "../styled-components/ReusedUI";
-import { AuthNavProps } from "../navigation/auth/AuthParamList";
+import { Wrapper } from "../../styled-components/ReusedUI";
+import { AuthNavProps } from "../../navigation/auth/AuthParamList";
 
 interface LoginFailedProps {}
 

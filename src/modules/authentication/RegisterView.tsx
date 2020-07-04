@@ -9,10 +9,10 @@ import {
 import {
   RegisterInput,
   useRegisterMutation,
-} from "../generated-components/apolloComponents";
-import { Wrapper, StyledColumnView } from "../styled-components/ReusedUI";
-import { AuthNavProps } from "../navigation/auth/AuthParamList";
-import { RegisterValidationSchema } from "../utils/FormValidationSchemas";
+} from "../../generated-components/apolloComponents";
+import { Wrapper, StyledColumnView } from "../../styled-components/ReusedUI";
+import { AuthNavProps } from "../../navigation/auth/AuthParamList";
+import { RegisterValidationSchema } from "../../utils/FormValidationSchemas";
 
 interface RegisterViewProps {}
 
