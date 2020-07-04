@@ -10,6 +10,7 @@ import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
 import { useStoreState } from "../../state-management/hooks";
+import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
 
 interface CreatePostViewProps {}
 
@@ -18,7 +19,9 @@ interface submitCreatePostProps {
   link: string;
 }
 
-export const CreatePostView: React.FC<CreatePostViewProps> = ({}) => {
+export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
+  navigation,
+}) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
   const postType = useStoreState((state) => state.createPost.postType);
   console.log("my type is ", postType);

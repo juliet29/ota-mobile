@@ -2,7 +2,7 @@ import { ErrorMessage, Formik } from "formik";
 import React, { useContext } from "react";
 import { Button, HelperText, TextInput } from "react-native-paper";
 import FacebookAuthButton from "../functional-components/FacebookAuthButton";
-import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
+import { GoogleAuthButton } from "../functional-components/GoogleAuthButton";
 import {
   LoginMutationVariables,
   useLoginMutation,
@@ -14,9 +14,8 @@ import {
   Wrapper,
 } from "../styled-components/ReusedUI";
 import { setAccessToken } from "../utils/accessToken";
-import { LoginValidationSchema } from "../utils/FormValidationSchemas";
 import { AuthContext } from "../utils/AuthProvider";
-import { GoogleAuthButton } from "../functional-components/GoogleAuthButton";
+import { LoginValidationSchema } from "../utils/FormValidationSchemas";
 
 // interface LoginViewProps {}
 // interface submitLoginUserProps {

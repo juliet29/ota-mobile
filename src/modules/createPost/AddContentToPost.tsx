@@ -1,23 +1,18 @@
-import React, { useEffect } from "react";
-import { Wrapper, StyledColumnView } from "../../styled-components/ReusedUI";
-import {
-  Text,
-  Searchbar,
-  Card,
-  Title,
-  Paragraph,
-  Button,
-} from "react-native-paper";
-import { useSearchQuery } from "../../generated-components/apolloComponents";
+import React from "react";
 import { FlatList } from "react-native";
+import { Button, Card, Searchbar } from "react-native-paper";
+import { useSearchQuery } from "../../generated-components/apolloComponents";
+import { useStoreState } from "../../state-management/hooks";
+import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 
-interface CreatePostModalProps {}
+interface AddContentToPostProps {}
 
-export const CreatePostModal: React.FC<CreatePostModalProps> = ({}) => {
+export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const postType = useStoreState((state) => state.createPost.postType);
   const { data, loading, error } = useSearchQuery({
     variables: {
-      type: "artist",
+      type: postType,
       query: searchQuery,
     },
   });
@@ -28,13 +23,13 @@ export const CreatePostModal: React.FC<CreatePostModalProps> = ({}) => {
   //   console.log(error);
   //   return <Text>Error..</Text>;
   // }
+  // TODO: handle errors
 
-  // TODO execute the search query
   // @ts-ignore
   const onChangeSearch = (query) => setSearchQuery(query);
 
   return (
-    <Wrapper>
+    <Wrapper style={{ backgroundColor: "white" }}>
       <StyledColumnView>
         <Searchbar
           placeholder="Search"
