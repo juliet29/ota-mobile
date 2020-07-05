@@ -43,12 +43,12 @@ export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
           onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
           value={searchQuery}
         />
-        {loading ? (
+        {error ? (
+          <Text></Text>
+        ) : !data ? (
           <StyledColumnView>
             <ActivityIndicator size="large" />
           </StyledColumnView>
-        ) : error ? (
-          <Text></Text>
         ) : (
           <SearchFlatLists data={data} />
         )}
