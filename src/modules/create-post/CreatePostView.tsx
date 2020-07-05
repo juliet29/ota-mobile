@@ -4,6 +4,7 @@ import { Button, HelperText, TextInput, Text } from "react-native-paper";
 import {
   GetPostsDocument,
   useCreatePostMutation,
+  CreatePostMutationVariables,
 } from "../../generated-components/apolloComponents";
 import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
 import { useStoreState, useStoreActions } from "../../state-management/hooks";
@@ -14,31 +15,25 @@ import { ContentPreview } from "./ContentPreview";
 
 interface CreatePostViewProps {}
 
-interface submitCreatePostProps {
-  text: string;
-  link: string;
-}
-
 export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   navigation,
 }) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
-  const postType = useStoreState((state) => state.createPost.postType);
-  // console.log("my type is ", postType);
   const content = useStoreState((state) => state.createPost.content);
-  // console.log("my content is ", content);
   const [toDisplay, setToDisplay] = useState(0);
   const setContent = useStoreActions(
     (actions) => actions.createPost.setContent
   );
-
+  // determine what options to show
   useEffect(() => {
-    // console.log("DISPLAY CHANGED");
     setContent({ ...content, name: "" });
-    // console.log("My content is1t272t7y3  ", content.name);
   }, [toDisplay, setToDisplay]);
 
-  const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
+  // TODO: handle loading
+  const submitCreatePost = async ({
+    text,
+    link,
+  }: CreatePostMutationVariables) => {
     try {
       const response = await createPost({
         variables: { text, link },
@@ -48,8 +43,9 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
     } catch (err) {
       console.log(err);
     }
+    // TODO: move to feed view on success
   };
-  // console.log("My content is 1t272t7y3  ", content.name);
+
   return (
     <Wrapper>
       <Formik
@@ -79,12 +75,11 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
             <HelperText>
               <ErrorMessage name="link" />
             </HelperText>
-            {/* // TODO conditionally render this... */}
 
+            {/* show Selected Content or options for creating Post */}
             {content.name ? (
               <ContentPreview
                 onPress={(value) => {
-                  // console.log("my display", toDisplay);
                   setToDisplay(value);
                 }}
               />

@@ -1,14 +1,11 @@
 import React from "react";
-import { StyledColumnView } from "../../styled-components/ReusedUI";
-import { Card, Title, Paragraph, Button } from "react-native-paper";
-import { useStoreState } from "../../state-management/hooks";
 import { Image } from "react-native";
-import { StateMapper } from "easy-peasy";
+import { Button, Card } from "react-native-paper";
+import { useStoreState } from "../../state-management/hooks";
+import { StyledColumnView } from "../../styled-components/ReusedUI";
 
 interface ContentPreviewProps {
-  //   props: any;
   onPress: (hello: number) => void;
-  //   props: boolean;
 }
 
 export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
@@ -19,21 +16,22 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
     <StyledColumnView>
       <Card>
         <Card.Title title={content.name} subtitle={postType} />
-        {/* <Image
+        <Image
           style={{ resizeMode: "contain", width: 200, height: 200 }}
           source={{
             uri: `${content.imageUrl}`,
           }}
-        /> */}
+        />
         <Card.Actions>
           <Button
             onPress={() => {
-              //   console.log("button Press!");
+              // send an alert to CreatePostView to
+              // signal user wants to clear content
+              // only clear in parent to enable useEffect()
               onPress(Math.random());
             }}>
             Cancel
           </Button>
-          <Button>Ok</Button>
         </Card.Actions>
       </Card>
     </StyledColumnView>
