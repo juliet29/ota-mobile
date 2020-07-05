@@ -33,6 +33,7 @@
     "faker": "^4.1.0",
     "formik": "^2.1.4",
     "graphql": "^15.1.0",
+    "graphql-anywhere": "^4.2.7",
     "passport": "^0.4.1",
     "passport-spotify": "^1.1.0",
     "react": "~16.9.0",

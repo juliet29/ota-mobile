@@ -51,7 +51,6 @@ interface ProvidersProps {}
 
 export const Providers: React.FC<ProvidersProps> = ({}) => {
   const [user, setUser] = useState(null);
-
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   return (

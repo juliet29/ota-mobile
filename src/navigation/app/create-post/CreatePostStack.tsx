@@ -1,8 +1,8 @@
 import React from "react";
-import { CreatePostView } from "../../../modules/createPost/CreatePostView";
+import { CreatePostView } from "../../../modules/create-post/CreatePostView";
 import { CreatePostParamList } from "./CreatePostParamList";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AddContentToPost } from "../../../modules/createPost/AddContentToPost";
+import { AddContentToPost } from "../../../modules/create-post/AddContentToPost";
 
 interface CreatePostStackProps {}
 

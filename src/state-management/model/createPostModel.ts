@@ -1,11 +1,17 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 
+interface ContentInterface {
+  id: string;
+  name: string;
+  imageUrl: string | null | undefined;
+}
+
 export interface CreatePostInterface {
   postType: string;
   setPostType: Action<CreatePostInterface, string>;
 
-  contentName: string;
-  setContentName: Action<CreatePostInterface, string>;
+  content: ContentInterface;
+  setContent: Action<CreatePostInterface, ContentInterface>;
 }
 
 const createPostModel: CreatePostInterface = {
@@ -14,9 +20,9 @@ const createPostModel: CreatePostInterface = {
     state.postType = payload;
   }),
 
-  contentName: "",
-  setContentName: action((state, payload) => {
-    state.contentName = payload;
+  content: { id: "", name: "", imageUrl: "" },
+  setContent: action((state, payload) => {
+    state.content = payload;
   }),
 };
 

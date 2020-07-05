@@ -1,16 +1,15 @@
-import { Formik, ErrorMessage } from "formik";
+import { ErrorMessage, Formik } from "formik";
 import React from "react";
-import { Button, TextInput, HelperText } from "react-native-paper";
-import { MyTextField } from "../../functional-components/MyTextField";
+import { Button, HelperText, TextInput } from "react-native-paper";
 import {
   GetPostsDocument,
   useCreatePostMutation,
 } from "../../generated-components/apolloComponents";
+import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
+import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
-import { useStoreState } from "../../state-management/hooks";
-import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
 
 interface CreatePostViewProps {}
 
@@ -25,6 +24,8 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   const [createPost, { loading, error }] = useCreatePostMutation();
   const postType = useStoreState((state) => state.createPost.postType);
   console.log("my type is ", postType);
+  const content = useStoreState((state) => state.createPost.content);
+  console.log("my content is ", content);
 
   const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
     try {
@@ -66,6 +67,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
             <HelperText>
               <ErrorMessage name="link" />
             </HelperText>
+            {/* // TODO conditionally render this... */}
             <CreatePostOptions />
 
             <Button mode="contained" onPress={handleSubmit}>

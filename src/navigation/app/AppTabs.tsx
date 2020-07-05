@@ -11,7 +11,7 @@ import {
 } from "./other/OtherStack";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
-import { AddContentToPost } from "../../modules/createPost/AddContentToPost";
+import { AddContentToPost } from "../../modules/create-post/AddContentToPost";
 
 interface AppTabsProps {}
 
