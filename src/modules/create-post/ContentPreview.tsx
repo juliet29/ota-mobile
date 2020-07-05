@@ -6,12 +6,20 @@ import { Image } from "react-native";
 import { StateMapper } from "easy-peasy";
 
 interface ContentPreviewProps {
-  props: boolean;
+  //   props: any;
+  onPress: (hello: boolean) => void;
+  //   props: boolean;
 }
 
-export const ContentPreview: React.FC<ContentPreviewProps> = ({ props }) => {
+export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
   const content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
+
+  //   const handleChange = () => {
+  //     props.onPress(true)
+  //   }
+  const tea: string = "tea";
+  console.log(onPress);
   return (
     <StyledColumnView>
       <Card>
@@ -25,9 +33,9 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ props }) => {
         <Card.Actions>
           <Button
             onPress={() => {
-              props = true;
-              //   (content.imageUrl = ""), (content.id = "");
-              console.log(props);
+              console.log("button Press!");
+
+              onPress(true);
             }}>
             Cancel
           </Button>

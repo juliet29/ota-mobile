@@ -6,7 +6,7 @@ import {
   useCreatePostMutation,
 } from "../../generated-components/apolloComponents";
 import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
-import { useStoreState } from "../../state-management/hooks";
+import { useStoreState, useStoreActions } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
@@ -27,12 +27,18 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   console.log("my type is ", postType);
   const content = useStoreState((state) => state.createPost.content);
   console.log("my content is ", content);
-  const [display, setDisplay] = useState(false);
+  const [toDisplay, setToDisplay] = useState(false);
+  const [chooseDisplay, setChooseDisplay] = useState(false);
+  const setContent = useStoreActions(
+    (actions) => actions.createPost.setContent
+  );
 
   useEffect(() => {
-    console.log("display changed");
-    setDisplay(true);
-  }, [display]);
+    console.log("DISPLAY CHANGED");
+
+    setContent({ ...content, name: "" });
+    console.log("My content is 1t272t7y3  ", content.name);
+  }, [toDisplay]);
 
   const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
     try {
@@ -45,6 +51,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
       console.log(err);
     }
   };
+  console.log("My content is 1t272t7y3  ", content.name);
   return (
     <Wrapper>
       <Formik
@@ -75,8 +82,9 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
               <ErrorMessage name="link" />
             </HelperText>
             {/* // TODO conditionally render this... */}
+
             {content.name ? (
-              <ContentPreview props={display} />
+              <ContentPreview onPress={(value) => setToDisplay(value)} />
             ) : (
               <CreatePostOptions />
             )}
