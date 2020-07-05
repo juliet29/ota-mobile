@@ -33,9 +33,9 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   );
 
   useEffect(() => {
-    console.log("DISPLAY CHANGED");
+    // console.log("DISPLAY CHANGED");
     setContent({ ...content, name: "" });
-    console.log("My content is1t272t7y3  ", content.name);
+    // console.log("My content is1t272t7y3  ", content.name);
   }, [toDisplay, setToDisplay]);
 
   const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
@@ -49,7 +49,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
       console.log(err);
     }
   };
-  console.log("My content is 1t272t7y3  ", content.name);
+  // console.log("My content is 1t272t7y3  ", content.name);
   return (
     <Wrapper>
       <Formik

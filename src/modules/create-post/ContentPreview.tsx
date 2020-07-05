@@ -28,7 +28,7 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
         <Card.Actions>
           <Button
             onPress={() => {
-              console.log("button Press!");
+              //   console.log("button Press!");
               onPress(Math.random());
             }}>
             Cancel
