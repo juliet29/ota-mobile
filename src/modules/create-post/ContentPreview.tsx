@@ -7,7 +7,7 @@ import { StateMapper } from "easy-peasy";
 
 interface ContentPreviewProps {
   //   props: any;
-  onPress: (hello: boolean) => void;
+  onPress: (hello: number) => void;
   //   props: boolean;
 }
 
@@ -15,11 +15,6 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
   const content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
 
-  //   const handleChange = () => {
-  //     props.onPress(true)
-  //   }
-  const tea: string = "tea";
-  console.log(onPress);
   return (
     <StyledColumnView>
       <Card>
@@ -34,8 +29,7 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
           <Button
             onPress={() => {
               console.log("button Press!");
-
-              onPress(true);
+              onPress(Math.random());
             }}>
             Cancel
           </Button>

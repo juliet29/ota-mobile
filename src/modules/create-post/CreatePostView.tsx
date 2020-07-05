@@ -24,21 +24,19 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
 }) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
   const postType = useStoreState((state) => state.createPost.postType);
-  console.log("my type is ", postType);
+  // console.log("my type is ", postType);
   const content = useStoreState((state) => state.createPost.content);
-  console.log("my content is ", content);
-  const [toDisplay, setToDisplay] = useState(false);
-  const [chooseDisplay, setChooseDisplay] = useState(false);
+  // console.log("my content is ", content);
+  const [toDisplay, setToDisplay] = useState(0);
   const setContent = useStoreActions(
     (actions) => actions.createPost.setContent
   );
 
   useEffect(() => {
     console.log("DISPLAY CHANGED");
-
     setContent({ ...content, name: "" });
-    console.log("My content is 1t272t7y3  ", content.name);
-  }, [toDisplay]);
+    console.log("My content is1t272t7y3  ", content.name);
+  }, [toDisplay, setToDisplay]);
 
   const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
     try {
@@ -84,7 +82,12 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
             {/* // TODO conditionally render this... */}
 
             {content.name ? (
-              <ContentPreview onPress={(value) => setToDisplay(value)} />
+              <ContentPreview
+                onPress={(value) => {
+                  // console.log("my display", toDisplay);
+                  setToDisplay(value);
+                }}
+              />
             ) : (
               <CreatePostOptions />
             )}
