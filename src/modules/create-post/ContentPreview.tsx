@@ -14,7 +14,7 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
 
   return (
     <StyledColumnView>
-      <Card style={{ alignItems: "center" }}>
+      <Card>
         <Card.Content style={{ alignItems: "center" }}>
           <Title>{content.name}</Title>
           <Subheading> {postType}</Subheading>

@@ -12,6 +12,8 @@ import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
 import { ContentPreview } from "./ContentPreview";
+import { TrackVotes } from "./ratings/TrackVotes";
+import { AlbumStars } from "./ratings/AlbumStars";
 
 interface CreatePostViewProps {}
 
@@ -20,6 +22,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
 }) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
   const content = useStoreState((state) => state.createPost.content);
+  const postType = useStoreState((state) => state.createPost.postType);
   const [toDisplay, setToDisplay] = useState(0);
   const setContent = useStoreActions(
     (actions) => actions.createPost.setContent
@@ -76,7 +79,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
               <ErrorMessage name="link" />
             </HelperText>
 
-            {/* show Selected Content or options for creating Post */}
+            {/* show selected content or options for creating Post */}
             {content.name ? (
               <ContentPreview
                 onPress={(value) => {
@@ -85,6 +88,15 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
               />
             ) : (
               <CreatePostOptions />
+            )}
+
+            {/* give option to rate/vote on albums/tracks */}
+            {postType === "track" ? (
+              <TrackVotes />
+            ) : postType === "album" ? (
+              <AlbumStars />
+            ) : (
+              <></>
             )}
 
             <Button mode="contained" onPress={handleSubmit}>
