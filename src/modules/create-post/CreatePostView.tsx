@@ -1,6 +1,6 @@
 import { ErrorMessage, Formik } from "formik";
-import React from "react";
-import { Button, HelperText, TextInput } from "react-native-paper";
+import React, { useEffect, useState } from "react";
+import { Button, HelperText, TextInput, Text } from "react-native-paper";
 import {
   GetPostsDocument,
   useCreatePostMutation,
@@ -10,6 +10,7 @@ import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { CreatePostOptions } from "./CreatePostOptions";
+import { ContentPreview } from "./ContentPreview";
 
 interface CreatePostViewProps {}
 
@@ -26,6 +27,12 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   console.log("my type is ", postType);
   const content = useStoreState((state) => state.createPost.content);
   console.log("my content is ", content);
+  const [display, setDisplay] = useState(false);
+
+  useEffect(() => {
+    console.log("display changed");
+    setDisplay(true);
+  }, [display]);
 
   const submitCreatePost = async ({ text, link }: submitCreatePostProps) => {
     try {
@@ -68,7 +75,11 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
               <ErrorMessage name="link" />
             </HelperText>
             {/* // TODO conditionally render this... */}
-            <CreatePostOptions />
+            {content.name ? (
+              <ContentPreview props={display} />
+            ) : (
+              <CreatePostOptions />
+            )}
 
             <Button mode="contained" onPress={handleSubmit}>
               CREATE POST
