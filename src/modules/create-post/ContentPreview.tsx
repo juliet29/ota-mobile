@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "react-native";
-import { Button, Card } from "react-native-paper";
+import { Button, Card, Title, Subheading } from "react-native-paper";
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 
@@ -14,25 +14,28 @@ export const ContentPreview: React.FC<ContentPreviewProps> = ({ onPress }) => {
 
   return (
     <StyledColumnView>
-      <Card>
-        <Card.Title title={content.name} subtitle={postType} />
-        <Image
-          style={{ resizeMode: "contain", width: 200, height: 200 }}
-          source={{
-            uri: `${content.imageUrl}`,
-          }}
-        />
-        <Card.Actions>
-          <Button
-            onPress={() => {
-              // send an alert to CreatePostView to
-              // signal user wants to clear content
-              // only clear in parent to enable useEffect()
-              onPress(Math.random());
-            }}>
-            Cancel
-          </Button>
-        </Card.Actions>
+      <Card style={{ alignItems: "center" }}>
+        <Card.Content style={{ alignItems: "center" }}>
+          <Title>{content.name}</Title>
+          <Subheading> {postType}</Subheading>
+          <Image
+            style={{ resizeMode: "contain", width: 200, height: 200 }}
+            source={{
+              uri: `${content.imageUrl}`,
+            }}
+          />
+          <Card.Actions>
+            <Button
+              onPress={() => {
+                // send an alert to CreatePostView to
+                // signal user wants to clear content
+                // only clear in parent to enable useEffect()
+                onPress(Math.random());
+              }}>
+              Cancel
+            </Button>
+          </Card.Actions>
+        </Card.Content>
       </Card>
     </StyledColumnView>
   );
