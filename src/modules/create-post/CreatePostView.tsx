@@ -1,10 +1,13 @@
 import { ErrorMessage, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button, HelperText, TextInput, Text } from "react-native-paper";
 import {
   GetPostsDocument,
   useCreatePostMutation,
   CreatePostMutationVariables,
+  useCreateArtistPostMutation,
+  useCreateAlbumPostMutation,
+  useCreateTrackPostMutation,
 } from "../../generated-components/apolloComponents";
 import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
 import { useStoreState, useStoreActions } from "../../state-management/hooks";
@@ -14,14 +17,15 @@ import { CreatePostOptions } from "./CreatePostOptions";
 import { ContentPreview } from "./ContentPreview";
 import { TrackVotes } from "./ratings/TrackVotes";
 import { AlbumStars } from "./ratings/AlbumStars";
+import { useSubmitContentPost } from "./SubmitContentPost";
 
 interface CreatePostViewProps {}
 
 export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   navigation,
 }) => {
-  const [createPost, { loading, error }] = useCreatePostMutation();
-  const content = useStoreState((state) => state.createPost.content);
+  const submitContent = useSubmitContentPost("my text");
+  let content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
   const [toDisplay, setToDisplay] = useState(0);
   const setContent = useStoreActions(
@@ -32,29 +36,33 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
     setContent({ ...content, name: "" });
   }, [toDisplay, setToDisplay]);
 
-  // TODO: handle loading
-  const submitCreatePost = async ({
-    text,
-    link,
-  }: CreatePostMutationVariables) => {
-    try {
-      const response = await createPost({
-        variables: { text, link },
-        refetchQueries: [{ query: GetPostsDocument }],
-      });
-      console.log(response);
-    } catch (err) {
-      console.log(err);
+  // make sure text is set before submitting content
+  useEffect(() => {
+    if (content.text) {
+      console.log("hello");
+      const hello = async () => {
+        console.log("just set text", content);
+        const response = await submitContent();
+        console.log(response);
+      };
+      hello();
     }
+  }, [content]);
+
+  // TODO: handle loading
+  const submitCreatePost = async ({ text }) => {
+    setContent({ ...content, text });
+    console.log("finished setting text");
+
     // TODO: move to feed view on success
   };
 
   return (
     <Wrapper>
       <Formik
-        initialValues={{ text: "", link: "" }}
-        onSubmit={({ text, link }) => {
-          submitCreatePost({ text, link });
+        initialValues={{ text: "" }}
+        onSubmit={({ text }) => {
+          submitCreatePost({ text });
         }}
         validationSchema={CreatePostValidationSchema}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -67,16 +75,6 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
             />
             <HelperText>
               <ErrorMessage name="text" />
-            </HelperText>
-
-            <TextInput
-              label="Link"
-              onChangeText={handleChange("link")}
-              onBlur={handleBlur("link")}
-              value={values.link}
-            />
-            <HelperText>
-              <ErrorMessage name="link" />
             </HelperText>
 
             {/* show selected content or options for creating Post */}

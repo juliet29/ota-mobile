@@ -1,9 +1,16 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 
+// TODO: define interfaces by post type?
 interface ContentInterface {
-  id: string;
-  name: string;
-  imageUrl: string | null | undefined;
+  id?: string;
+  name?: string;
+  imageUrl?: string;
+  text?: string;
+  artistNames?: string[];
+  // album specific
+  rating?: number;
+  //track specific
+  vote?: number; // 1 or -1
 }
 
 export interface CreatePostInterface {
@@ -12,6 +19,7 @@ export interface CreatePostInterface {
 
   content: ContentInterface;
   setContent: Action<CreatePostInterface, ContentInterface>;
+  clearContent: Action<CreatePostInterface>;
 }
 
 const createPostModel: CreatePostInterface = {
@@ -20,9 +28,12 @@ const createPostModel: CreatePostInterface = {
     state.postType = payload;
   }),
 
-  content: { id: "", name: "", imageUrl: "" },
+  content: {},
   setContent: action((state, payload) => {
     state.content = payload;
+  }),
+  clearContent: action((state) => {
+    state.content = {};
   }),
 };
 

@@ -241,6 +241,32 @@ export type RegisterInput = {
   email?: Maybe<Scalars['String']>;
 };
 
+export type CreateAlbumPostMutationVariables = Exact<{
+  data: AlbumPostInput;
+}>;
+
+
+export type CreateAlbumPostMutation = (
+  { __typename?: 'Mutation' }
+  & { createAlbumPost?: Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'id'>
+  )> }
+);
+
+export type CreateArtistPostMutationVariables = Exact<{
+  data: ArtistPostInput;
+}>;
+
+
+export type CreateArtistPostMutation = (
+  { __typename?: 'Mutation' }
+  & { createArtistPost?: Maybe<(
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'id'>
+  )> }
+);
+
 export type CreatePostMutationVariables = Exact<{
   text: Scalars['String'];
   link: Scalars['String'];
@@ -250,6 +276,19 @@ export type CreatePostMutationVariables = Exact<{
 export type CreatePostMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createPost'>
+);
+
+export type CreateTrackPostMutationVariables = Exact<{
+  data: TrackPostInput;
+}>;
+
+
+export type CreateTrackPostMutation = (
+  { __typename?: 'Mutation' }
+  & { createTrackPost?: Maybe<(
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'id'>
+  )> }
 );
 
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -374,6 +413,70 @@ export type RegisterMutation = (
 );
 
 
+export const CreateAlbumPostDocument = gql`
+    mutation CreateAlbumPost($data: AlbumPostInput!) {
+  createAlbumPost(data: $data) {
+    id
+  }
+}
+    `;
+export type CreateAlbumPostMutationFn = ApolloReactCommon.MutationFunction<CreateAlbumPostMutation, CreateAlbumPostMutationVariables>;
+
+/**
+ * __useCreateAlbumPostMutation__
+ *
+ * To run a mutation, you first call `useCreateAlbumPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAlbumPostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAlbumPostMutation, { data, loading, error }] = useCreateAlbumPostMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateAlbumPostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateAlbumPostMutation, CreateAlbumPostMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateAlbumPostMutation, CreateAlbumPostMutationVariables>(CreateAlbumPostDocument, baseOptions);
+      }
+export type CreateAlbumPostMutationHookResult = ReturnType<typeof useCreateAlbumPostMutation>;
+export type CreateAlbumPostMutationResult = ApolloReactCommon.MutationResult<CreateAlbumPostMutation>;
+export type CreateAlbumPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateAlbumPostMutation, CreateAlbumPostMutationVariables>;
+export const CreateArtistPostDocument = gql`
+    mutation CreateArtistPost($data: ArtistPostInput!) {
+  createArtistPost(data: $data) {
+    id
+  }
+}
+    `;
+export type CreateArtistPostMutationFn = ApolloReactCommon.MutationFunction<CreateArtistPostMutation, CreateArtistPostMutationVariables>;
+
+/**
+ * __useCreateArtistPostMutation__
+ *
+ * To run a mutation, you first call `useCreateArtistPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateArtistPostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createArtistPostMutation, { data, loading, error }] = useCreateArtistPostMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateArtistPostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateArtistPostMutation, CreateArtistPostMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateArtistPostMutation, CreateArtistPostMutationVariables>(CreateArtistPostDocument, baseOptions);
+      }
+export type CreateArtistPostMutationHookResult = ReturnType<typeof useCreateArtistPostMutation>;
+export type CreateArtistPostMutationResult = ApolloReactCommon.MutationResult<CreateArtistPostMutation>;
+export type CreateArtistPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateArtistPostMutation, CreateArtistPostMutationVariables>;
 export const CreatePostDocument = gql`
     mutation CreatePost($text: String!, $link: String!) {
   createPost(text: $text, link: $link)
@@ -405,6 +508,38 @@ export function useCreatePostMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = ApolloReactCommon.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const CreateTrackPostDocument = gql`
+    mutation CreateTrackPost($data: TrackPostInput!) {
+  createTrackPost(data: $data) {
+    id
+  }
+}
+    `;
+export type CreateTrackPostMutationFn = ApolloReactCommon.MutationFunction<CreateTrackPostMutation, CreateTrackPostMutationVariables>;
+
+/**
+ * __useCreateTrackPostMutation__
+ *
+ * To run a mutation, you first call `useCreateTrackPostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTrackPostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTrackPostMutation, { data, loading, error }] = useCreateTrackPostMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateTrackPostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateTrackPostMutation, CreateTrackPostMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateTrackPostMutation, CreateTrackPostMutationVariables>(CreateTrackPostDocument, baseOptions);
+      }
+export type CreateTrackPostMutationHookResult = ReturnType<typeof useCreateTrackPostMutation>;
+export type CreateTrackPostMutationResult = ApolloReactCommon.MutationResult<CreateTrackPostMutation>;
+export type CreateTrackPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTrackPostMutation, CreateTrackPostMutationVariables>;
 export const GetPostsDocument = gql`
     query GetPosts {
   getPosts {

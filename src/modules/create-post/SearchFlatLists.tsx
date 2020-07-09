@@ -4,27 +4,37 @@ import React from "react";
 import { FlatList, View } from "react-native";
 import { Caption, Card, Headline, List, Text } from "react-native-paper";
 import { SearchSpotifyQuery } from "../../generated-components/apolloComponents";
-import { useStoreActions } from "../../state-management/hooks";
+import { useStoreActions, useStoreState } from "../../state-management/hooks";
 
 interface SearchFlatListsProps {
   data: SearchSpotifyQuery | undefined;
 }
 
 export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
+  let content = useStoreState((state) => state.createPost.content);
   const setContent = useStoreActions(
     (actions) => actions.createPost.setContent
   );
+  const clearContent = useStoreActions(
+    (actions) => actions.createPost.clearContent
+  );
   const navigation = useNavigation();
-  const chooseContent = (
+  const chooseContent = async (
     id: string,
     name: string,
-    imageUrl: string | null | undefined
+    imageUrl?: string,
+    artistNames?: string[]
   ) => {
+    // clear all previous values + sey new global state
+    await clearContent();
+
     setContent({
       id,
       name,
       imageUrl,
+      artistNames,
     });
+
     navigation.goBack();
     return;
   };
@@ -37,15 +47,14 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
         keyExtractor={(item, index) => item!?.id!?.toString() + index}
         renderItem={(results) => (
           <List.Item
-            onPress={() =>
-              chooseContent(
-                results.item!?.id!,
-                results.item!?.name!,
-                results.item?.images?.map((imgItem, ix) => {
-                  return imgItem?.url;
-                })[1]
-              )
-            }
+            onPress={() => {
+              const id = results.item!?.id!;
+              const name = results.item!?.name!;
+              const imageUrl = results.item?.images?.map((item, ix) => {
+                return item?.url;
+              })[1];
+              chooseContent(id, name, imageUrl);
+            }}
             title={results.item?.name}
           />
         )}
@@ -60,15 +69,17 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
         keyExtractor={(item, index) => item!?.id!?.toString() + index}
         renderItem={(results) => (
           <List.Item
-            onPress={() =>
-              chooseContent(
-                results.item!?.id!,
-                results.item!?.name!,
-                results.item?.album?.images?.map((imgItem, ix) => {
-                  return imgItem?.url;
-                })[1]
-              )
-            }
+            onPress={() => {
+              const id = results.item!?.id!;
+              const name = results.item!?.name!;
+              const imageUrl = results.item?.album?.images?.map((item, ix) => {
+                return item?.url;
+              })[1];
+              const artistNames = results.item?.artists?.map((item, ix) => {
+                return item?.name;
+              });
+              chooseContent(id, name, imageUrl, artistNames);
+            }}
             title={results.item?.name}
             description={results.item?.artists?.map((element, ix) => (
               <Text key={ix}>- {element?.name} </Text>
@@ -86,15 +97,17 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
         keyExtractor={(item, index) => item!?.id!?.toString() + index}
         renderItem={(results) => (
           <List.Item
-            onPress={() =>
-              chooseContent(
-                results.item!?.id!,
-                results.item!?.name!,
-                results.item?.images?.map((imgItem, ix) => {
-                  return imgItem?.url;
-                })[1]
-              )
-            }
+            onPress={() => {
+              const id = results.item!?.id!;
+              const name = results.item!?.name!;
+              const imageUrl = results.item?.images?.map((item, ix) => {
+                return item?.url;
+              })[1];
+              const artistNames = results.item?.artists?.map((item, ix) => {
+                return item?.name;
+              });
+              chooseContent(id, name, imageUrl, artistNames);
+            }}
             title={results.item?.name}
             description={results.item?.release_date}
           />
