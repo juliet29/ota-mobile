@@ -50,17 +50,15 @@ export const CreatePostView: React.FC<CreatePostNavProps<
           alert("Success");
           navigation.navigate("Home");
         }
+        // TODO: handle loading + failure
       };
       actuallySubmit();
     }
   }, [content]);
 
-  // TODO: handle loading
   const submitCreatePost = async ({ text }) => {
     setContent({ ...content, text });
     console.log("finished setting text");
-
-    // TODO: move to feed view on success
   };
 
   return (

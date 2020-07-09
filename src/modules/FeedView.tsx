@@ -1,11 +1,15 @@
 import React from "react";
-import { Center } from "../styled-components/Center";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-import { Button, Card, Title, Paragraph, Subheading } from "react-native-paper";
-import { HomeStackNavProps } from "../navigation/app/home/HomeParamList";
-import faker from "faker";
+import { Text, Image } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import {
+  Card,
+  Paragraph,
+  Subheading,
+  Title,
+  Caption,
+} from "react-native-paper";
 import { useGetPostsQuery } from "../generated-components/apolloComponents";
-import { Text, View } from "react-native";
+import { HomeStackNavProps } from "../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../styled-components/ReusedUI";
 
 // interface ItemProps {
@@ -45,16 +49,39 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
       renderItem={({ item }) => (
         <StyledColumnView>
           <Card>
-            <Card.Content>
+            <Card.Content style={{ alignItems: "center" }}>
               <Title>{item?.user?.username}</Title>
-              <Subheading>{item?.timeSubmitted}</Subheading>
+              <Caption>{item?.timeSubmitted}</Caption>
+              {item?.__typename === "ArtistPost" ? (
+                <Subheading>{item?.artistId}</Subheading>
+              ) : item?.__typename === "AlbumPost" ? (
+                <Subheading>{item?.albumId}</Subheading>
+              ) : (
+                <Subheading>{item?.trackId}</Subheading>
+              )}
+
               <Paragraph>{item?.text}</Paragraph>
-              <Paragraph>{item?.link}</Paragraph>
+              {item.imageUrl ? (
+                <Image
+                  style={{ resizeMode: "contain", width: 200, height: 200 }}
+                  source={{
+                    uri: `${item.imageUrl}`,
+                  }}
+                />
+              ) : (
+                <Image
+                  style={{ resizeMode: "contain", width: 200, height: 200 }}
+                  source={{
+                    uri:
+                      "https://dubsism.files.wordpress.com/2017/12/image-not-found.png?w=1094",
+                  }}
+                />
+              )}
             </Card.Content>
           </Card>
         </StyledColumnView>
       )}
-      // keyExtractor={(item) => item?.id}
+      keyExtractor={(item, ix) => ix.toString()}
     />
   );
 };
