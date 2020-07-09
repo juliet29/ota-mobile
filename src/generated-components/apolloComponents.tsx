@@ -16,11 +16,11 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  getCurrentUser?: Maybe<User>;
-  hello?: Maybe<Scalars['String']>;
-  getPosts?: Maybe<Array<Maybe<Post>>>;
+  getPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
   getArtist?: Maybe<Artist>;
   search?: Maybe<SearchResult>;
+  getCurrentUser?: Maybe<User>;
+  hello?: Maybe<Scalars['String']>;
 };
 
 
@@ -34,6 +34,22 @@ export type QuerySearchArgs = {
   query?: Maybe<Scalars['String']>;
 };
 
+export type GetPostsResult = AlbumPost | ArtistPost | TrackPost;
+
+export type AlbumPost = {
+  __typename?: 'AlbumPost';
+  id?: Maybe<Scalars['ID']>;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  imageUrl?: Maybe<Scalars['String']>;
+  albumId?: Maybe<Scalars['String']>;
+  rating?: Maybe<Scalars['Float']>;
+  artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
+  albumName?: Maybe<Scalars['String']>;
+};
+
+
 export type User = {
   __typename?: 'User';
   id?: Maybe<Scalars['ID']>;
@@ -41,15 +57,29 @@ export type User = {
   email?: Maybe<Scalars['String']>;
 };
 
-export type Post = {
-  __typename?: 'Post';
+export type ArtistPost = {
+  __typename?: 'ArtistPost';
   id?: Maybe<Scalars['ID']>;
-  text?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
   timeSubmitted?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
+  imageUrl?: Maybe<Scalars['String']>;
+  artistId?: Maybe<Scalars['String']>;
+  artistName?: Maybe<Scalars['String']>;
 };
 
+export type TrackPost = {
+  __typename?: 'TrackPost';
+  id?: Maybe<Scalars['ID']>;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  imageUrl?: Maybe<Scalars['String']>;
+  trackId?: Maybe<Scalars['String']>;
+  vote?: Maybe<Scalars['Float']>;
+  artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
+  trackName?: Maybe<Scalars['String']>;
+};
 
 export type Artist = {
   __typename?: 'Artist';
@@ -133,28 +163,13 @@ export type AlbumItems = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  changePassword?: Maybe<User>;
-  confirmUser?: Maybe<Scalars['Boolean']>;
-  forgotPassword?: Maybe<Scalars['Boolean']>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Scalars['Boolean']>;
-  register?: Maybe<Scalars['Boolean']>;
   createPost?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type MutationChangePasswordArgs = {
-  data?: Maybe<ChangePassowrdInput>;
-};
-
-
-export type MutationConfirmUserArgs = {
-  token?: Maybe<Scalars['String']>;
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email?: Maybe<Scalars['String']>;
+  createArtistPost?: Maybe<ArtistPost>;
+  createAlbumPost?: Maybe<AlbumPost>;
+  createTrackPost?: Maybe<TrackPost>;
+  register?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -164,25 +179,60 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationRegisterArgs = {
-  data?: Maybe<RegisterInput>;
-};
-
-
 export type MutationCreatePostArgs = {
   link?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
 };
 
-export type ChangePassowrdInput = {
-  password?: Maybe<Scalars['String']>;
-  token?: Maybe<Scalars['String']>;
+
+export type MutationCreateArtistPostArgs = {
+  data?: Maybe<ArtistPostInput>;
+};
+
+
+export type MutationCreateAlbumPostArgs = {
+  data?: Maybe<AlbumPostInput>;
+};
+
+
+export type MutationCreateTrackPostArgs = {
+  data?: Maybe<TrackPostInput>;
+};
+
+
+export type MutationRegisterArgs = {
+  data?: Maybe<RegisterInput>;
 };
 
 export type LoginResponse = {
   __typename?: 'LoginResponse';
   accessToken?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
+};
+
+export type ArtistPostInput = {
+  text?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  artistId?: Maybe<Scalars['String']>;
+  artistName?: Maybe<Scalars['String']>;
+};
+
+export type AlbumPostInput = {
+  text?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  albumId?: Maybe<Scalars['String']>;
+  rating?: Maybe<Scalars['Float']>;
+  albumName?: Maybe<Scalars['String']>;
+  artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type TrackPostInput = {
+  text?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  trackId?: Maybe<Scalars['String']>;
+  vote?: Maybe<Scalars['Float']>;
+  trackName?: Maybe<Scalars['String']>;
+  artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type RegisterInput = {
@@ -208,8 +258,22 @@ export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts?: Maybe<Array<Maybe<(
-    { __typename?: 'Post' }
-    & Pick<Post, 'text' | 'link' | 'timeSubmitted' | 'id'>
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'text' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'text' | 'imageUrl' | 'timeSubmitted' | 'artistId'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'text' | 'artistNames' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -344,12 +408,36 @@ export type CreatePostMutationOptions = ApolloReactCommon.BaseMutationOptions<Cr
 export const GetPostsDocument = gql`
     query GetPosts {
   getPosts {
-    text
-    link
-    timeSubmitted
-    id
-    user {
-      username
+    ... on AlbumPost {
+      text
+      artistNames
+      rating
+      imageUrl
+      timeSubmitted
+      albumId
+      user {
+        username
+      }
+    }
+    ... on TrackPost {
+      text
+      artistNames
+      vote
+      imageUrl
+      timeSubmitted
+      trackId
+      user {
+        username
+      }
+    }
+    ... on ArtistPost {
+      text
+      imageUrl
+      timeSubmitted
+      artistId
+      user {
+        username
+      }
     }
   }
 }

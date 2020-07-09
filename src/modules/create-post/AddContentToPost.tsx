@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import { Text } from "react-native";
 import {
-  Button,
-  Card,
-  Searchbar,
-  Headline,
-  Caption,
-  Title,
   ActivityIndicator,
+  Button,
+  Searchbar,
+  Title,
 } from "react-native-paper";
-import {
-  useSearchSpotifyQuery,
-  SearchSpotifyQuery,
-  SearchSpotifyQueryVariables,
-} from "../../generated-components/apolloComponents";
+import { useSearchSpotifyQuery } from "../../generated-components/apolloComponents";
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
-import { useNavigation } from "@react-navigation/native";
 import { SearchFlatLists } from "./SearchFlatLists";
 
 interface AddContentToPostProps {}

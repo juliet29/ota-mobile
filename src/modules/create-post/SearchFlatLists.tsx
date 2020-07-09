@@ -1,3 +1,4 @@
+// Displaying search results for the different content types
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { FlatList, View } from "react-native";
@@ -29,17 +30,29 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
   };
   const searchResult = data.data?.search;
 
-  if (searchResult?.__typename === "ArtistSearchResult")
+  if (searchResult?.__typename === "ArtistSearchResult") {
     return (
       <FlatList
         data={searchResult.artists?.items}
+        keyExtractor={(item, index) => item!?.id!?.toString() + index}
         renderItem={(results) => (
-          <Card>
-            <Headline>{results.item?.name}</Headline>
-          </Card>
+          <List.Item
+            onPress={() =>
+              chooseContent(
+                results.item!?.id!,
+                results.item!?.name!,
+                results.item?.images?.map((imgItem, ix) => {
+                  return imgItem?.url;
+                })[1]
+              )
+            }
+            title={results.item?.name}
+          />
         )}
       />
     );
+  }
+
   if (searchResult?.__typename === "TrackSearchResult") {
     return (
       <FlatList
@@ -66,20 +79,30 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
     );
   }
 
-  if (searchResult?.__typename === "AlbumSearchResult")
+  if (searchResult?.__typename === "AlbumSearchResult") {
     return (
       <FlatList
         data={searchResult.albums?.items}
+        keyExtractor={(item, index) => item!?.id!?.toString() + index}
         renderItem={(results) => (
-          <Card>
-            <Headline>{results.item?.name}</Headline>
-            {results.item?.artists?.map((element, ix) => (
-              <Caption key={ix}>{element?.name}</Caption>
-            ))}
-            <Caption>Release Date {results.item?.release_date}</Caption>
-          </Card>
+          <List.Item
+            onPress={() =>
+              chooseContent(
+                results.item!?.id!,
+                results.item!?.name!,
+                results.item?.images?.map((imgItem, ix) => {
+                  return imgItem?.url;
+                })[1]
+              )
+            }
+            title={results.item?.name}
+            description={results.item?.release_date}
+          />
         )}
       />
     );
+  }
+
+  // if not any of the options
   return <View></View>;
 };

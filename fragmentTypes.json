@@ -3,6 +3,21 @@
     "types": [
       {
         "kind": "UNION",
+        "name": "GetPostsResult",
+        "possibleTypes": [
+          {
+            "name": "AlbumPost"
+          },
+          {
+            "name": "ArtistPost"
+          },
+          {
+            "name": "TrackPost"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
         "name": "SearchResult",
         "possibleTypes": [
           {

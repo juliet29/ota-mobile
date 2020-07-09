@@ -90,10 +90,10 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
               <CreatePostOptions />
             )}
 
-            {/* give option to rate/vote on albums/tracks */}
-            {postType === "track" ? (
+            {/* give option to rate or vote on albums or tracks once content is selected*/}
+            {content.name && postType === "track" ? (
               <TrackVotes />
-            ) : postType === "album" ? (
+            ) : content.name && postType === "album" ? (
               <AlbumStars />
             ) : (
               <></>
