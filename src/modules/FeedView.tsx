@@ -53,11 +53,11 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
               <Title>{item?.user?.username}</Title>
               <Caption>{item?.timeSubmitted}</Caption>
               {item?.__typename === "ArtistPost" ? (
-                <Subheading>{item?.artistId}</Subheading>
+                <Subheading>{item?.artistName}</Subheading>
               ) : item?.__typename === "AlbumPost" ? (
-                <Subheading>{item?.albumId}</Subheading>
+                <Subheading>{item?.albumName}</Subheading>
               ) : (
-                <Subheading>{item?.trackId}</Subheading>
+                <Subheading>{item?.trackName}</Subheading>
               )}
 
               <Paragraph>{item?.text}</Paragraph>

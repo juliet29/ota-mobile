@@ -298,21 +298,21 @@ export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'text' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId'>
+    & Pick<AlbumPost, 'text' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'text' | 'imageUrl' | 'timeSubmitted' | 'artistId'>
+    & Pick<ArtistPost, 'text' | 'imageUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'text' | 'artistNames' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId'>
+    & Pick<TrackPost, 'text' | 'artistNames' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -550,6 +550,7 @@ export const GetPostsDocument = gql`
       imageUrl
       timeSubmitted
       albumId
+      albumName
       user {
         username
       }
@@ -561,6 +562,7 @@ export const GetPostsDocument = gql`
       imageUrl
       timeSubmitted
       trackId
+      trackName
       user {
         username
       }
@@ -570,6 +572,7 @@ export const GetPostsDocument = gql`
       imageUrl
       timeSubmitted
       artistId
+      artistName
       user {
         username
       }

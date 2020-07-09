@@ -10,6 +10,7 @@ export const GET_POSTS = gql`
         imageUrl
         timeSubmitted
         albumId
+        albumName
         user {
           username
         }
@@ -21,6 +22,7 @@ export const GET_POSTS = gql`
         imageUrl
         timeSubmitted
         trackId
+        trackName
         user {
           username
         }
@@ -30,6 +32,7 @@ export const GET_POSTS = gql`
         imageUrl
         timeSubmitted
         artistId
+        artistName
         user {
           username
         }
