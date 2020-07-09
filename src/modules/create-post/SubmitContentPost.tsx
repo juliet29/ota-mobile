@@ -1,27 +1,26 @@
-import React, { ReactNode } from "react";
 import {
-  useCreateTrackPostMutation,
-  useCreateArtistPostMutation,
-  useCreateAlbumPostMutation,
+  AlbumPostInput,
+  ArtistPostInput,
   GetPostsDocument,
   TrackPostInput,
-  ArtistPostInput,
-  AlbumPostInput,
+  useCreateAlbumPostMutation,
+  useCreateArtistPostMutation,
+  useCreateTrackPostMutation,
 } from "../../generated-components/apolloComponents";
 import { useStoreState } from "../../state-management/hooks";
 
 interface SubmitContentPostProps {}
-type useSubmitContentType = (param: string) => () => any;
+type useSubmitContentType = () => () => any;
 
-export const useSubmitContentPost: useSubmitContentType = (text) => {
+export const useSubmitContentPost: useSubmitContentType = () => {
   const content = useStoreState((state) => state.createPost.content);
+  const postType = useStoreState((state) => state.createPost.postType);
   const [createArtistPost] = useCreateArtistPostMutation();
   const [createAlbumPost] = useCreateAlbumPostMutation();
   const [createTrackPost] = useCreateTrackPostMutation();
-  const postType = useStoreState((state) => state.createPost.postType);
 
-  const submitArtistPost = async (text: string) => {
-    const { name: artistName, imageUrl, id: artistId } = content;
+  const submitArtistPost = async () => {
+    const { name: artistName, imageUrl, id: artistId, text } = content;
     const data: ArtistPostInput = { text, artistName, imageUrl, artistId };
     try {
       const response = await createArtistPost({
@@ -34,14 +33,16 @@ export const useSubmitContentPost: useSubmitContentType = (text) => {
     }
   };
 
-  const submitTrackPost = async (text: string) => {
+  const submitTrackPost = async () => {
     const {
       name: trackName,
       id: trackId,
       imageUrl,
       vote,
+      text,
       artistNames,
     } = content;
+
     const data: TrackPostInput = {
       trackName,
       trackId,
@@ -61,13 +62,14 @@ export const useSubmitContentPost: useSubmitContentType = (text) => {
     }
   };
 
-  const submitAlbumPost = async (text: string) => {
+  const submitAlbumPost = async () => {
     const {
       name: albumName,
       id: albumId,
       imageUrl,
       rating,
       artistNames,
+      text,
     } = content;
     const data: AlbumPostInput = {
       albumId,
@@ -92,10 +94,10 @@ export const useSubmitContentPost: useSubmitContentType = (text) => {
     // console.log(content);
     const finalResponse =
       postType === "track"
-        ? submitTrackPost(text)
+        ? submitTrackPost()
         : postType === "album"
-        ? submitAlbumPost(text)
-        : submitArtistPost(text);
+        ? submitAlbumPost()
+        : submitArtistPost();
 
     return finalResponse;
   };

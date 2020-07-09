@@ -18,13 +18,15 @@ import { ContentPreview } from "./ContentPreview";
 import { TrackVotes } from "./ratings/TrackVotes";
 import { AlbumStars } from "./ratings/AlbumStars";
 import { useSubmitContentPost } from "./SubmitContentPost";
+import { useNavigation } from "@react-navigation/native";
 
 interface CreatePostViewProps {}
 
-export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
-  navigation,
-}) => {
-  const submitContent = useSubmitContentPost("my text");
+export const CreatePostView: React.FC<CreatePostNavProps<
+  "CreatePost"
+>> = ({}) => {
+  const navigation = useNavigation();
+  const submitContent = useSubmitContentPost();
   let content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
   const [toDisplay, setToDisplay] = useState(0);
@@ -40,12 +42,16 @@ export const CreatePostView: React.FC<CreatePostNavProps<"CreatePost">> = ({
   useEffect(() => {
     if (content.text) {
       console.log("hello");
-      const hello = async () => {
+      const actuallySubmit = async () => {
         console.log("just set text", content);
         const response = await submitContent();
         console.log(response);
+        if (response.data) {
+          alert("Success");
+          navigation.navigate("Home");
+        }
       };
-      hello();
+      actuallySubmit();
     }
   }, [content]);
 
