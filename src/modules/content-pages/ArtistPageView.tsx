@@ -1,58 +1,31 @@
 import React from "react";
-import { Image, ActivityIndicator } from "react-native";
-import { Wrapper, StyledColumnView } from "../../styled-components/ReusedUI";
+import { ActivityIndicator, ScrollView } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import {
-  Subheading,
+  Avatar,
   Button,
-  Title,
   Caption,
   Card,
-  Text,
   Headline,
+  Subheading,
+  Text,
+  Title,
 } from "react-native-paper";
 import {
-  HomeParamList,
-  HomeStackNavProps,
-} from "../../navigation/app/home/HomeParamList";
-import {
+  useGetArtistAlbumsQuery,
   useGetArtistTopTracksQuery,
-  Maybe,
-  ArtistTopTrackItem,
-  Artist,
-  Image as ImageType,
-  GetArtistTopTracksQuery,
 } from "../../generated-components/apolloComponents";
-import { FlatList } from "react-native-gesture-handler";
-interface ArtistPageViewProps {}
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { StyledColumnView } from "../../styled-components/ReusedUI";
 
-type ArtistItem = { __typename?: "ArtistTopTrackItem" } & Pick<
-  ArtistTopTrackItem,
-  "name" | "preview_url"
-> & {
-    artists?: Maybe<
-      Array<Maybe<{ __typename?: "Artist" } & Pick<Artist, "name">>>
-    >;
-    album?: Maybe<
-      { __typename?: "Album" } & {
-        images?: Maybe<
-          Array<Maybe<{ __typename?: "Image" } & Pick<ImageType, "url">>>
-        >;
-      }
-    >;
-  };
-
-export interface ArtistFlatList {
-  tracks: GetArtistTopTracksQuery[];
+interface ArtistProps {
+  id: string;
 }
 
-export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
-  route,
-  navigation,
-}) => {
-  const { artistId } = route.params;
+export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
   const { data, loading, error } = useGetArtistTopTracksQuery({
     variables: {
-      id: artistId,
+      id: id,
     },
   });
 
@@ -64,56 +37,100 @@ export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
     return <Text>Error..</Text>;
   }
 
-  console.log(data);
-
   return (
-    <Wrapper>
-      <StyledColumnView>
-        <Card.Content style={{ alignItems: "center" }}>
-          <Image
-            style={{ width: 50, height: 50 }}
-            resizeMode="contain"
-            source={{
-              uri: "https://reactnative.dev/img/tiny_logo.png",
-            }}
-          />
-          <Title>Artist Name</Title>
-          <Subheading>10 Followers</Subheading>
-          <Button>Follow</Button>
-        </Card.Content>
-      </StyledColumnView>
-      <StyledColumnView>
-        <Headline>Top Songs</Headline>
-
-        <FlatList
-          data={data.getArtistTopTracks.tracks!}
-          renderItem={(item) => (
-            <Card>
-              <Card.Content style={{ alignItems: "center" }}>
-                <Text>{item.item.name}</Text>
-                <Caption>Song Title</Caption>
-                <Button>Play</Button>
-              </Card.Content>
-            </Card>
-          )}
-          keyExtractor={(item, ix) => ix.toString()}
-        />
-        {/* flatlist : { item: ArtistItem } */}
-      </StyledColumnView>
-
-      <StyledColumnView>
-        {/* flatlist */}
-        <Headline>Albums</Headline>
+    <FlatList
+      data={data.getArtistTopTracks.tracks!}
+      renderItem={(item) => (
         <Card>
           <Card.Content style={{ alignItems: "center" }}>
-            <Text>Album Name</Text>
+            <Subheading style={{ textAlign: "center" }}>
+              {item.item.name}
+            </Subheading>
+            {item.item.artists.map((element, ix) => (
+              <Caption key={ix}>{element.name}</Caption>
+            ))}
+            <Button>Play</Button>
+          </Card.Content>
+        </Card>
+      )}
+      keyExtractor={(item, ix) => ix.toString()}
+    />
+  );
+};
+
+export const ArtistPageAlbums: React.FC<ArtistProps> = ({ id }) => {
+  const { data, loading, error } = useGetArtistAlbumsQuery({
+    variables: {
+      id: id,
+    },
+  });
+  console.log(data);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+  if (error || !data) {
+    console.log(error);
+    return <Text>Error..</Text>;
+  }
+
+  if (data.getArtistAlbums.items.length < 1) {
+    return (
+      <Card>
+        <Caption style={{ textAlign: "center" }}>
+          This Artist has no albums
+        </Caption>
+      </Card>
+    );
+  }
+
+  return (
+    <FlatList
+      data={data.getArtistAlbums.items}
+      renderItem={(item) => (
+        <Card>
+          <Card.Content style={{ alignItems: "center" }}>
+            <Text>{item.item.name}</Text>
             <Caption>Rating</Caption>
             <Button>Play</Button>
           </Card.Content>
         </Card>
+      )}
+      keyExtractor={(item, ix) => ix.toString()}
+    />
+  );
+};
+
+export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
+  route,
+  navigation,
+}) => {
+  const { id, name, imageUrl } = route.params;
+
+  return (
+    <ScrollView>
+      <StyledColumnView>
+        <Card>
+          <Card.Content style={{ alignItems: "center" }}>
+            <Avatar.Image size={80} source={{ uri: `${imageUrl}` }} />
+            <Title>{name}</Title>
+            <Subheading>10 Followers</Subheading>
+            <Button>Follow</Button>
+          </Card.Content>
+        </Card>
       </StyledColumnView>
 
-      <Button>See Shares of this Artist</Button>
-    </Wrapper>
+      <StyledColumnView>
+        <Headline>Top Songs</Headline>
+        <ArtistPageTracks id={id} />
+      </StyledColumnView>
+
+      <StyledColumnView>
+        <Headline>Albums</Headline>
+        <ArtistPageAlbums id={id} />
+      </StyledColumnView>
+
+      <Button mode="contained">See Shares of this Artist</Button>
+    </ScrollView>
   );
 };

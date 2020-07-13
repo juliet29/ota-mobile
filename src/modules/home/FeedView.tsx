@@ -1,26 +1,23 @@
 import React from "react";
-import { Text, Image } from "react-native";
+import { Image, Text } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
-  Card,
-  Paragraph,
-  Subheading,
-  Title,
-  Caption,
   ActivityIndicator,
   Button,
+  Caption,
+  Card,
+  Paragraph,
+  Title,
 } from "react-native-paper";
 import {
+  AlbumPost,
+  ArtistPost,
+  TrackPost,
   useGetPostsQuery,
   User,
-  ArtistPost,
-  AlbumPost,
-  TrackPost,
 } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
-import FastImage from "react-native-fast-image";
-import { useNavigation } from "@react-navigation/native";
 
 interface AlbumPostProps {
   item: {
@@ -76,7 +73,6 @@ interface ArtistPostProps {
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
-  // const navigation = useNavigation<()
   return (
     <Card>
       {/* TODO: make a global style for centering */}
@@ -96,7 +92,11 @@ export const ArtistPostView: React.FC<
         <Button
           mode="contained"
           onPress={() => {
-            navigation.navigate("ArtistPage", { artistId: item?.artistId });
+            navigation.navigate("ArtistPage", {
+              id: item?.artistId,
+              name: item?.artistName,
+              imageUrl: item.imageUrl,
+            });
           }}>
           SEE ARTIST
         </Button>
