@@ -39,16 +39,6 @@ export const ArtistPostsView: React.FC<HomeStackNavProps<"ArtistPosts">> = ({
     return <Text>Error..</Text>;
   }
 
-  if (data.getArtistPosts.length < 1) {
-    return (
-      <Card>
-        <Caption style={{ textAlign: "center" }}>
-          There are no posts about this artist yet!
-        </Caption>
-      </Card>
-    );
-  }
-
   return (
     <StyledColumnView>
       <Title>Shares of {name}</Title>

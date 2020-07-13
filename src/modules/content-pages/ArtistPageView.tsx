@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, ScrollView } from "react-native";
+import { ActivityIndicator, ScrollView, Image } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   Avatar,
@@ -43,6 +43,17 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
       renderItem={(item) => (
         <Card>
           <Card.Content style={{ alignItems: "center" }}>
+            {
+              item?.item.album.images.map((element) => (
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  resizeMode="contain"
+                  source={{
+                    uri: `${element.url}`,
+                  }}
+                />
+              ))[0]
+            }
             <Subheading style={{ textAlign: "center" }}>
               {item.item.name}
             </Subheading>
@@ -58,7 +69,9 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
   );
 };
 
-export const ArtistPageAlbums: React.FC<ArtistProps> = ({ id }) => {
+export const ArtistPageAlbums: React.FC<
+  ArtistProps & HomeStackNavProps<"ArtistPage">
+> = ({ id, navigation, route }) => {
   const { data, loading, error } = useGetArtistAlbumsQuery({
     variables: {
       id: id,
@@ -90,9 +103,30 @@ export const ArtistPageAlbums: React.FC<ArtistProps> = ({ id }) => {
       renderItem={(item) => (
         <Card>
           <Card.Content style={{ alignItems: "center" }}>
+            {
+              item?.item.images.map((element) => (
+                <Image
+                  style={{ width: 50, height: 50 }}
+                  resizeMode="contain"
+                  source={{
+                    uri: `${element.url}`,
+                  }}
+                />
+              ))[0]
+            }
+
             <Text>{item.item.name}</Text>
             <Caption>Rating</Caption>
-            <Button>Play</Button>
+            <Button
+              onPress={() => {
+                navigation.navigate("AlbumPage", {
+                  id: item?.item.id,
+                  name: item?.item.name,
+                  imageUrl: item?.item.images.map((element) => element.url)[0],
+                });
+              }}>
+              See the Album
+            </Button>
           </Card.Content>
         </Card>
       )}
@@ -127,7 +161,7 @@ export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
 
       <StyledColumnView>
         <Headline>Albums</Headline>
-        <ArtistPageAlbums id={id} />
+        <ArtistPageAlbums id={id} navigation={navigation} route={route} />
       </StyledColumnView>
 
       <Button

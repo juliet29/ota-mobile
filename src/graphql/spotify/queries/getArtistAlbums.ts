@@ -7,6 +7,9 @@ export const GET_ARTIST_ALBUMS = gql`
         id
         name
         type
+        images {
+          url
+        }
       }
     }
   }

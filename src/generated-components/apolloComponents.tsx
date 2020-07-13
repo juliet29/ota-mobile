@@ -445,6 +445,26 @@ export type GetTrackPostsQuery = (
   )>>> }
 );
 
+export type GetAlbumTracksQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetAlbumTracksQuery = (
+  { __typename?: 'Query' }
+  & { getAlbumTracks?: Maybe<(
+    { __typename?: 'AlbumTracks' }
+    & { items?: Maybe<Array<Maybe<(
+      { __typename?: 'AlbumTrackItem' }
+      & Pick<AlbumTrackItem, 'name' | 'preview_url' | 'track_number'>
+      & { artists?: Maybe<Array<Maybe<(
+        { __typename?: 'Artist' }
+        & Pick<Artist, 'name'>
+      )>>> }
+    )>>> }
+  )> }
+);
+
 export type GetArtistAlbumsQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -457,6 +477,10 @@ export type GetArtistAlbumsQuery = (
     & { items?: Maybe<Array<Maybe<(
       { __typename?: 'Album' }
       & Pick<Album, 'id' | 'name' | 'type'>
+      & { images?: Maybe<Array<Maybe<(
+        { __typename?: 'Image' }
+        & Pick<Image, 'url'>
+      )>>> }
     )>>> }
   )> }
 );
@@ -889,6 +913,46 @@ export function useGetTrackPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type GetTrackPostsQueryHookResult = ReturnType<typeof useGetTrackPostsQuery>;
 export type GetTrackPostsLazyQueryHookResult = ReturnType<typeof useGetTrackPostsLazyQuery>;
 export type GetTrackPostsQueryResult = ApolloReactCommon.QueryResult<GetTrackPostsQuery, GetTrackPostsQueryVariables>;
+export const GetAlbumTracksDocument = gql`
+    query getAlbumTracks($id: String) {
+  getAlbumTracks(id: $id) {
+    items {
+      name
+      preview_url
+      track_number
+      artists {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAlbumTracksQuery__
+ *
+ * To run a query within a React component, call `useGetAlbumTracksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAlbumTracksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAlbumTracksQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAlbumTracksQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAlbumTracksQuery, GetAlbumTracksQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAlbumTracksQuery, GetAlbumTracksQueryVariables>(GetAlbumTracksDocument, baseOptions);
+      }
+export function useGetAlbumTracksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAlbumTracksQuery, GetAlbumTracksQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAlbumTracksQuery, GetAlbumTracksQueryVariables>(GetAlbumTracksDocument, baseOptions);
+        }
+export type GetAlbumTracksQueryHookResult = ReturnType<typeof useGetAlbumTracksQuery>;
+export type GetAlbumTracksLazyQueryHookResult = ReturnType<typeof useGetAlbumTracksLazyQuery>;
+export type GetAlbumTracksQueryResult = ApolloReactCommon.QueryResult<GetAlbumTracksQuery, GetAlbumTracksQueryVariables>;
 export const GetArtistAlbumsDocument = gql`
     query getArtistAlbums($id: String!) {
   getArtistAlbums(id: $id) {
@@ -896,6 +960,9 @@ export const GetArtistAlbumsDocument = gql`
       id
       name
       type
+      images {
+        url
+      }
     }
   }
 }
