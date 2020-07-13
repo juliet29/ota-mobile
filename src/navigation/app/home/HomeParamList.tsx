@@ -4,6 +4,7 @@ import { PostParamList } from "../shared/PostParamList";
 
 export type HomeParamList = {
   Feed: undefined;
+  ArtistPage: { artistId?: string };
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {

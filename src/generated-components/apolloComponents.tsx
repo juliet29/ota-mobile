@@ -17,14 +17,44 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   getPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
-  getArtist?: Maybe<Artist>;
+  getArtistPosts?: Maybe<Array<Maybe<ArtistPost>>>;
+  getAlbumPosts?: Maybe<Array<Maybe<AlbumPost>>>;
+  getTrackPosts?: Maybe<Array<Maybe<TrackPost>>>;
+  getAlbumTracks?: Maybe<AlbumTracks>;
+  getArtistAlbums?: Maybe<ArtistAlbums>;
+  getArtistTopTracks?: Maybe<ArtistTopTracks>;
   search?: Maybe<SearchResult>;
   getCurrentUser?: Maybe<User>;
   hello?: Maybe<Scalars['String']>;
 };
 
 
-export type QueryGetArtistArgs = {
+export type QueryGetArtistPostsArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetAlbumPostsArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetTrackPostsArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetAlbumTracksArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetArtistAlbumsArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetArtistTopTracksArgs = {
   id?: Maybe<Scalars['String']>;
 };
 
@@ -81,14 +111,23 @@ export type TrackPost = {
   trackName?: Maybe<Scalars['String']>;
 };
 
-export type Artist = {
-  __typename?: 'Artist';
+export type AlbumTracks = {
+  __typename?: 'AlbumTracks';
+  items?: Maybe<Array<Maybe<AlbumTrackItem>>>;
+};
+
+export type AlbumTrackItem = {
+  __typename?: 'AlbumTrackItem';
   id?: Maybe<Scalars['String']>;
   uri?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   images?: Maybe<Array<Maybe<Image>>>;
   external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  album?: Maybe<Album>;
+  artists?: Maybe<Array<Maybe<Artist>>>;
+  track_number?: Maybe<Scalars['Float']>;
+  preview_url?: Maybe<Scalars['String']>;
 };
 
 export type Image = {
@@ -101,6 +140,54 @@ export type Image = {
 export type ExternalUrl = {
   __typename?: 'ExternalUrl';
   spotify?: Maybe<Scalars['String']>;
+};
+
+export type Album = {
+  __typename?: 'Album';
+  id?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  release_date?: Maybe<Scalars['String']>;
+  album_type?: Maybe<Scalars['String']>;
+  artists?: Maybe<Array<Maybe<Artist>>>;
+};
+
+export type Artist = {
+  __typename?: 'Artist';
+  id?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+};
+
+export type ArtistAlbums = {
+  __typename?: 'ArtistAlbums';
+  items?: Maybe<Array<Maybe<Album>>>;
+};
+
+export type ArtistTopTracks = {
+  __typename?: 'ArtistTopTracks';
+  tracks?: Maybe<Array<Maybe<ArtistTopTrackItem>>>;
+};
+
+export type ArtistTopTrackItem = {
+  __typename?: 'ArtistTopTrackItem';
+  id?: Maybe<Scalars['String']>;
+  uri?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  images?: Maybe<Array<Maybe<Image>>>;
+  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  album?: Maybe<Album>;
+  artists?: Maybe<Array<Maybe<Artist>>>;
+  track_number?: Maybe<Scalars['Float']>;
+  is_playable?: Maybe<Scalars['Boolean']>;
+  preview_url?: Maybe<Scalars['String']>;
 };
 
 export type SearchResult = TrackSearchResult | ArtistSearchResult | AlbumSearchResult;
@@ -128,19 +215,6 @@ export type Track = {
   track_number?: Maybe<Scalars['Float']>;
 };
 
-export type Album = {
-  __typename?: 'Album';
-  id?: Maybe<Scalars['String']>;
-  uri?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-  images?: Maybe<Array<Maybe<Image>>>;
-  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
-  release_date?: Maybe<Scalars['String']>;
-  album_type?: Maybe<Scalars['String']>;
-  artists?: Maybe<Array<Maybe<Artist>>>;
-};
-
 export type ArtistSearchResult = {
   __typename?: 'ArtistSearchResult';
   artists?: Maybe<ArtistItems>;
@@ -163,19 +237,28 @@ export type AlbumItems = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createAlbumPost?: Maybe<AlbumPost>;
+  createArtistPost?: Maybe<ArtistPost>;
+  createTrackPost?: Maybe<TrackPost>;
+  createPost?: Maybe<Scalars['Boolean']>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Scalars['Boolean']>;
-  createPost?: Maybe<Scalars['Boolean']>;
-  createArtistPost?: Maybe<ArtistPost>;
-  createAlbumPost?: Maybe<AlbumPost>;
-  createTrackPost?: Maybe<TrackPost>;
   register?: Maybe<Scalars['Boolean']>;
 };
 
 
-export type MutationLoginArgs = {
-  password?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
+export type MutationCreateAlbumPostArgs = {
+  data?: Maybe<AlbumPostInput>;
+};
+
+
+export type MutationCreateArtistPostArgs = {
+  data?: Maybe<ArtistPostInput>;
+};
+
+
+export type MutationCreateTrackPostArgs = {
+  data?: Maybe<TrackPostInput>;
 };
 
 
@@ -185,36 +268,14 @@ export type MutationCreatePostArgs = {
 };
 
 
-export type MutationCreateArtistPostArgs = {
-  data?: Maybe<ArtistPostInput>;
-};
-
-
-export type MutationCreateAlbumPostArgs = {
-  data?: Maybe<AlbumPostInput>;
-};
-
-
-export type MutationCreateTrackPostArgs = {
-  data?: Maybe<TrackPostInput>;
+export type MutationLoginArgs = {
+  password?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
 };
 
 
 export type MutationRegisterArgs = {
   data?: Maybe<RegisterInput>;
-};
-
-export type LoginResponse = {
-  __typename?: 'LoginResponse';
-  accessToken?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
-};
-
-export type ArtistPostInput = {
-  text?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
-  artistId?: Maybe<Scalars['String']>;
-  artistName?: Maybe<Scalars['String']>;
 };
 
 export type AlbumPostInput = {
@@ -226,6 +287,13 @@ export type AlbumPostInput = {
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+export type ArtistPostInput = {
+  text?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  artistId?: Maybe<Scalars['String']>;
+  artistName?: Maybe<Scalars['String']>;
+};
+
 export type TrackPostInput = {
   text?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
@@ -233,6 +301,12 @@ export type TrackPostInput = {
   vote?: Maybe<Scalars['Float']>;
   trackName?: Maybe<Scalars['String']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type RegisterInput = {
@@ -291,6 +365,40 @@ export type CreateTrackPostMutation = (
   )> }
 );
 
+export type GetAlbumPostsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetAlbumPostsQuery = (
+  { __typename?: 'Query' }
+  & { getAlbumPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'albumName' | 'artistNames' | 'text' | 'rating' | 'timeSubmitted'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  )>>> }
+);
+
+export type GetArtistPostsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetArtistPostsQuery = (
+  { __typename?: 'Query' }
+  & { getArtistPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'artistName' | 'text' | 'timeSubmitted'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  )>>> }
+);
+
 export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -318,6 +426,65 @@ export type GetPostsQuery = (
       & Pick<User, 'username'>
     )> }
   )>>> }
+);
+
+export type GetTrackPostsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetTrackPostsQuery = (
+  { __typename?: 'Query' }
+  & { getTrackPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'trackName' | 'text' | 'vote' | 'timeSubmitted'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  )>>> }
+);
+
+export type GetArtistAlbumsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetArtistAlbumsQuery = (
+  { __typename?: 'Query' }
+  & { getArtistAlbums?: Maybe<(
+    { __typename?: 'ArtistAlbums' }
+    & { items?: Maybe<Array<Maybe<(
+      { __typename?: 'Album' }
+      & Pick<Album, 'id' | 'name' | 'type'>
+    )>>> }
+  )> }
+);
+
+export type GetArtistTopTracksQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetArtistTopTracksQuery = (
+  { __typename?: 'Query' }
+  & { getArtistTopTracks?: Maybe<(
+    { __typename?: 'ArtistTopTracks' }
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'ArtistTopTrackItem' }
+      & Pick<ArtistTopTrackItem, 'name' | 'preview_url'>
+      & { artists?: Maybe<Array<Maybe<(
+        { __typename?: 'Artist' }
+        & Pick<Artist, 'name'>
+      )>>>, album?: Maybe<(
+        { __typename?: 'Album' }
+        & { images?: Maybe<Array<Maybe<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'url'>
+        )>>> }
+      )> }
+    )>>> }
+  )> }
 );
 
 export type SearchSpotifyQueryVariables = Exact<{
@@ -540,6 +707,84 @@ export function useCreateTrackPostMutation(baseOptions?: ApolloReactHooks.Mutati
 export type CreateTrackPostMutationHookResult = ReturnType<typeof useCreateTrackPostMutation>;
 export type CreateTrackPostMutationResult = ApolloReactCommon.MutationResult<CreateTrackPostMutation>;
 export type CreateTrackPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTrackPostMutation, CreateTrackPostMutationVariables>;
+export const GetAlbumPostsDocument = gql`
+    query getAlbumPosts($id: String!) {
+  getAlbumPosts(id: $id) {
+    albumName
+    artistNames
+    text
+    rating
+    timeSubmitted
+    user {
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAlbumPostsQuery__
+ *
+ * To run a query within a React component, call `useGetAlbumPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAlbumPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAlbumPostsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAlbumPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAlbumPostsQuery, GetAlbumPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAlbumPostsQuery, GetAlbumPostsQueryVariables>(GetAlbumPostsDocument, baseOptions);
+      }
+export function useGetAlbumPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAlbumPostsQuery, GetAlbumPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAlbumPostsQuery, GetAlbumPostsQueryVariables>(GetAlbumPostsDocument, baseOptions);
+        }
+export type GetAlbumPostsQueryHookResult = ReturnType<typeof useGetAlbumPostsQuery>;
+export type GetAlbumPostsLazyQueryHookResult = ReturnType<typeof useGetAlbumPostsLazyQuery>;
+export type GetAlbumPostsQueryResult = ApolloReactCommon.QueryResult<GetAlbumPostsQuery, GetAlbumPostsQueryVariables>;
+export const GetArtistPostsDocument = gql`
+    query getArtistPosts($id: String!) {
+  getArtistPosts(id: $id) {
+    artistName
+    text
+    timeSubmitted
+    user {
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetArtistPostsQuery__
+ *
+ * To run a query within a React component, call `useGetArtistPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArtistPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArtistPostsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetArtistPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetArtistPostsQuery, GetArtistPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetArtistPostsQuery, GetArtistPostsQueryVariables>(GetArtistPostsDocument, baseOptions);
+      }
+export function useGetArtistPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetArtistPostsQuery, GetArtistPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetArtistPostsQuery, GetArtistPostsQueryVariables>(GetArtistPostsDocument, baseOptions);
+        }
+export type GetArtistPostsQueryHookResult = ReturnType<typeof useGetArtistPostsQuery>;
+export type GetArtistPostsLazyQueryHookResult = ReturnType<typeof useGetArtistPostsLazyQuery>;
+export type GetArtistPostsQueryResult = ApolloReactCommon.QueryResult<GetArtistPostsQuery, GetArtistPostsQueryVariables>;
 export const GetPostsDocument = gql`
     query GetPosts {
   getPosts {
@@ -605,6 +850,126 @@ export function useGetPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsQueryResult = ApolloReactCommon.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
+export const GetTrackPostsDocument = gql`
+    query getTrackPosts($id: String!) {
+  getTrackPosts(id: $id) {
+    trackName
+    text
+    vote
+    timeSubmitted
+    user {
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTrackPostsQuery__
+ *
+ * To run a query within a React component, call `useGetTrackPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTrackPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTrackPostsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetTrackPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTrackPostsQuery, GetTrackPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTrackPostsQuery, GetTrackPostsQueryVariables>(GetTrackPostsDocument, baseOptions);
+      }
+export function useGetTrackPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTrackPostsQuery, GetTrackPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTrackPostsQuery, GetTrackPostsQueryVariables>(GetTrackPostsDocument, baseOptions);
+        }
+export type GetTrackPostsQueryHookResult = ReturnType<typeof useGetTrackPostsQuery>;
+export type GetTrackPostsLazyQueryHookResult = ReturnType<typeof useGetTrackPostsLazyQuery>;
+export type GetTrackPostsQueryResult = ApolloReactCommon.QueryResult<GetTrackPostsQuery, GetTrackPostsQueryVariables>;
+export const GetArtistAlbumsDocument = gql`
+    query getArtistAlbums($id: String!) {
+  getArtistAlbums(id: $id) {
+    items {
+      id
+      name
+      type
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetArtistAlbumsQuery__
+ *
+ * To run a query within a React component, call `useGetArtistAlbumsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArtistAlbumsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArtistAlbumsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetArtistAlbumsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetArtistAlbumsQuery, GetArtistAlbumsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetArtistAlbumsQuery, GetArtistAlbumsQueryVariables>(GetArtistAlbumsDocument, baseOptions);
+      }
+export function useGetArtistAlbumsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetArtistAlbumsQuery, GetArtistAlbumsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetArtistAlbumsQuery, GetArtistAlbumsQueryVariables>(GetArtistAlbumsDocument, baseOptions);
+        }
+export type GetArtistAlbumsQueryHookResult = ReturnType<typeof useGetArtistAlbumsQuery>;
+export type GetArtistAlbumsLazyQueryHookResult = ReturnType<typeof useGetArtistAlbumsLazyQuery>;
+export type GetArtistAlbumsQueryResult = ApolloReactCommon.QueryResult<GetArtistAlbumsQuery, GetArtistAlbumsQueryVariables>;
+export const GetArtistTopTracksDocument = gql`
+    query getArtistTopTracks($id: String!) {
+  getArtistTopTracks(id: $id) {
+    tracks {
+      name
+      artists {
+        name
+      }
+      preview_url
+      album {
+        images {
+          url
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetArtistTopTracksQuery__
+ *
+ * To run a query within a React component, call `useGetArtistTopTracksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArtistTopTracksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArtistTopTracksQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetArtistTopTracksQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetArtistTopTracksQuery, GetArtistTopTracksQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetArtistTopTracksQuery, GetArtistTopTracksQueryVariables>(GetArtistTopTracksDocument, baseOptions);
+      }
+export function useGetArtistTopTracksLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetArtistTopTracksQuery, GetArtistTopTracksQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetArtistTopTracksQuery, GetArtistTopTracksQueryVariables>(GetArtistTopTracksDocument, baseOptions);
+        }
+export type GetArtistTopTracksQueryHookResult = ReturnType<typeof useGetArtistTopTracksQuery>;
+export type GetArtistTopTracksLazyQueryHookResult = ReturnType<typeof useGetArtistTopTracksLazyQuery>;
+export type GetArtistTopTracksQueryResult = ApolloReactCommon.QueryResult<GetArtistTopTracksQuery, GetArtistTopTracksQueryVariables>;
 export const SearchSpotifyDocument = gql`
     query searchSpotify($type: String!, $query: String!) {
   search(type: $type, query: $query) {
