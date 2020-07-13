@@ -130,7 +130,16 @@ export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
         <ArtistPageAlbums id={id} />
       </StyledColumnView>
 
-      <Button mode="contained">See Shares of this Artist</Button>
+      <Button
+        mode="contained"
+        onPress={() => {
+          navigation.navigate("ArtistPosts", {
+            id: id,
+            name: name,
+          });
+        }}>
+        See Shares of this Artist
+      </Button>
     </ScrollView>
   );
 };
