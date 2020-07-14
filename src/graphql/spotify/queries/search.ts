@@ -16,6 +16,9 @@ export const SEARCH_SPOTIFY = gql`
             images {
               url
             }
+            external_urls {
+              spotify
+            }
           }
         }
       }
@@ -27,6 +30,9 @@ export const SEARCH_SPOTIFY = gql`
             name
             images {
               url
+            }
+            external_urls {
+              spotify
             }
           }
         }
@@ -45,6 +51,9 @@ export const SEARCH_SPOTIFY = gql`
             }
             artists {
               name
+            }
+            external_urls {
+              spotify
             }
           }
         }

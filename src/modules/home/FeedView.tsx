@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text } from "react-native";
+import { Image, Text, Linking } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   ActivityIndicator,
@@ -18,6 +18,7 @@ import {
 } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
+import StarRating from "react-native-star-rating";
 
 interface AlbumPostProps {
   item: {
@@ -30,6 +31,7 @@ interface AlbumPostProps {
     | "imageUrl"
     | "timeSubmitted"
     | "albumId"
+    | "externalUrl"
     | "albumName"
   > & {
       user?: {
@@ -49,6 +51,7 @@ interface TrackPostProps {
     | "artistNames"
     | "vote"
     | "trackId"
+    | "externalUrl"
     | "trackName"
   > & {
       user?: {
@@ -62,7 +65,12 @@ interface ArtistPostProps {
     __typename?: "ArtistPost";
   } & Pick<
     ArtistPost,
-    "text" | "imageUrl" | "timeSubmitted" | "artistId" | "artistName"
+    | "text"
+    | "imageUrl"
+    | "timeSubmitted"
+    | "artistId"
+    | "artistName"
+    | "externalUrl"
   > & {
       user?: {
         __typename?: "User";
@@ -121,7 +129,8 @@ export const AlbumPostView: React.FC<
         />
         <Caption>{item?.user?.username}</Caption>
         <Text>{item?.timeSubmitted}</Text>
-        <Caption>ARTIST</Caption>
+        <Caption>ALBUM</Caption>
+        <StarRating disabled={true} rating={item?.rating} />
         <Title>{item?.albumName}</Title>
         <Paragraph>{item?.text}</Paragraph>
         <Button
@@ -144,6 +153,11 @@ export const AlbumPostView: React.FC<
 export const TrackPostView: React.FC<
   TrackPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
+  const openURL = (url: string) => {
+    Linking.openURL(url).catch((err) =>
+      console.error("An error occurred while opening url", err)
+    );
+  };
   return (
     <Card>
       {/* TODO: make a global style for centering */}
@@ -157,20 +171,22 @@ export const TrackPostView: React.FC<
         />
         <Caption>{item?.user?.username}</Caption>
         <Text>{item?.timeSubmitted}</Text>
-        <Caption>ARTIST</Caption>
+        <Caption>TRACK</Caption>
         <Title>{item?.trackName}</Title>
         <Paragraph>{item?.text}</Paragraph>
         <Button
           mode="contained"
           onPress={() => {
-            console.log("track button");
+            console.log(item.externalUrl);
+
+            openURL(`${item.externalUrl}`);
             // navigation.navigate("ArtistPage", {
             //   id: item?.artistId,
             //   name: item?.artistName,
-            //   imageUrl: item.imageUrl,
+
             // });
           }}>
-          SEE TRACK
+          SEE TRACK ON SPOTIFY
         </Button>
       </Card.Content>
     </Card>

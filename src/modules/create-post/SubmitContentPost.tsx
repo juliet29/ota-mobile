@@ -20,8 +20,20 @@ export const useSubmitContentPost: useSubmitContentType = () => {
   const [createTrackPost] = useCreateTrackPostMutation();
 
   const submitArtistPost = async () => {
-    const { name: artistName, imageUrl, id: artistId, text } = content;
-    const data: ArtistPostInput = { text, artistName, imageUrl, artistId };
+    const {
+      name: artistName,
+      imageUrl,
+      id: artistId,
+      text,
+      externalUrl,
+    } = content;
+    const data: ArtistPostInput = {
+      text,
+      artistName,
+      imageUrl,
+      artistId,
+      externalUrl,
+    };
     try {
       const response = await createArtistPost({
         variables: { data },
@@ -41,6 +53,7 @@ export const useSubmitContentPost: useSubmitContentType = () => {
       vote,
       text,
       artistNames,
+      externalUrl,
     } = content;
 
     const data: TrackPostInput = {
@@ -50,6 +63,7 @@ export const useSubmitContentPost: useSubmitContentType = () => {
       imageUrl,
       vote,
       artistNames,
+      externalUrl,
     };
     try {
       const response = await createTrackPost({
@@ -70,6 +84,7 @@ export const useSubmitContentPost: useSubmitContentType = () => {
       rating,
       artistNames,
       text,
+      externalUrl,
     } = content;
     const data: AlbumPostInput = {
       albumId,
@@ -78,6 +93,7 @@ export const useSubmitContentPost: useSubmitContentType = () => {
       imageUrl,
       rating,
       artistNames,
+      externalUrl,
     };
     try {
       const response = await createAlbumPost({

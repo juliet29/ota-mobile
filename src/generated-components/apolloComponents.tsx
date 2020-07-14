@@ -71,6 +71,7 @@ export type AlbumPost = {
   id?: Maybe<Scalars['ID']>;
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  externalUrl?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   imageUrl?: Maybe<Scalars['String']>;
   albumId?: Maybe<Scalars['String']>;
@@ -92,6 +93,7 @@ export type ArtistPost = {
   id?: Maybe<Scalars['ID']>;
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  externalUrl?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   imageUrl?: Maybe<Scalars['String']>;
   artistId?: Maybe<Scalars['String']>;
@@ -103,6 +105,7 @@ export type TrackPost = {
   id?: Maybe<Scalars['ID']>;
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  externalUrl?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   imageUrl?: Maybe<Scalars['String']>;
   trackId?: Maybe<Scalars['String']>;
@@ -123,7 +126,7 @@ export type AlbumTrackItem = {
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   images?: Maybe<Array<Maybe<Image>>>;
-  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  external_urls?: Maybe<ExternalUrl>;
   album?: Maybe<Album>;
   artists?: Maybe<Array<Maybe<Artist>>>;
   track_number?: Maybe<Scalars['Float']>;
@@ -149,7 +152,7 @@ export type Album = {
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   images?: Maybe<Array<Maybe<Image>>>;
-  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  external_urls?: Maybe<ExternalUrl>;
   release_date?: Maybe<Scalars['String']>;
   album_type?: Maybe<Scalars['String']>;
   artists?: Maybe<Array<Maybe<Artist>>>;
@@ -162,7 +165,7 @@ export type Artist = {
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   images?: Maybe<Array<Maybe<Image>>>;
-  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  external_urls?: Maybe<ExternalUrl>;
 };
 
 export type ArtistAlbums = {
@@ -182,7 +185,7 @@ export type ArtistTopTrackItem = {
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   images?: Maybe<Array<Maybe<Image>>>;
-  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  external_urls?: Maybe<ExternalUrl>;
   album?: Maybe<Album>;
   artists?: Maybe<Array<Maybe<Artist>>>;
   track_number?: Maybe<Scalars['Float']>;
@@ -209,7 +212,7 @@ export type Track = {
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   images?: Maybe<Array<Maybe<Image>>>;
-  external_urls?: Maybe<Array<Maybe<ExternalUrl>>>;
+  external_urls?: Maybe<ExternalUrl>;
   album?: Maybe<Album>;
   artists?: Maybe<Array<Maybe<Artist>>>;
   track_number?: Maybe<Scalars['Float']>;
@@ -281,6 +284,7 @@ export type MutationRegisterArgs = {
 export type AlbumPostInput = {
   text?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  externalUrl?: Maybe<Scalars['String']>;
   albumId?: Maybe<Scalars['String']>;
   rating?: Maybe<Scalars['Float']>;
   albumName?: Maybe<Scalars['String']>;
@@ -290,6 +294,7 @@ export type AlbumPostInput = {
 export type ArtistPostInput = {
   text?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  externalUrl?: Maybe<Scalars['String']>;
   artistId?: Maybe<Scalars['String']>;
   artistName?: Maybe<Scalars['String']>;
 };
@@ -297,6 +302,7 @@ export type ArtistPostInput = {
 export type TrackPostInput = {
   text?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  externalUrl?: Maybe<Scalars['String']>;
   trackId?: Maybe<Scalars['String']>;
   vote?: Maybe<Scalars['Float']>;
   trackName?: Maybe<Scalars['String']>;
@@ -374,7 +380,7 @@ export type GetAlbumPostsQuery = (
   { __typename?: 'Query' }
   & { getAlbumPosts?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'albumName' | 'artistNames' | 'text' | 'rating' | 'timeSubmitted'>
+    & Pick<AlbumPost, 'albumName' | 'externalUrl' | 'artistNames' | 'text' | 'rating' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -391,7 +397,7 @@ export type GetArtistPostsQuery = (
   { __typename?: 'Query' }
   & { getArtistPosts?: Maybe<Array<Maybe<(
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'artistName' | 'text' | 'timeSubmitted'>
+    & Pick<ArtistPost, 'artistName' | 'externalUrl' | 'text' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -406,21 +412,21 @@ export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'text' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & Pick<AlbumPost, 'text' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'text' | 'imageUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & Pick<ArtistPost, 'text' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'text' | 'artistNames' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & Pick<TrackPost, 'text' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -437,7 +443,7 @@ export type GetTrackPostsQuery = (
   { __typename?: 'Query' }
   & { getTrackPosts?: Maybe<Array<Maybe<(
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'trackName' | 'text' | 'vote' | 'timeSubmitted'>
+    & Pick<TrackPost, 'trackName' | 'externalUrl' | 'text' | 'vote' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -536,7 +542,10 @@ export type SearchSpotifyQuery = (
         )>, artists?: Maybe<Array<Maybe<(
           { __typename?: 'Artist' }
           & Pick<Artist, 'name'>
-        )>>> }
+        )>>>, external_urls?: Maybe<(
+          { __typename?: 'ExternalUrl' }
+          & Pick<ExternalUrl, 'spotify'>
+        )> }
       )>>> }
     )> }
   ) | (
@@ -549,7 +558,10 @@ export type SearchSpotifyQuery = (
         & { images?: Maybe<Array<Maybe<(
           { __typename?: 'Image' }
           & Pick<Image, 'url'>
-        )>>> }
+        )>>>, external_urls?: Maybe<(
+          { __typename?: 'ExternalUrl' }
+          & Pick<ExternalUrl, 'spotify'>
+        )> }
       )>>> }
     )> }
   ) | (
@@ -565,7 +577,10 @@ export type SearchSpotifyQuery = (
         )>>>, images?: Maybe<Array<Maybe<(
           { __typename?: 'Image' }
           & Pick<Image, 'url'>
-        )>>> }
+        )>>>, external_urls?: Maybe<(
+          { __typename?: 'ExternalUrl' }
+          & Pick<ExternalUrl, 'spotify'>
+        )> }
       )>>> }
     )> }
   )> }
@@ -735,6 +750,7 @@ export const GetAlbumPostsDocument = gql`
     query getAlbumPosts($id: String!) {
   getAlbumPosts(id: $id) {
     albumName
+    externalUrl
     artistNames
     text
     rating
@@ -775,6 +791,7 @@ export const GetArtistPostsDocument = gql`
     query getArtistPosts($id: String!) {
   getArtistPosts(id: $id) {
     artistName
+    externalUrl
     text
     timeSubmitted
     user {
@@ -814,6 +831,7 @@ export const GetPostsDocument = gql`
   getPosts {
     ... on AlbumPost {
       text
+      externalUrl
       artistNames
       rating
       imageUrl
@@ -827,6 +845,7 @@ export const GetPostsDocument = gql`
     ... on TrackPost {
       text
       artistNames
+      externalUrl
       vote
       imageUrl
       timeSubmitted
@@ -839,6 +858,7 @@ export const GetPostsDocument = gql`
     ... on ArtistPost {
       text
       imageUrl
+      externalUrl
       timeSubmitted
       artistId
       artistName
@@ -878,6 +898,7 @@ export const GetTrackPostsDocument = gql`
     query getTrackPosts($id: String!) {
   getTrackPosts(id: $id) {
     trackName
+    externalUrl
     text
     vote
     timeSubmitted
@@ -1053,6 +1074,9 @@ export const SearchSpotifyDocument = gql`
           images {
             url
           }
+          external_urls {
+            spotify
+          }
         }
       }
     }
@@ -1064,6 +1088,9 @@ export const SearchSpotifyDocument = gql`
           name
           images {
             url
+          }
+          external_urls {
+            spotify
           }
         }
       }
@@ -1082,6 +1109,9 @@ export const SearchSpotifyDocument = gql`
           }
           artists {
             name
+          }
+          external_urls {
+            spotify
           }
         }
       }

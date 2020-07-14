@@ -5,6 +5,7 @@ export const GET_POSTS = gql`
     getPosts {
       ... on AlbumPost {
         text
+        externalUrl
         artistNames
         rating
         imageUrl
@@ -18,6 +19,7 @@ export const GET_POSTS = gql`
       ... on TrackPost {
         text
         artistNames
+        externalUrl
         vote
         imageUrl
         timeSubmitted
@@ -30,6 +32,7 @@ export const GET_POSTS = gql`
       ... on ArtistPost {
         text
         imageUrl
+        externalUrl
         timeSubmitted
         artistId
         artistName

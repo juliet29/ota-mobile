@@ -23,15 +23,17 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
     id: string,
     name: string,
     imageUrl?: string,
+    externalUrl?: string,
     artistNames?: string[]
   ) => {
-    // clear all previous values + sey new global state
+    // clear all previous values + set new global state
     await clearContent();
 
     setContent({
       id,
       name,
       imageUrl,
+      externalUrl,
       artistNames,
     });
 
@@ -50,10 +52,11 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
             onPress={() => {
               const id = results.item!?.id!;
               const name = results.item!?.name!;
+              const externalUrl = results.item!?.external_urls?.spotify;
               const imageUrl = results.item?.images?.map((item, ix) => {
                 return item?.url;
               })[1];
-              chooseContent(id, name, imageUrl);
+              chooseContent(id, name, imageUrl, externalUrl);
             }}
             title={results.item?.name}
           />
@@ -72,13 +75,14 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
             onPress={() => {
               const id = results.item!?.id!;
               const name = results.item!?.name!;
+              const externalUrl = results.item!?.external_urls?.spotify;
               const imageUrl = results.item?.album?.images?.map((item, ix) => {
                 return item?.url;
               })[1];
               const artistNames = results.item?.artists?.map((item, ix) => {
                 return item?.name;
               });
-              chooseContent(id, name, imageUrl, artistNames);
+              chooseContent(id, name, imageUrl, externalUrl, artistNames);
             }}
             title={results.item?.name}
             description={results.item?.artists?.map((element, ix) => (
@@ -100,13 +104,14 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
             onPress={() => {
               const id = results.item!?.id!;
               const name = results.item!?.name!;
+              const externalUrl = results.item!?.external_urls?.spotify;
               const imageUrl = results.item?.images?.map((item, ix) => {
                 return item?.url;
               })[1];
               const artistNames = results.item?.artists?.map((item, ix) => {
                 return item?.name;
               });
-              chooseContent(id, name, imageUrl, artistNames);
+              chooseContent(id, name, imageUrl, externalUrl, artistNames);
             }}
             title={results.item?.name}
             description={results.item?.release_date}

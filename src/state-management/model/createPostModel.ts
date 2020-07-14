@@ -5,6 +5,7 @@ interface ContentInterface {
   id?: string;
   name?: string;
   imageUrl?: string;
+  externalUrl?: string;
   text?: string;
   artistNames?: string[];
   // album specific
