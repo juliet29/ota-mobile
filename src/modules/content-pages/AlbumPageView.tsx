@@ -20,7 +20,7 @@ import { Image } from "react-native";
 
 interface AlbumPageProps {}
 
-export const AlbumPage: React.FC<HomeStackNavProps<"AlbumPage">> = ({
+export const AlbumPageView: React.FC<HomeStackNavProps<"AlbumPage">> = ({
   route,
   navigation,
 }) => {
