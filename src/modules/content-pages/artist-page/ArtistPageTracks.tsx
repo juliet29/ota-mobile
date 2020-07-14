@@ -108,11 +108,13 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
 
   const handlePlayPause = async () => {
     console.log("pI 2", state);
-    playing && state.playbackInstance
-      ? await state.playbackInstance.pauseAsync()
-      : await state.playbackInstance.playAsync();
-    // setTest((test) => ({ ...test, volume: 0.5 }));
-    // setState((state) => ({ ...state }));
+    if (playing) {
+      setState((state) => ({ ...state, playbackInstance: null }));
+      setPlayable(false);
+      return;
+    }
+
+    await state.playbackInstance.playAsync();
 
     setPlaying((playing) => !playing);
     console.log("pI 2.1", state);
