@@ -18,25 +18,17 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
   });
 
   const [state, setState] = useState({
-    // isPlaying: false,
     playbackInstance: null,
-    currentTrack: "",
     volume: 1.0,
     isBuffering: false,
   });
 
-  const [test, setTest] = useState({
-    // isPlaying: false,
-    playbackInstance: null,
-    currentTrack: "",
-    volume: 1.0,
-    isBuffering: false,
-  });
+  const [currentTrack, setCurrentTrack] = useState("");
+  const [playable, setPlayable] = useState(false);
 
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    console.log("current track is", state.currentTrack);
     const prepareAudio = async () => {
       try {
         await Audio.setAudioModeAsync({
@@ -48,8 +40,6 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
           staysActiveInBackground: true,
           playThroughEarpieceAndroid: true,
         });
-
-        await loadAudio();
       } catch (e) {
         console.log("err preparing audio", e);
       }
@@ -60,23 +50,34 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
     console.log("pI 1.5", state);
   }, []);
 
-  // useEffect(() => {
-  //   console.log("state", state);
-  // }, [state]);
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    const loadTrack = async () => {
+      console.log("current track is", currentTrack);
+      try {
+        await loadAudio();
+        setPlayable(true);
+      } catch (e) {
+        console.log("err load audio", e);
+      }
+    };
 
-  // useEffect(() => {
-  //   console.log("test", test);
-  // });
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      loadTrack();
+    }
+  }, [currentTrack]);
 
   const loadAudio = async () => {
-    const { currentTrack, volume } = state;
+    const { volume } = state;
 
     try {
       const playbackInstance = new Audio.Sound();
       const source = {
-        uri:
-          "https://p.scdn.co/mp3-preview/9779493d90a47f29e4257aa45bc6146d1ee9cb26?cid=16ecb71937474d49bf1cd3c7d77a8850",
-        // uri: `${currentTrack}`,
+        // uri:
+        //   "https://p.scdn.co/mp3-preview/9779493d90a47f29e4257aa45bc6146d1ee9cb26?cid=16ecb71937474d49bf1cd3c7d77a8850",
+        uri: `${currentTrack}`,
       };
 
       const status = {
@@ -91,8 +92,8 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
       setState((state) => ({ ...state, playbackInstance }));
       console.log("pI 0", state);
 
-      setTest((state) => ({ ...state, volume: 0.55 }));
-      console.log("pT 0", test);
+      // setTest((state) => ({ ...state, volume: 0.55 }));
+      // console.log("pT 0", test);
       setState((state) => ({ ...state, volume: 0.55 }));
 
       console.log("pI 1", state);
@@ -111,7 +112,7 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
       ? await state.playbackInstance.pauseAsync()
       : await state.playbackInstance.playAsync();
     // setTest((test) => ({ ...test, volume: 0.5 }));
-    setState((state) => ({ ...state }));
+    // setState((state) => ({ ...state }));
 
     setPlaying((playing) => !playing);
     console.log("pI 2.1", state);
@@ -149,12 +150,20 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
             {item.item.artists.map((element, ix) => (
               <Caption key={ix}>{element.name}</Caption>
             ))}
-
             {item.item.preview_url ? (
               <Button
                 onPress={() => {
-                  // setState({ ...state, currentTrack: item.item.preview_url });
+                  setCurrentTrack(item.item.preview_url);
+                }}>
+                Listen to This Track
+              </Button>
+            ) : (
+              <Caption>No Preview Available</Caption>
+            )}
 
+            {playable ? (
+              <Button
+                onPress={() => {
                   handlePlayPause();
                 }}>
                 {state.isBuffering ? (
