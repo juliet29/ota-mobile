@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useGetArtistTopTracksQuery } from "../../../generated-components/apolloComponents";
 import { ActivityIndicator, Image } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
@@ -18,12 +18,22 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
   });
 
   const [state, setState] = useState({
-    isPlaying: false,
+    // isPlaying: false,
     playbackInstance: null,
     currentTrack: "",
     volume: 1.0,
     isBuffering: false,
   });
+
+  const [test, setTest] = useState({
+    // isPlaying: false,
+    playbackInstance: null,
+    currentTrack: "",
+    volume: 1.0,
+    isBuffering: false,
+  });
+
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     console.log("current track is", state.currentTrack);
@@ -47,16 +57,19 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
 
     // actually execute
     prepareAudio();
+    console.log("pI 1.5", state);
   }, []);
 
-  // useEffect( state.currentTrack
-  //   () => {
+  // useEffect(() => {
+  //   console.log("state", state);
+  // }, [state]);
 
-  //   }
-  // )
+  // useEffect(() => {
+  //   console.log("test", test);
+  // });
 
   const loadAudio = async () => {
-    const { currentTrack, isPlaying, volume } = state;
+    const { currentTrack, volume } = state;
 
     try {
       const playbackInstance = new Audio.Sound();
@@ -67,14 +80,22 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
       };
 
       const status = {
-        shouldPlay: isPlaying,
+        shouldPlay: playing,
         volume,
       };
 
       playbackInstance.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
       await playbackInstance.loadAsync(source, status, false);
-      console.log("pI 1", playbackInstance);
-      setState({ ...state, playbackInstance });
+      console.log("pbi", playbackInstance);
+
+      setState((state) => ({ ...state, playbackInstance }));
+      console.log("pI 0", state);
+
+      setTest((state) => ({ ...state, volume: 0.55 }));
+      console.log("pT 0", test);
+      setState((state) => ({ ...state, volume: 0.55 }));
+
+      console.log("pI 1", state);
     } catch (e) {
       console.log("err loading audio", e);
     }
@@ -85,13 +106,15 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
   };
 
   const handlePlayPause = async () => {
-    const { isPlaying, playbackInstance } = state;
-    console.log("pI 2", playbackInstance);
-    isPlaying
-      ? await playbackInstance.pauseAsync()
-      : await playbackInstance.playAsync();
+    console.log("pI 2", state);
+    playing && state.playbackInstance
+      ? await state.playbackInstance.pauseAsync()
+      : await state.playbackInstance.playAsync();
+    // setTest((test) => ({ ...test, volume: 0.5 }));
+    setState((state) => ({ ...state }));
 
-    setState({ ...state, isPlaying: !isPlaying });
+    setPlaying((playing) => !playing);
+    console.log("pI 2.1", state);
   };
 
   // actually render
@@ -134,7 +157,9 @@ export const ArtistPageTracks: React.FC<ArtistProps> = ({ id }) => {
 
                   handlePlayPause();
                 }}>
-                {state.isPlaying ? (
+                {state.isBuffering ? (
+                  <Ionicons name="ios-circle" size={48} color="#12345" />
+                ) : playing ? (
                   <Ionicons name="ios-pause" size={48} color="#444" />
                 ) : (
                   <Ionicons name="ios-play-circle" size={48} color="#444" />

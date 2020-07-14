@@ -105,12 +105,76 @@ export const ArtistPostView: React.FC<
   );
 };
 
-export const AlbumPostView: React.FC<AlbumPostProps> = ({ item }) => {
-  return <Text>AlbumPost</Text>;
+export const AlbumPostView: React.FC<
+  AlbumPostProps & HomeStackNavProps<"Feed">
+> = ({ item, navigation, route }) => {
+  return (
+    <Card>
+      {/* TODO: make a global style for centering */}
+      <Card.Content style={{ alignItems: "center" }}>
+        <Image
+          style={{ width: 200, height: 200 }}
+          resizeMode="contain"
+          source={{
+            uri: `${item.imageUrl}`,
+          }}
+        />
+        <Caption>{item?.user?.username}</Caption>
+        <Text>{item?.timeSubmitted}</Text>
+        <Caption>ARTIST</Caption>
+        <Title>{item?.albumName}</Title>
+        <Paragraph>{item?.text}</Paragraph>
+        <Button
+          mode="contained"
+          onPress={() => {
+            console.log("album button");
+            navigation.navigate("AlbumPage", {
+              id: item?.albumId,
+              name: item?.albumName,
+              imageUrl: item.imageUrl,
+            });
+          }}>
+          SEE ALBUM
+        </Button>
+      </Card.Content>
+    </Card>
+  );
 };
 
-export const TrackPostView: React.FC<TrackPostProps> = ({ item }) => {
-  return <Text>TrackPost</Text>;
+export const TrackPostView: React.FC<
+  TrackPostProps & HomeStackNavProps<"Feed">
+> = ({ item, navigation, route }) => {
+  return (
+    <Card>
+      {/* TODO: make a global style for centering */}
+      <Card.Content style={{ alignItems: "center" }}>
+        <Image
+          style={{ width: 200, height: 200 }}
+          resizeMode="contain"
+          source={{
+            uri: `${item.imageUrl}`,
+          }}
+        />
+        <Caption>{item?.user?.username}</Caption>
+        <Text>{item?.timeSubmitted}</Text>
+        <Caption>ARTIST</Caption>
+        <Title>{item?.trackName}</Title>
+        <Paragraph>{item?.text}</Paragraph>
+        <Button
+          mode="contained"
+          onPress={() => {
+            console.log("track button");
+            // navigation.navigate("ArtistPage", {
+            //   id: item?.artistId,
+            //   name: item?.artistName,
+            //   imageUrl: item.imageUrl,
+            // });
+          }}>
+          SEE TRACK
+        </Button>
+      </Card.Content>
+    </Card>
+  );
 };
 
 export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
@@ -133,11 +197,11 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
       renderItem={({ item }) => (
         <StyledColumnView>
           {item?.__typename === "ArtistPost" ? (
-            <ArtistPostView navigation={navigation} item={item} route={route} />
+            <ArtistPostView item={item} navigation={navigation} route={route} />
           ) : item?.__typename === "AlbumPost" ? (
-            <AlbumPostView item={item} />
+            <AlbumPostView item={item} navigation={navigation} route={route} />
           ) : (
-            <TrackPostView item={item} />
+            <TrackPostView item={item} navigation={navigation} route={route} />
           )}
         </StyledColumnView>
       )}
