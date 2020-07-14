@@ -3,11 +3,11 @@ import { Image, Text, Linking } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import {
   ActivityIndicator,
-  Button,
   Caption,
   Card,
   Paragraph,
   Title,
+  Button,
 } from "react-native-paper";
 import {
   AlbumPost,
@@ -172,6 +172,12 @@ export const TrackPostView: React.FC<
         <Caption>{item?.user?.username}</Caption>
         <Text>{item?.timeSubmitted}</Text>
         <Caption>TRACK</Caption>
+        {item?.vote === 1 ? (
+          <Button icon="thumb-up-outline" disabled={true}></Button>
+        ) : (
+          <Button icon="thumb-down-outline" disabled={true}></Button>
+        )}
+
         <Title>{item?.trackName}</Title>
         <Paragraph>{item?.text}</Paragraph>
         <Button
