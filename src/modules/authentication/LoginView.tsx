@@ -16,6 +16,7 @@ import {
 import { setAccessToken } from "../../utils/accessToken";
 import { AuthContext } from "../../utils/AuthProvider";
 import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
+import { useLoginHook } from "../../functional-components/useLoginHook";
 
 // interface LoginViewProps {}
 // interface submitLoginUserProps {
@@ -27,6 +28,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
   const { setUser } = useContext(AuthContext);
   const [loginUser, { loading, error }] = useLoginMutation();
+  const setLoginUser = useLoginHook();
 
   async function submitLoginUser({ email, password }: LoginMutationVariables) {
     try {
@@ -39,8 +41,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         response.data.login.accessToken
       ) {
         const accessToken = response.data.login.accessToken;
-        setAccessToken(accessToken);
-        setUser(accessToken);
+        setLoginUser(accessToken);
       }
     } catch (err) {
       console.log(err);

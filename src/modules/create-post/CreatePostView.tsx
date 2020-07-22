@@ -17,7 +17,7 @@ import { CreatePostOptions } from "./CreatePostOptions";
 import { ContentPreview } from "./ContentPreview";
 import { TrackVotes } from "./ratings/TrackVotes";
 import { AlbumStars } from "./ratings/AlbumStars";
-import { useSubmitContentPost } from "./SubmitContentPost";
+import { useSubmitContentPost } from "./useSubmitContentPost";
 import { useNavigation } from "@react-navigation/native";
 
 interface CreatePostViewProps {}

@@ -6,6 +6,7 @@ import { Wrapper } from "../styled-components/ReusedUI";
 import { AuthContext } from "./AuthProvider";
 
 import getEnvVars from "../../environment";
+import { useLoginHook } from "../functional-components/useLoginHook";
 // @ts-ignore
 const { apiUrl } = getEnvVars();
 console.log(`my url in app w headers is ${apiUrl}`);
@@ -15,6 +16,7 @@ interface Props {}
 
 export const AppWithHeaders: React.FC<Props> = () => {
   const [loading, setLoading] = useState(true);
+  const loginUser = useLoginHook();
   const { setUser } = useContext(AuthContext);
   //"http://localhost:4000/refresh_token"
   // "https://peaceful-oasis-92942.herokuapp.com/refresh_token"
@@ -25,8 +27,7 @@ export const AppWithHeaders: React.FC<Props> = () => {
       credentials: "include",
     }).then(async (x) => {
       const { accessToken } = await x.json();
-      setAccessToken(accessToken);
-      setUser(accessToken);
+      loginUser(accessToken);
       setLoading(false);
     });
   }, []);
