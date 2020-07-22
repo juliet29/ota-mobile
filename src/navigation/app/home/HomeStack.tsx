@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
-import { Text, Button, FlatList } from "react-native";
-import { FeedView } from "../../../modules/FeedView";
-import { HomeStackNavProps, HomeParamList } from "./HomeParamList";
-import { StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { AuthContext } from "../../../utils/AuthProvider";
+import React from "react";
 import { LogoutButton } from "../../../functional-components/LogoutButton";
+import { ArtistPageView } from "../../../modules/content-pages/artist-page/ArtistPageView";
+import { ArtistPostsView } from "../../../modules/content-pages/ArtistPostsView";
+import { FeedView } from "../../../modules/home/FeedView";
+import { HomeParamList } from "./HomeParamList";
+import { AlbumPageView } from "../../../modules/content-pages/AlbumPageView";
 
 interface HomeStackProps {}
 
@@ -15,7 +14,6 @@ const Stack = createStackNavigator<HomeParamList>();
 export const HomeStack: React.FC<HomeStackProps> = ({}) => {
   return (
     <Stack.Navigator initialRouteName="Feed">
-      {/* {addProductRoutes(Stack)} */}
       <Stack.Screen
         name="Feed"
         options={{
@@ -25,6 +23,9 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
         }}
         component={FeedView}
       />
+      <Stack.Screen name="ArtistPage" component={ArtistPageView} />
+      <Stack.Screen name="ArtistPosts" component={ArtistPostsView} />
+      <Stack.Screen name="AlbumPage" component={AlbumPageView} />
     </Stack.Navigator>
   );
 };

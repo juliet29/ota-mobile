@@ -4,6 +4,12 @@ export const RegisterValidationSchema = yup.object({
   username: yup.string().required().min(5),
   email: yup.string().required().email(),
   password: yup.string().required().min(5),
+  confirmPassword: yup
+    .string()
+    .required()
+    .test("passwords-match", "passwords must match", function (value) {
+      return this.parent.password === value;
+    }),
 });
 
 export const LoginValidationSchema = yup.object({

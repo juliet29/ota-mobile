@@ -1,0 +1,36 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "UNION",
+        "name": "GetPostsResult",
+        "possibleTypes": [
+          {
+            "name": "AlbumPost"
+          },
+          {
+            "name": "ArtistPost"
+          },
+          {
+            "name": "TrackPost"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "SearchResult",
+        "possibleTypes": [
+          {
+            "name": "TrackSearchResult"
+          },
+          {
+            "name": "ArtistSearchResult"
+          },
+          {
+            "name": "AlbumSearchResult"
+          }
+        ]
+      }
+    ]
+  }
+}

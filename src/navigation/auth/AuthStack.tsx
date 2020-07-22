@@ -1,9 +1,9 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { LoginView } from "../../modules/LoginView";
-import { RegisterView } from "../../modules/RegisterView";
+import { LoginView } from "../../modules/authentication/LoginView";
+import { RegisterView } from "../../modules/authentication/RegisterView";
 import { AuthParamList } from "./AuthParamList";
-import { LoginFailed } from "../../modules/LoginFailed";
+import { LoginFailed } from "../../modules/authentication/LoginFailed";
 
 interface AuthStackProps {}
 

@@ -8,7 +8,11 @@ interface GoogleAuthButtonProps {}
 
 export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({}) => {
   const { setUser } = useContext(AuthContext);
-  const signInWithGoogle = async () => {
+  async function submitSignInWithGoogle() {
+    await signInWithGoogle();
+    setUser("googlelogin");
+  }
+  async function signInWithGoogle() {
     try {
       const result = await Google.logInAsync({
         iosClientId: GOOGLE_IOS_CLIENT_ID,
@@ -31,14 +35,13 @@ export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({}) => {
       console.log("signing in with Google not successful! ", err);
       return { error: true };
     }
-  };
+  }
 
   return (
     <Button
       mode="outlined"
       onPress={() => {
-        signInWithGoogle();
-        setUser("googlelogin");
+        submitSignInWithGoogle();
       }}>
       Sign in with Google
     </Button>

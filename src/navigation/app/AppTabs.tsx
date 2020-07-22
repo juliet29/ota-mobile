@@ -10,6 +10,8 @@ import {
   DirectMessagesStack,
 } from "./other/OtherStack";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { AddContentToPost } from "../../modules/create-post/AddContentToPost";
 
 interface AppTabsProps {}
 
@@ -44,5 +46,21 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
       <Tabs.Screen name="MyList" component={MyListStack} />
       <Tabs.Screen name="DirectMessages" component={DirectMessagesStack} />
     </Tabs.Navigator>
+  );
+};
+
+interface RootStackProps {}
+
+const Root = createStackNavigator();
+export const RootStack: React.FC<RootStackProps> = ({}) => {
+  return (
+    <Root.Navigator mode="modal">
+      <Root.Screen
+        name="AppTabs"
+        component={AppTabs}
+        options={{ headerShown: false }}
+      />
+      <Root.Screen name="AddContentToPost" component={AddContentToPost} />
+    </Root.Navigator>
   );
 };

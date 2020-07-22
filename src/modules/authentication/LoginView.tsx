@@ -1,22 +1,21 @@
 import { ErrorMessage, Formik } from "formik";
 import React, { useContext } from "react";
 import { Button, HelperText, TextInput } from "react-native-paper";
-import FacebookAuthButton from "../functional-components/FacebookAuthButton";
-import SpotifyAuthButton from "../functional-components/SpotifyAuthButton";
+import FacebookAuthButton from "../../functional-components/FacebookAuthButton";
+import { GoogleAuthButton } from "../../functional-components/GoogleAuthButton";
 import {
   LoginMutationVariables,
   useLoginMutation,
-} from "../generated-components/apolloComponents";
-import { AuthNavProps } from "../navigation/auth/AuthParamList";
+} from "../../generated-components/apolloComponents";
+import { AuthNavProps } from "../../navigation/auth/AuthParamList";
 import {
   LineBreak,
   StyledColumnView,
   Wrapper,
-} from "../styled-components/ReusedUI";
-import { setAccessToken } from "../utils/accessToken";
-import { LoginValidationSchema } from "../utils/FormValidationSchemas";
-import { AuthContext } from "../utils/AuthProvider";
-import { GoogleAuthButton } from "../functional-components/GoogleAuthButton";
+} from "../../styled-components/ReusedUI";
+import { setAccessToken } from "../../utils/accessToken";
+import { AuthContext } from "../../utils/AuthProvider";
+import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
 
 // interface LoginViewProps {}
 // interface submitLoginUserProps {
@@ -33,7 +32,12 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
     try {
       const response = await loginUser({ variables: { email, password } });
       console.log(response);
-      if (response && response.data && response.data.login) {
+      if (
+        response &&
+        response.data &&
+        response.data.login &&
+        response.data.login.accessToken
+      ) {
         const accessToken = response.data.login.accessToken;
         setAccessToken(accessToken);
         setUser(accessToken);
@@ -54,6 +58,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         initialValues={{ password: "", email: "" }}
         onSubmit={({ email, password }) => {
           console.log("signin button press");
+          email = email.toLowerCase();
           submitLoginUser({ email, password });
         }}
         validationSchema={LoginValidationSchema}>
@@ -65,7 +70,8 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
               label="Email"
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
-              value={values.email}
+              // TODO: CHANGE ON SERVER
+              value={values.email.toLowerCase()}
             />
             <HelperText>
               <ErrorMessage name="email" />
@@ -90,10 +96,13 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         )}
       </Formik>
 
-      <FacebookAuthButton />
-      {/* only works in Safari for whatever reason */}
-      {/* <SpotifyAuthButton /> */}
-      <GoogleAuthButton />
+      <StyledColumnView>
+        <FacebookAuthButton />
+        {/* only works in Safari for whatever reason */}
+        {/* <SpotifyAuthButton /> */}
+        <LineBreak />
+        <GoogleAuthButton />
+      </StyledColumnView>
 
       <Button
         mode="text"
