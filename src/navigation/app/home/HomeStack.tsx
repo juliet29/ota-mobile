@@ -6,6 +6,7 @@ import { ArtistPostsView } from "../../../modules/content-pages/ArtistPostsView"
 import { FeedView } from "../../../modules/home/FeedView";
 import { HomeParamList } from "./HomeParamList";
 import { AlbumPageView } from "../../../modules/content-pages/AlbumPageView";
+import { TrackPageView } from "../../../modules/content-pages/TrackPageView";
 
 interface HomeStackProps {}
 
@@ -26,6 +27,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="ArtistPage" component={ArtistPageView} />
       <Stack.Screen name="ArtistPosts" component={ArtistPostsView} />
       <Stack.Screen name="AlbumPage" component={AlbumPageView} />
+      <Stack.Screen name="TrackPage" component={TrackPageView} />
     </Stack.Navigator>
   );
 };

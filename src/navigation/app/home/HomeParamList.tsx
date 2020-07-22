@@ -7,6 +7,12 @@ export type HomeParamList = {
   ArtistPage: { id: string; name: string; imageUrl?: string };
   ArtistPosts: { id: string; name: string };
   AlbumPage: { id: string; name: string; imageUrl?: string };
+  TrackPage: {
+    id: string;
+    name: string;
+    artistNames: string[];
+    imageUrl?: string;
+  };
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {

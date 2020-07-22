@@ -34,7 +34,7 @@ export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
 
       <StyledColumnView>
         <Headline>Top Songs</Headline>
-        <ArtistPageTracks id={id} />
+        <ArtistPageTracks id={id} navigation={navigation} route={route} />
       </StyledColumnView>
 
       <StyledColumnView>

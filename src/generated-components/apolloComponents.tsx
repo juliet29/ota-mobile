@@ -247,6 +247,7 @@ export type Mutation = {
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Scalars['Boolean']>;
   register?: Maybe<Scalars['Boolean']>;
+  facebookRegisterAndLogIn?: Maybe<LoginResponse>;
 };
 
 
@@ -279,6 +280,11 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   data?: Maybe<RegisterInput>;
+};
+
+
+export type MutationFacebookRegisterAndLogInArgs = {
+  data?: Maybe<FacebookRegisterInput>;
 };
 
 export type AlbumPostInput = {
@@ -317,6 +323,12 @@ export type LoginResponse = {
 
 export type RegisterInput = {
   password?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+};
+
+export type FacebookRegisterInput = {
+  id?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
 };
@@ -502,7 +514,7 @@ export type GetArtistTopTracksQuery = (
     { __typename?: 'ArtistTopTracks' }
     & { tracks?: Maybe<Array<Maybe<(
       { __typename?: 'ArtistTopTrackItem' }
-      & Pick<ArtistTopTrackItem, 'name' | 'preview_url'>
+      & Pick<ArtistTopTrackItem, 'id' | 'name' | 'preview_url'>
       & { artists?: Maybe<Array<Maybe<(
         { __typename?: 'Artist' }
         & Pick<Artist, 'name'>
@@ -583,6 +595,19 @@ export type SearchSpotifyQuery = (
         )> }
       )>>> }
     )> }
+  )> }
+);
+
+export type FacebookSsoMutationVariables = Exact<{
+  data: FacebookRegisterInput;
+}>;
+
+
+export type FacebookSsoMutation = (
+  { __typename?: 'Mutation' }
+  & { facebookRegisterAndLogIn?: Maybe<(
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
   )> }
 );
 
@@ -1018,6 +1043,7 @@ export const GetArtistTopTracksDocument = gql`
     query getArtistTopTracks($id: String!) {
   getArtistTopTracks(id: $id) {
     tracks {
+      id
       name
       artists {
         name
@@ -1146,6 +1172,38 @@ export function useSearchSpotifyLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type SearchSpotifyQueryHookResult = ReturnType<typeof useSearchSpotifyQuery>;
 export type SearchSpotifyLazyQueryHookResult = ReturnType<typeof useSearchSpotifyLazyQuery>;
 export type SearchSpotifyQueryResult = ApolloReactCommon.QueryResult<SearchSpotifyQuery, SearchSpotifyQueryVariables>;
+export const FacebookSsoDocument = gql`
+    mutation facebookSSO($data: FacebookRegisterInput!) {
+  facebookRegisterAndLogIn(data: $data) {
+    accessToken
+  }
+}
+    `;
+export type FacebookSsoMutationFn = ApolloReactCommon.MutationFunction<FacebookSsoMutation, FacebookSsoMutationVariables>;
+
+/**
+ * __useFacebookSsoMutation__
+ *
+ * To run a mutation, you first call `useFacebookSsoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFacebookSsoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [facebookSsoMutation, { data, loading, error }] = useFacebookSsoMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFacebookSsoMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<FacebookSsoMutation, FacebookSsoMutationVariables>) {
+        return ApolloReactHooks.useMutation<FacebookSsoMutation, FacebookSsoMutationVariables>(FacebookSsoDocument, baseOptions);
+      }
+export type FacebookSsoMutationHookResult = ReturnType<typeof useFacebookSsoMutation>;
+export type FacebookSsoMutationResult = ApolloReactCommon.MutationResult<FacebookSsoMutation>;
+export type FacebookSsoMutationOptions = ApolloReactCommon.BaseMutationOptions<FacebookSsoMutation, FacebookSsoMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

@@ -173,12 +173,26 @@ export const TrackPostView: React.FC<
         <Text>{item?.timeSubmitted}</Text>
         <Caption>TRACK</Caption>
         {item?.vote === 1 ? (
-          <Button icon="thumb-up-outline" disabled={true}></Button>
+          <Button icon="thumb-up-outline" disabled={true}>
+            {" "}
+          </Button>
         ) : (
-          <Button icon="thumb-down-outline" disabled={true}></Button>
+          <Button icon="thumb-down-outline" disabled={true}>
+            {" "}
+          </Button>
         )}
+        <Button
+          onPress={() => {
+            navigation.navigate("TrackPage", {
+              id: item?.trackId,
+              name: item?.trackName,
+              artistNames: item?.artistNames,
+              imageUrl: item?.imageUrl,
+            });
+          }}>
+          <Title>{item?.trackName}</Title>
+        </Button>
 
-        <Title>{item?.trackName}</Title>
         <Paragraph>{item?.text}</Paragraph>
         <Button
           mode="contained"
