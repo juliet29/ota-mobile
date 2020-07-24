@@ -11,6 +11,7 @@ import {
   useFacebookSsoMutation,
   FacebookRegisterInput,
 } from "../generated-components/apolloComponents";
+import { useLoginHook } from "./useLoginHook";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -24,6 +25,7 @@ const useProxy = Platform.select({ web: false, default: true });
 
 export default function FacebookAuthButton() {
   const [signOnUser, { loading, error }] = useFacebookSsoMutation();
+  const [setLoginUser] = useLoginHook();
 
   async function submitSignOnUser(data: FacebookRegisterInput) {
     try {
@@ -33,6 +35,7 @@ export default function FacebookAuthButton() {
           data,
         },
       });
+      return response.data.facebookRegisterAndLogIn.accessToken;
       console.log(response);
     } catch (err) {
       // TODO  handle server errors at top level
@@ -64,8 +67,8 @@ export default function FacebookAuthButton() {
           id: userInfo.id,
         };
         console.log("better user", userInfo);
-        submitSignOnUser(goodUserInfo);
-
+        const token = await submitSignOnUser(goodUserInfo);
+        setLoginUser(token);
         Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
 
         // sign on the user to ota-server, and get an access code

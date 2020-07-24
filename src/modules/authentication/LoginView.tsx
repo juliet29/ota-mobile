@@ -6,6 +6,7 @@ import { GoogleAuthButton } from "../../functional-components/GoogleAuthButton";
 import {
   LoginMutationVariables,
   useLoginMutation,
+  useGetCurrentUserQuery,
 } from "../../generated-components/apolloComponents";
 import { AuthNavProps } from "../../navigation/auth/AuthParamList";
 import {
@@ -17,6 +18,8 @@ import { setAccessToken } from "../../utils/accessToken";
 import { AuthContext } from "../../utils/AuthProvider";
 import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
 import { useLoginHook } from "../../functional-components/useLoginHook";
+import { useStoreActions, useStoreState } from "../../state-management/hooks";
+import { useSetUserHook } from "../../functional-components/useSetUserHook";
 
 // interface LoginViewProps {}
 // interface submitLoginUserProps {
@@ -26,11 +29,15 @@ import { useLoginHook } from "../../functional-components/useLoginHook";
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
-  const { setUser } = useContext(AuthContext);
   const [loginUser, { loading, error }] = useLoginMutation();
-  const setLoginUser = useLoginHook();
 
-  async function submitLoginUser({ email, password }: LoginMutationVariables) {
+  const [setLoginUser] = useLoginHook();
+  // const setCurrentUser = useSetUserHook();
+
+  const submitLoginUser = async ({
+    email,
+    password,
+  }: LoginMutationVariables) => {
     try {
       const response = await loginUser({ variables: { email, password } });
       console.log(response);
@@ -42,16 +49,23 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
       ) {
         const accessToken = response.data.login.accessToken;
         setLoginUser(accessToken);
+
+        // get current user function
       }
     } catch (err) {
       console.log(err);
       return null;
     }
-  }
+  };
 
   if (error) {
     navigation.navigate("LoginFailed");
   }
+
+  const loginAndSetUser = async ({ email, password }) => {
+    await submitLoginUser({ email, password });
+    // setCurrentUser();
+  };
 
   return (
     <Wrapper>
@@ -60,7 +74,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         onSubmit={({ email, password }) => {
           console.log("signin button press");
           email = email.toLowerCase();
-          submitLoginUser({ email, password });
+          loginAndSetUser({ email, password });
         }}
         validationSchema={LoginValidationSchema}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (

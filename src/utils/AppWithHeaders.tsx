@@ -7,6 +7,7 @@ import { AuthContext } from "./AuthProvider";
 
 import getEnvVars from "../../environment";
 import { useLoginHook } from "../functional-components/useLoginHook";
+import { useSetUserHook } from "../functional-components/useSetUserHook";
 // @ts-ignore
 const { apiUrl } = getEnvVars();
 console.log(`my url in app w headers is ${apiUrl}`);
@@ -16,20 +17,29 @@ interface Props {}
 
 export const AppWithHeaders: React.FC<Props> = () => {
   const [loading, setLoading] = useState(true);
-  const loginUser = useLoginHook();
-  const { setUser } = useContext(AuthContext);
+  const [setLoginUser] = useLoginHook();
+  // const setCurrentUser = useSetUserHook();
   //"http://localhost:4000/refresh_token"
   // "https://peaceful-oasis-92942.herokuapp.com/refresh_token"
 
   useEffect(() => {
-    fetch(`${apiUrl}/refresh_token`, {
-      method: "POST",
-      credentials: "include",
-    }).then(async (x) => {
-      const { accessToken } = await x.json();
-      loginUser(accessToken);
-      setLoading(false);
-    });
+    const fetchData = async () => {
+      fetch(`${apiUrl}/refresh_token`, {
+        method: "POST",
+        credentials: "include",
+      }).then(async (x) => {
+        const { accessToken } = await x.json();
+        setLoginUser(accessToken);
+        setLoading(false);
+      });
+    };
+
+    const fetchAndSet = async () => {
+      await fetchData();
+      // setCurrentUser();
+    };
+
+    fetchAndSet();
   }, []);
 
   if (loading) {

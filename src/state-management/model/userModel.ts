@@ -1,10 +1,11 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 
 // TODO: define interfaces by post type?
-interface UserTypeInterface {
-  id?: string;
+export interface UserTypeInterface {
+  id?: string | number;
   username?: string;
   email?: string;
+  accessToken?: string;
 }
 
 export interface UserInterface {

@@ -6,19 +6,21 @@ import { AuthStack } from "../navigation/auth/AuthStack";
 import { Center } from "../styled-components/Center";
 import { getAccessToken } from "./accessToken";
 import { AuthContext } from "./AuthProvider";
+import { useStoreState } from "../state-management/hooks";
 
 interface RoutesProps {}
 
 export const Routes: React.FC<RoutesProps> = ({}) => {
-  const { user } = useContext(AuthContext);
-  console.log(`my context is ${user}`);
+  // const { user } = useContext(AuthContext);
+  // console.log(`my context is ${user}`);
+  const user = useStoreState((state) => state.user.user);
   const [loading, setLoading] = useState(true);
   // let accessToken = getAccessToken();
 
   useEffect(() => {
-    // check if user is logged in or not
+    // check if user is logged in or not --> not doing anything rn
     let accessToken = getAccessToken();
-    console.log(accessToken);
+    console.log("easy-peasy user from routes: ", user);
     if (accessToken) {
       console.log("user is logged in");
     }
@@ -35,7 +37,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
   // const accessToken = getAccessToken();
   return (
     <NavigationContainer>
-      {user ? <RootStack /> : <AuthStack />}
+      {user.accessToken ? <RootStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };
