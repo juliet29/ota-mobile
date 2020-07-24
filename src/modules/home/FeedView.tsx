@@ -20,13 +20,6 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   const userState = useStoreState((state) => state.user.user);
   const setCurrentUser = useSetUserHook();
 
-  useEffect(() => {
-    setCurrentUser().then((x) => {
-      console.log("in feed view, hope this is true", x);
-    });
-    console.log("feed view use effect");
-  }, [data]);
-
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -37,36 +30,38 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
 
   return (
     <ScrollView>
-      <Card>
-        <Caption>Hello {userState.username}</Caption>
-      </Card>
-      <FlatList
-        data={data.getPosts}
-        renderItem={({ item }) => (
-          <StyledColumnView>
-            {item?.__typename === "ArtistPost" ? (
-              <ArtistPostView
-                item={item}
-                navigation={navigation}
-                route={route}
-              />
-            ) : item?.__typename === "AlbumPost" ? (
-              <AlbumPostView
-                item={item}
-                navigation={navigation}
-                route={route}
-              />
-            ) : (
-              <TrackPostView
-                item={item}
-                navigation={navigation}
-                route={route}
-              />
-            )}
-          </StyledColumnView>
-        )}
-        keyExtractor={(item, ix) => ix.toString()}
-      />
+      <StyledColumnView>
+        <Card>
+          <Caption>Hello {userState.username}</Caption>
+        </Card>
+        <FlatList
+          data={data.getPosts}
+          renderItem={({ item }) => (
+            <StyledColumnView>
+              {item?.__typename === "ArtistPost" ? (
+                <ArtistPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              ) : item?.__typename === "AlbumPost" ? (
+                <AlbumPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              ) : (
+                <TrackPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              )}
+            </StyledColumnView>
+          )}
+          keyExtractor={(item, ix) => ix.toString()}
+        />
+      </StyledColumnView>
     </ScrollView>
   );
 };

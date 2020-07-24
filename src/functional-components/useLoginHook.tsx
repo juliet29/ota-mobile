@@ -18,6 +18,7 @@ type useLoginHookType = () => [
 export const useLoginHook: useLoginHookType = () => {
   //   const { setUser } = useContext(AuthContext);
   const setUser = useStoreActions((actions) => actions.user.setUser);
+  const clearUser = useStoreActions((actions) => actions.user.clearUser);
   // const setCurrentUser = useSetUserHook();
 
   const setLoginUser = (myToken: string, userData?: UserTypeInterface) => {
@@ -38,7 +39,7 @@ export const useLoginHook: useLoginHookType = () => {
 
   const setLogoutUser = () => {
     setAccessToken("");
-    setUser({ accessToken: "" });
+    clearUser();
     // setUser(accessToken);
   };
 
