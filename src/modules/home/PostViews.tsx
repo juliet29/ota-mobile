@@ -127,7 +127,7 @@ export const AlbumPostView: React.FC<
         <Caption>{item?.user?.username}</Caption>
         <Text>{item?.timeSubmitted}</Text>
         <Caption>ALBUM</Caption>
-        <StarRating disabled={true} rating={item?.rating} />
+        {/* <StarRating disabled={true} rating={item?.rating} /> */}
         <Title>{item?.albumName}</Title>
         <Paragraph>{item?.text}</Paragraph>
         <Button

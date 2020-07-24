@@ -7,6 +7,7 @@ import userModel, {
   UserTypeInterface,
 } from "../state-management/model/userModel";
 import { useSetUserHook } from "./useSetUserHook";
+import { client } from "../index";
 
 interface LoginHookProps {}
 
@@ -37,9 +38,13 @@ export const useLoginHook: useLoginHookType = () => {
     // setCurrentUser();
   };
 
-  const setLogoutUser = () => {
+  const setLogoutUser = async () => {
     setAccessToken("");
     clearUser();
+    // clear the apollo cache
+    await client.clearStore();
+    client.resetStore();
+
     // setUser(accessToken);
   };
 
