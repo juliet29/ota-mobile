@@ -6,8 +6,8 @@ import { Wrapper } from "../styled-components/ReusedUI";
 import { AuthContext } from "./AuthProvider";
 
 import getEnvVars from "../../environment";
-import { useLoginHook } from "../functional-components/useLoginHook";
-import { useSetUserHook } from "../functional-components/useSetUserHook";
+import { useLoginHook } from "../modules/authentication/components/useLoginHook";
+import { useSetUserHook } from "../modules/authentication/components/useSetUserHook";
 // @ts-ignore
 const { apiUrl } = getEnvVars();
 console.log(`my url in app w headers is ${apiUrl}`);

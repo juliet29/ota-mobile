@@ -13,6 +13,7 @@ export type HomeParamList = {
     artistNames: string[];
     imageUrl?: string;
   };
+  UserPage: undefined;
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {

@@ -1,12 +1,9 @@
-import React, { useContext, useEffect } from "react";
-import { AuthContext } from "../utils/AuthProvider";
-import { setAccessToken } from "../utils/accessToken";
-import { useStoreActions, useStoreState } from "../state-management/hooks";
-import { State } from "react-native-gesture-handler";
-import userModel, {
-  UserTypeInterface,
-} from "../state-management/model/userModel";
-import { useGetCurrentUserQuery } from "../generated-components/apolloComponents";
+import { useEffect } from "react";
+import { useGetCurrentUserQuery } from "../../../generated-components/apolloComponents";
+import {
+  useStoreActions,
+  useStoreState,
+} from "../../../state-management/hooks";
 
 interface LoginHookProps {}
 

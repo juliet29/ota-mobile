@@ -1,16 +1,13 @@
-import * as React from "react";
-import * as WebBrowser from "expo-web-browser";
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
-import { Platform, Alert } from "react-native";
-import { Button } from "react-native-paper";
-import { FB_ID } from "../utils/Keys";
-import { AuthContext } from "../utils/AuthProvider";
-import { useContext } from "react";
 import * as Facebook from "expo-facebook";
+import * as WebBrowser from "expo-web-browser";
+import * as React from "react";
+import { Alert, Platform } from "react-native";
+import { Button } from "react-native-paper";
 import {
-  useFacebookSsoMutation,
   SsoRegisterInput,
-} from "../generated-components/apolloComponents";
+  useFacebookSsoMutation,
+} from "../../../generated-components/apolloComponents";
+import { FB_ID } from "../../../utils/Keys";
 import { useLoginHook } from "./useLoginHook";
 
 WebBrowser.maybeCompleteAuthSession();

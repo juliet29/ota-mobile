@@ -1,25 +1,20 @@
 import { ErrorMessage, Formik } from "formik";
-import React, { useContext } from "react";
+import React from "react";
 import { Button, HelperText, TextInput } from "react-native-paper";
-import FacebookAuthButton from "../../functional-components/FacebookAuthButton";
-import { GoogleAuthButton } from "../../functional-components/GoogleAuthButton";
 import {
   LoginMutationVariables,
   useLoginMutation,
-  useGetCurrentUserQuery,
 } from "../../generated-components/apolloComponents";
+import { useLoginHook } from "../../modules/authentication/components//useLoginHook";
+import FacebookAuthButton from "../../modules/authentication/components/FacebookAuthButton";
+import { GoogleAuthButton } from "../../modules/authentication/components/GoogleAuthButton";
 import { AuthNavProps } from "../../navigation/auth/AuthParamList";
 import {
   LineBreak,
   StyledColumnView,
   Wrapper,
 } from "../../styled-components/ReusedUI";
-import { setAccessToken } from "../../utils/accessToken";
-import { AuthContext } from "../../utils/AuthProvider";
 import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
-import { useLoginHook } from "../../functional-components/useLoginHook";
-import { useStoreActions, useStoreState } from "../../state-management/hooks";
-import { useSetUserHook } from "../../functional-components/useSetUserHook";
 
 // interface LoginViewProps {}
 // interface submitLoginUserProps {

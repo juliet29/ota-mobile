@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../utils/AuthProvider";
-import { setAccessToken } from "../utils/accessToken";
-import { useStoreActions } from "../state-management/hooks";
+import { AuthContext } from "../../../utils/AuthProvider";
+import { setAccessToken } from "../../../utils/accessToken";
+import { useStoreActions } from "../../../state-management/hooks";
 import { State } from "react-native-gesture-handler";
 import userModel, {
   UserTypeInterface,
-} from "../state-management/model/userModel";
+} from "../../../state-management/model/userModel";
 import { useSetUserHook } from "./useSetUserHook";
-import { client } from "../index";
+import { client } from "../../../index";
 
 interface LoginHookProps {}
 

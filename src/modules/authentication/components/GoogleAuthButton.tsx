@@ -4,12 +4,12 @@ import {
   GOOGLE_IOS_CLIENT_ID,
   GOOGLE_ANDROID_CLIENT_ID,
   GOOGLE_WEB_CLIENT_ID,
-} from "../utils/Keys";
+} from "../../../utils/Keys";
 import { Button } from "react-native-paper";
 import {
   SsoRegisterInput,
   useGoogleSsoMutation,
-} from "../generated-components/apolloComponents";
+} from "../../../generated-components/apolloComponents";
 import { Alert } from "react-native";
 import { useLoginHook } from "./useLoginHook";
 

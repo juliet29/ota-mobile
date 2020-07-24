@@ -10,7 +10,7 @@ import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { AlbumPostView, ArtistPostView, TrackPostView } from "./PostViews";
 import { useStoreActions, useStoreState } from "../../state-management/hooks";
-import { useSetUserHook } from "../../functional-components/useSetUserHook";
+import { useSetUserHook } from "../../modules/authentication/components/useSetUserHook";
 
 export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   navigation,
