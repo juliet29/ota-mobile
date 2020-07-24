@@ -87,6 +87,7 @@ export type User = {
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   facebookId?: Maybe<Scalars['String']>;
+  googleId?: Maybe<Scalars['String']>;
 };
 
 export type ArtistPost = {
@@ -248,7 +249,8 @@ export type Mutation = {
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Scalars['Boolean']>;
   register?: Maybe<Scalars['Boolean']>;
-  facebookRegisterAndLogIn?: Maybe<LoginResponse>;
+  facebookSSO?: Maybe<LoginResponse>;
+  googleSSO?: Maybe<LoginResponse>;
 };
 
 
@@ -284,8 +286,13 @@ export type MutationRegisterArgs = {
 };
 
 
-export type MutationFacebookRegisterAndLogInArgs = {
-  data?: Maybe<FacebookRegisterInput>;
+export type MutationFacebookSsoArgs = {
+  data?: Maybe<SsoRegisterInput>;
+};
+
+
+export type MutationGoogleSsoArgs = {
+  data?: Maybe<SsoRegisterInput>;
 };
 
 export type AlbumPostInput = {
@@ -328,7 +335,7 @@ export type RegisterInput = {
   email?: Maybe<Scalars['String']>;
 };
 
-export type FacebookRegisterInput = {
+export type SsoRegisterInput = {
   id?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
@@ -600,13 +607,26 @@ export type SearchSpotifyQuery = (
 );
 
 export type FacebookSsoMutationVariables = Exact<{
-  data: FacebookRegisterInput;
+  data: SsoRegisterInput;
 }>;
 
 
 export type FacebookSsoMutation = (
   { __typename?: 'Mutation' }
-  & { facebookRegisterAndLogIn?: Maybe<(
+  & { facebookSSO?: Maybe<(
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
+  )> }
+);
+
+export type GoogleSsoMutationVariables = Exact<{
+  data: SsoRegisterInput;
+}>;
+
+
+export type GoogleSsoMutation = (
+  { __typename?: 'Mutation' }
+  & { googleSSO?: Maybe<(
     { __typename?: 'LoginResponse' }
     & Pick<LoginResponse, 'accessToken'>
   )> }
@@ -1185,8 +1205,8 @@ export type SearchSpotifyQueryHookResult = ReturnType<typeof useSearchSpotifyQue
 export type SearchSpotifyLazyQueryHookResult = ReturnType<typeof useSearchSpotifyLazyQuery>;
 export type SearchSpotifyQueryResult = ApolloReactCommon.QueryResult<SearchSpotifyQuery, SearchSpotifyQueryVariables>;
 export const FacebookSsoDocument = gql`
-    mutation facebookSSO($data: FacebookRegisterInput!) {
-  facebookRegisterAndLogIn(data: $data) {
+    mutation FacebookSSO($data: SSORegisterInput!) {
+  facebookSSO(data: $data) {
     accessToken
   }
 }
@@ -1216,6 +1236,38 @@ export function useFacebookSsoMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type FacebookSsoMutationHookResult = ReturnType<typeof useFacebookSsoMutation>;
 export type FacebookSsoMutationResult = ApolloReactCommon.MutationResult<FacebookSsoMutation>;
 export type FacebookSsoMutationOptions = ApolloReactCommon.BaseMutationOptions<FacebookSsoMutation, FacebookSsoMutationVariables>;
+export const GoogleSsoDocument = gql`
+    mutation GoogleSSO($data: SSORegisterInput!) {
+  googleSSO(data: $data) {
+    accessToken
+  }
+}
+    `;
+export type GoogleSsoMutationFn = ApolloReactCommon.MutationFunction<GoogleSsoMutation, GoogleSsoMutationVariables>;
+
+/**
+ * __useGoogleSsoMutation__
+ *
+ * To run a mutation, you first call `useGoogleSsoMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGoogleSsoMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [googleSsoMutation, { data, loading, error }] = useGoogleSsoMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useGoogleSsoMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<GoogleSsoMutation, GoogleSsoMutationVariables>) {
+        return ApolloReactHooks.useMutation<GoogleSsoMutation, GoogleSsoMutationVariables>(GoogleSsoDocument, baseOptions);
+      }
+export type GoogleSsoMutationHookResult = ReturnType<typeof useGoogleSsoMutation>;
+export type GoogleSsoMutationResult = ApolloReactCommon.MutationResult<GoogleSsoMutation>;
+export type GoogleSsoMutationOptions = ApolloReactCommon.BaseMutationOptions<GoogleSsoMutation, GoogleSsoMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

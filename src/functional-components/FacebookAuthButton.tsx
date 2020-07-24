@@ -9,7 +9,7 @@ import { useContext } from "react";
 import * as Facebook from "expo-facebook";
 import {
   useFacebookSsoMutation,
-  FacebookRegisterInput,
+  SsoRegisterInput,
 } from "../generated-components/apolloComponents";
 import { useLoginHook } from "./useLoginHook";
 
@@ -27,7 +27,7 @@ export default function FacebookAuthButton() {
   const [signOnUser, { loading, error }] = useFacebookSsoMutation();
   const [setLoginUser] = useLoginHook();
 
-  async function submitSignOnUser(data: FacebookRegisterInput) {
+  async function submitSignOnUser(data: SsoRegisterInput) {
     try {
       console.log("about submit");
       const response = await signOnUser({
@@ -35,8 +35,7 @@ export default function FacebookAuthButton() {
           data,
         },
       });
-      return response.data.facebookRegisterAndLogIn.accessToken;
-      console.log(response);
+      return response.data.facebookSSO.accessToken;
     } catch (err) {
       // TODO  handle server errors at top level
       console.log("server err", err);
@@ -61,7 +60,7 @@ export default function FacebookAuthButton() {
 
         const userInfo = await response.json();
 
-        const goodUserInfo: FacebookRegisterInput = {
+        const goodUserInfo: SsoRegisterInput = {
           username: userInfo.name,
           email: userInfo.email,
           id: userInfo.id,
