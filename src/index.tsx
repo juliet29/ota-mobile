@@ -13,6 +13,7 @@ import {
 } from "apollo-cache-inmemory";
 import introspectionQueryResultData from "../fragmentTypes.json";
 import getEnvVars from "../environment";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // @ts-ignore
 const { apiUrl } = getEnvVars();
@@ -58,7 +59,10 @@ export const Providers: React.FC<ProvidersProps> = ({}) => {
       <AuthContext.Provider value={value as any}>
         <ApolloProvider client={client}>
           <PaperProvider theme={theme}>
+            {/* <SafeAreaProvider>
+              {" "} */}
             <AppWithHeaders />
+            {/* </SafeAreaProvider> */}
           </PaperProvider>
         </ApolloProvider>
       </AuthContext.Provider>

@@ -13,7 +13,7 @@ export const UserButton: React.FC<UserButtonProps> = ({ navigation }) => {
       mode="text"
       onPress={async () => {
         console.log("user button press");
-        navigation.navigate("UserPages");
+        navigation.navigate("UserPage");
       }}>
       User
     </Button>

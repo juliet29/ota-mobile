@@ -10,6 +10,8 @@ import { TrackPageView } from "../../../modules/content-pages/TrackPageView";
 import { UserView } from "../../../modules/user/UserView";
 import { View } from "react-native";
 import { UserButton } from "../../../modules/user/UserButton";
+import { Caption, Title } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface HomeStackProps {}
 
@@ -23,10 +25,18 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
         options={{
           header: ({ scene, previous, navigation }) => {
             return (
-              <View>
-                <UserButton navigation={navigation} />
-                <LogoutButton />
-              </View>
+              <SafeAreaView>
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <Title>On the Aux</Title>
+                  <UserButton navigation={navigation} />
+                  {/* <LogoutButton /> */}
+                </View>
+              </SafeAreaView>
             );
           },
         }}
