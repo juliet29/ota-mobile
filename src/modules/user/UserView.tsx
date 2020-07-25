@@ -1,20 +1,45 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import { Card, Caption, Title, Button, Avatar } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { useStoreState } from "../../state-management/hooks";
 import { LogoutButton } from "../authentication/components/LogoutButton";
-import { UserPosts } from "./components/UserPosts";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { UserPosts } from "./user-posts/UserPosts";
+import { TabView, SceneMap } from "react-native-tab-view";
+import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
 
 interface UserViewProps {}
+const initialLayout = { width: Dimensions.get("window").width };
 
 export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
   navigation,
   route,
 }) => {
   const userState = useStoreState((state) => state.user.user);
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: "first", title: "Posts" },
+    { key: "second", title: "Top Five" },
+  ]);
+
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case "first":
+        return <UserPosts navigation={navigation} route={route} />;
+      case "second":
+        return <UserTopFiveView />;
+      default:
+        return null;
+    }
+  };
+
+  // const renderScene = SceneMap({
+  //   first: UserPosts,
+  //   second: UserTopFiveView,
+  // });
+
   return (
     <ScrollView>
       <StyledColumnView>
@@ -44,7 +69,14 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
           </Card>
         </StyledColumnView>
 
-        <UserPosts navigation={navigation} route={route} />
+        <TabView
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={initialLayout}
+        />
+
+        {/* <UserPosts navigation={navigation} route={route} /> */}
       </StyledColumnView>
     </ScrollView>
   );
