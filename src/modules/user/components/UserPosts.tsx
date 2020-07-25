@@ -64,8 +64,11 @@ export const UserPosts: React.FC<HomeStackNavProps<"UserPage">> = ({
 
   return (
     <Card>
-      <Caption>User Posts</Caption>
       <FlatList
+        contentContainerStyle={{
+          justifyContent: "space-around",
+          flexDirection: "row",
+        }}
         data={buttonArray}
         renderItem={({ item }) => (
           <ToggleButton

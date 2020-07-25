@@ -3,19 +3,19 @@ import { Button } from "react-native-paper";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { StackHeaderProps, StackNavigationProp } from "@react-navigation/stack";
 
-interface UserButtonProps {
+interface SearchButtonProps {
   navigation: StackNavigationProp<Record<string, object>, string>;
 }
 
-export const UserButton: React.FC<UserButtonProps> = ({ navigation }) => {
+export const SearchButton: React.FC<SearchButtonProps> = ({ navigation }) => {
   return (
     <Button
       mode="contained"
       onPress={async () => {
-        console.log("user button press");
-        navigation.navigate("UserPage");
+        console.log("search button press");
+        navigation.navigate("SearchPage");
       }}>
-      User
+      Search
     </Button>
   );
 };

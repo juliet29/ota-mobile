@@ -48,19 +48,3 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
     </Tabs.Navigator>
   );
 };
-
-interface RootStackProps {}
-
-const Root = createStackNavigator();
-export const RootStack: React.FC<RootStackProps> = ({}) => {
-  return (
-    <Root.Navigator mode="modal">
-      <Root.Screen
-        name="AppTabs"
-        component={AppTabs}
-        options={{ headerShown: false }}
-      />
-      <Root.Screen name="AddContentToPost" component={AddContentToPost} />
-    </Root.Navigator>
-  );
-};

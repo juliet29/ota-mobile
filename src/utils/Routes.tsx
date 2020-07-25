@@ -1,12 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native-paper";
-import { AppTabs, RootStack } from "../navigation/app/AppTabs";
+import { RootStack } from "../navigation/app/RootStack";
 import { AuthStack } from "../navigation/auth/AuthStack";
+import { useStoreState } from "../state-management/hooks";
 import { Center } from "../styled-components/Center";
 import { getAccessToken } from "./accessToken";
-import { AuthContext } from "./AuthProvider";
-import { useStoreState } from "../state-management/hooks";
 
 interface RoutesProps {}
 

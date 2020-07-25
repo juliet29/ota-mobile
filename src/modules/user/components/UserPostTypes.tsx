@@ -14,7 +14,7 @@ import {
   Button,
   Text,
 } from "react-native-paper";
-import { Image, Linking } from "react-native";
+import { Image, Linking, View } from "react-native";
 import StarRating from "react-native-star-rating";
 
 interface AlbumPostProps {
@@ -83,14 +83,13 @@ export const ArtistPostView: React.FC<
       {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
         <Image
-          style={{ width: 200, height: 200 }}
+          style={{ width: 100, height: 100 }}
           resizeMode="contain"
           source={{
             uri: `${item.imageUrl}`,
           }}
         />
-        <Caption>{item?.user?.username}</Caption>
-        <Text>{item?.timeSubmitted}</Text>
+
         <Caption>ARTIST</Caption>
         <Title>{item?.artistName}</Title>
         <Paragraph>{item?.text}</Paragraph>
@@ -118,14 +117,13 @@ export const AlbumPostView: React.FC<
       {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
         <Image
-          style={{ width: 200, height: 200 }}
+          style={{ width: 100, height: 100 }}
           resizeMode="contain"
           source={{
             uri: `${item.imageUrl}`,
           }}
         />
-        <Caption>{item?.user?.username}</Caption>
-        <Text>{item?.timeSubmitted}</Text>
+
         <Caption>ALBUM</Caption>
         {/* <StarRating disabled={true} rating={item?.rating} /> */}
         <Title>{item?.albumName}</Title>
@@ -157,27 +155,18 @@ export const TrackPostView: React.FC<
   };
   return (
     <Card>
-      {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
+        {/* TODO: make a global style for centering */}
+
         <Image
-          style={{ width: 200, height: 200 }}
+          style={{ width: 100, height: 100 }}
           resizeMode="contain"
           source={{
             uri: `${item.imageUrl}`,
           }}
         />
-        <Caption>{item?.user?.username}</Caption>
-        <Text>{item?.timeSubmitted}</Text>
+
         <Caption>TRACK</Caption>
-        {item?.vote === 1 ? (
-          <Button icon="thumb-up-outline" disabled={true}>
-            {" "}
-          </Button>
-        ) : (
-          <Button icon="thumb-down-outline" disabled={true}>
-            {" "}
-          </Button>
-        )}
         <Button
           onPress={() => {
             navigation.navigate("TrackPage", {
@@ -189,7 +178,6 @@ export const TrackPostView: React.FC<
           }}>
           <Title>{item?.trackName}</Title>
         </Button>
-
         <Paragraph>{item?.text}</Paragraph>
         <Button
           mode="contained"
@@ -197,11 +185,6 @@ export const TrackPostView: React.FC<
             console.log(item.externalUrl);
 
             openURL(`${item.externalUrl}`);
-            // navigation.navigate("ArtistPage", {
-            //   id: item?.artistId,
-            //   name: item?.artistName,
-
-            // });
           }}>
           SEE TRACK ON SPOTIFY
         </Button>

@@ -12,6 +12,8 @@ import { View } from "react-native";
 import { UserButton } from "../../../modules/user/UserButton";
 import { Caption, Title } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SearchView } from "../../../modules/search/SearchView";
+import { SearchButton } from "../../../modules/search/SearchButton";
 
 interface HomeStackProps {}
 
@@ -34,6 +36,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
                   }}>
                   <Title>On the Aux</Title>
                   <UserButton navigation={navigation} />
+                  <SearchButton navigation={navigation} />
                   {/* <LogoutButton /> */}
                 </View>
               </SafeAreaView>
@@ -47,6 +50,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="AlbumPage" component={AlbumPageView} />
       <Stack.Screen name="TrackPage" component={TrackPageView} />
       <Stack.Screen name="UserPage" component={UserView} />
+      <Stack.Screen name="SearchPage" component={SearchView} />
     </Stack.Navigator>
   );
 };

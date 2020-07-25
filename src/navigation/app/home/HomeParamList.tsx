@@ -14,6 +14,7 @@ export type HomeParamList = {
     imageUrl?: string;
   };
   UserPage: undefined;
+  SearchPage: undefined;
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {
