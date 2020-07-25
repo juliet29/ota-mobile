@@ -35,7 +35,7 @@ export const TrackTopFiveEdit: React.FC<TopFiveEditProps> = ({
       />
       <FlatList
         data={array}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item, index) => (item.name + index).toString()}
         renderItem={({ item }) => (
           <Chip
             onClose={() => {

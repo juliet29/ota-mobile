@@ -4,6 +4,7 @@ import Swiper from "react-native-swiper/src";
 import { AlbumTopFiveEdit } from "./albums/AlbumTopFiveEdit";
 import { ArtistTopFiveEdit } from "./artists/ArtistTopFiveEdit";
 import { TrackTopFiveEdit } from "./tracks/TrackTopFiveEdit";
+import { TopFivePreview } from "./TopFivePreview";
 
 interface TopFiveSwiperProps {}
 export type TopFiveArrayType = {
@@ -19,7 +20,7 @@ export const TopFiveSwiper: React.FC<TopFiveSwiperProps> = ({}) => {
   const [trackArray, setTrackArray] = useState(Array<TopFiveArrayType>());
 
   return (
-    <Swiper style={styles.wrapper} showsButtons={true}>
+    <Swiper loop={false} style={styles.wrapper} showsButtons={true}>
       <View style={styles.slide1}>
         <ArtistTopFiveEdit array={artistArray} setArray={setArtistArray} />
       </View>
@@ -28,6 +29,13 @@ export const TopFiveSwiper: React.FC<TopFiveSwiperProps> = ({}) => {
       </View>
       <View style={styles.slide3}>
         <TrackTopFiveEdit array={trackArray} setArray={setTrackArray} />
+      </View>
+      <View style={styles.slide4}>
+        <TopFivePreview
+          artists={artistArray}
+          albums={albumArray}
+          tracks={trackArray}
+        />
       </View>
     </Swiper>
   );
@@ -51,6 +59,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#92BBD9",
+  },
+  slide4: {
+    flex: 1,
     backgroundColor: "#92BBD9",
   },
   text: {

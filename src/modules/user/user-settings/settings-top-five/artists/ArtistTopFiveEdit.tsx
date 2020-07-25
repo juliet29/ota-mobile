@@ -34,6 +34,10 @@ export const ArtistTopFiveEdit: React.FC<TopFiveEditProps> = ({
         setArray={setArray}
       />
       <FlatList
+        contentContainerStyle={{
+          justifyContent: "space-around",
+          flexDirection: "column",
+        }}
         data={array}
         keyExtractor={(item, index) => item.id}
         renderItem={({ item }) => (

@@ -1,17 +1,17 @@
 // Displaying search results for the different content types
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Dimensions } from "react-native";
 import { ActivityIndicator, Avatar, List, Title } from "react-native-paper";
 import { useSearchSpotifyQuery } from "../../../../../generated-components/apolloComponents";
 import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
-import { TopFiveArrayType } from "../../TopFiveSwiper";
+import { TopFiveArrayType } from "../TopFiveSwiper";
 
 interface TopFiveQueryProps {
   searchQuery: string;
   array: TopFiveArrayType[];
   setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
 }
-
+let screenHeight = Dimensions.get("window").height;
 export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   searchQuery,
   array,
@@ -34,7 +34,7 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   const searchResult = data?.search;
   if (searchResult?.__typename === "AlbumSearchResult") {
     return (
-      <StyledColumnView>
+      <StyledColumnView style={{ height: screenHeight / 4 }}>
         <Title>Album</Title>
         <FlatList
           data={searchResult.albums?.items}
