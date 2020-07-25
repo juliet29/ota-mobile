@@ -19,7 +19,7 @@ export const useSetUserHook: useSetUserHookType = () => {
     setCurrentUser().then((x) => {
       console.log("in set userhook, hope this is true", x);
     });
-    console.log("set user use effect");
+    // console.log("set user use effect");
   }, [data]);
   //   console.log("just called user", data);
 
@@ -40,20 +40,20 @@ export const useSetUserHook: useSetUserHookType = () => {
       //
     }
 
-    console.log("i got BIGer data", data);
+    // console.log("i got BIGer data", data);
 
     try {
       const thisData = data.getCurrentUser;
       console.log("raw data", thisData);
-      const userId = thisData.facebookId ? thisData.facebookId : thisData.id;
+      // const userId = thisData.facebookId ? thisData.facebookId : thisData.id;
       setUser({
         ...userState,
         email: thisData.email,
         username: thisData.username,
-        id: userId,
+        id: +thisData.id,
       });
     } catch (error) {
-      console.log("errerrrr in data", error);
+      console.log("error in useSetUserHook try catch ", error);
       return false;
     }
     return true;

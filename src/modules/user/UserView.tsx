@@ -5,10 +5,15 @@ import { ScrollView } from "react-native-gesture-handler";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { useStoreState } from "../../state-management/hooks";
 import { LogoutButton } from "../authentication/components/LogoutButton";
+import { UserPosts } from "./components/UserPosts";
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 
 interface UserViewProps {}
 
-export const UserView: React.FC<UserViewProps> = ({}) => {
+export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
+  navigation,
+  route,
+}) => {
   const userState = useStoreState((state) => state.user.user);
   return (
     <ScrollView>
@@ -39,11 +44,7 @@ export const UserView: React.FC<UserViewProps> = ({}) => {
           </Card>
         </StyledColumnView>
 
-        <StyledColumnView>
-          <Card>
-            <Caption>Posts, and top 5s</Caption>
-          </Card>
-        </StyledColumnView>
+        <UserPosts navigation={navigation} route={route} />
       </StyledColumnView>
     </ScrollView>
   );

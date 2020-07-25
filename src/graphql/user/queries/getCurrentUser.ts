@@ -6,7 +6,6 @@ export const GET_CURRENT_USER = gql`
       username
       id
       email
-      facebookId
     }
   }
 `;

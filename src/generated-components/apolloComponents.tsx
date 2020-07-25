@@ -17,6 +17,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   getPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
+  getUserPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
   getArtistPosts?: Maybe<Array<Maybe<ArtistPost>>>;
   getAlbumPosts?: Maybe<Array<Maybe<AlbumPost>>>;
   getTrackPosts?: Maybe<Array<Maybe<TrackPost>>>;
@@ -26,6 +27,11 @@ export type Query = {
   search?: Maybe<SearchResult>;
   getCurrentUser?: Maybe<User>;
   hello?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetUserPostsArgs = {
+  id?: Maybe<Scalars['Float']>;
 };
 
 
@@ -72,12 +78,12 @@ export type AlbumPost = {
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
   externalUrl?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
   imageUrl?: Maybe<Scalars['String']>;
   albumId?: Maybe<Scalars['String']>;
   rating?: Maybe<Scalars['Float']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
   albumName?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 
@@ -96,10 +102,10 @@ export type ArtistPost = {
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
   externalUrl?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
   imageUrl?: Maybe<Scalars['String']>;
   artistId?: Maybe<Scalars['String']>;
   artistName?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type TrackPost = {
@@ -108,12 +114,12 @@ export type TrackPost = {
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
   externalUrl?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
   imageUrl?: Maybe<Scalars['String']>;
   trackId?: Maybe<Scalars['String']>;
   vote?: Maybe<Scalars['Float']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
   trackName?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type AlbumTracks = {
@@ -471,6 +477,37 @@ export type GetTrackPostsQuery = (
   )>>> }
 );
 
+export type GetUserPostsQueryVariables = Exact<{
+  id?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type GetUserPostsQuery = (
+  { __typename?: 'Query' }
+  & { getUserPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'text' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'text' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'text' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  )>>> }
+);
+
 export type GetAlbumTracksQueryVariables = Exact<{
   id?: Maybe<Scalars['String']>;
 }>;
@@ -671,7 +708,7 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { getCurrentUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'id' | 'email' | 'facebookId'>
+    & Pick<User, 'username' | 'id' | 'email'>
   )> }
 );
 
@@ -991,6 +1028,75 @@ export function useGetTrackPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type GetTrackPostsQueryHookResult = ReturnType<typeof useGetTrackPostsQuery>;
 export type GetTrackPostsLazyQueryHookResult = ReturnType<typeof useGetTrackPostsLazyQuery>;
 export type GetTrackPostsQueryResult = ApolloReactCommon.QueryResult<GetTrackPostsQuery, GetTrackPostsQueryVariables>;
+export const GetUserPostsDocument = gql`
+    query GetUserPosts($id: Float) {
+  getUserPosts(id: $id) {
+    ... on AlbumPost {
+      text
+      externalUrl
+      artistNames
+      rating
+      imageUrl
+      timeSubmitted
+      albumId
+      albumName
+      user {
+        username
+      }
+    }
+    ... on TrackPost {
+      text
+      artistNames
+      externalUrl
+      vote
+      imageUrl
+      timeSubmitted
+      trackId
+      trackName
+      user {
+        username
+      }
+    }
+    ... on ArtistPost {
+      text
+      imageUrl
+      externalUrl
+      timeSubmitted
+      artistId
+      artistName
+      user {
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserPostsQuery__
+ *
+ * To run a query within a React component, call `useGetUserPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserPostsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserPostsQuery, GetUserPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetUserPostsQuery, GetUserPostsQueryVariables>(GetUserPostsDocument, baseOptions);
+      }
+export function useGetUserPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserPostsQuery, GetUserPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetUserPostsQuery, GetUserPostsQueryVariables>(GetUserPostsDocument, baseOptions);
+        }
+export type GetUserPostsQueryHookResult = ReturnType<typeof useGetUserPostsQuery>;
+export type GetUserPostsLazyQueryHookResult = ReturnType<typeof useGetUserPostsLazyQuery>;
+export type GetUserPostsQueryResult = ApolloReactCommon.QueryResult<GetUserPostsQuery, GetUserPostsQueryVariables>;
 export const GetAlbumTracksDocument = gql`
     query getAlbumTracks($id: String) {
   getAlbumTracks(id: $id) {
@@ -1366,7 +1472,6 @@ export const GetCurrentUserDocument = gql`
     username
     id
     email
-    facebookId
   }
 }
     `;

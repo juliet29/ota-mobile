@@ -2,7 +2,7 @@ import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
 
 // TODO: define interfaces by post type?
 export interface UserTypeInterface {
-  id?: string | number;
+  id?: number;
   username?: string;
   email?: string;
   accessToken?: string;
