@@ -19,9 +19,9 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
   useEffect(() => {
     // check if user is logged in or not --> not doing anything rn
     let accessToken = getAccessToken();
-    console.log("easy-peasy user from routes: ", user);
+    // console.log("easy-peasy user from routes: ", user);
     if (accessToken) {
-      console.log("user is logged in");
+      // console.log("user is logged in");
     }
     setLoading(false);
   }, []);

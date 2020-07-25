@@ -17,7 +17,7 @@ export const useSetUserHook: useSetUserHookType = () => {
 
   useEffect(() => {
     setCurrentUser().then((x) => {
-      console.log("in set userhook, hope this is true", x);
+      // console.log("in set userhook, hope this is true", x);
     });
     // console.log("set user use effect");
   }, [data]);
@@ -27,12 +27,12 @@ export const useSetUserHook: useSetUserHookType = () => {
 
   const setCurrentUser = async () => {
     if (error) {
-      console.log("error getting user", error);
+      // console.log("error getting user", error);
       return false;
     }
 
     if (!data) {
-      console.log("no data", data);
+      // console.log("no data", data);
       return false;
     }
 
@@ -44,7 +44,7 @@ export const useSetUserHook: useSetUserHookType = () => {
 
     try {
       const thisData = data.getCurrentUser;
-      console.log("raw data", thisData);
+      // console.log("raw data", thisData);
       // const userId = thisData.facebookId ? thisData.facebookId : thisData.id;
       setUser({
         ...userState,
@@ -53,7 +53,7 @@ export const useSetUserHook: useSetUserHookType = () => {
         id: +thisData.id,
       });
     } catch (error) {
-      console.log("error in useSetUserHook try catch ", error);
+      // console.log("error in useSetUserHook try catch ", error);
       return false;
     }
     return true;

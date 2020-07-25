@@ -10,7 +10,7 @@ import { useLoginHook } from "../modules/authentication/components/useLoginHook"
 import { useSetUserHook } from "../modules/authentication/components/useSetUserHook";
 // @ts-ignore
 const { apiUrl } = getEnvVars();
-console.log(`my url in app w headers is ${apiUrl}`);
+// console.log(`my url in app w headers is ${apiUrl}`);
 
 // get a refresh token on each app load
 interface Props {}

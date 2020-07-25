@@ -32,7 +32,7 @@ export const useLoginHook: useLoginHookType = () => {
           username: userData.username,
         }
       : { accessToken: myToken };
-    console.log("my payload", payload);
+    // console.log("my payload", payload);
     setUser(payload);
     // setUser(accessToken);
     // setCurrentUser();
