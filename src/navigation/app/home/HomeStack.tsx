@@ -15,7 +15,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SearchView } from "../../../modules/search/SearchView";
 import { SearchButton } from "../../../modules/search/SearchButton";
 import { SettingsView } from "../../../modules/user/user-settings/SettingsView";
-import { TopFiveSwiper } from "../../../modules/user/user-settings/TopFiveSwiper";
+import { TopFiveSwiper } from "../../../modules/user/user-settings/settings-top-five/TopFiveSwiper";
 
 interface HomeStackProps {}
 

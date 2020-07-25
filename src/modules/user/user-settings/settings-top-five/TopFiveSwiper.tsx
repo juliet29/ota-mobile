@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import { AppRegistry, StyleSheet, Text, View } from "react-native";
-import { Caption, Card, Title, Searchbar } from "react-native-paper";
-import { StyledColumnView } from "../../../styled-components/ReusedUI";
+import { StyleSheet, View } from "react-native";
 import Swiper from "react-native-swiper/src";
-import { ArtistSearchType } from "../../search/search-types/ArtistSearchType";
-import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
-import { ArtistTopFiveEdit } from "./settings-top-five-types/artists/ArtistTopFiveEdit";
-import { AlbumTopFiveEdit } from "./settings-top-five-types/albums/AlbumTopFiveEdit";
-import { TrackTopFiveEdit } from "./settings-top-five-types/tracks/TrackTopFiveEdit";
+import { AlbumTopFiveEdit } from "./albums/AlbumTopFiveEdit";
+import { ArtistTopFiveEdit } from "./artists/ArtistTopFiveEdit";
+import { TrackTopFiveEdit } from "./tracks/TrackTopFiveEdit";
 
 interface TopFiveSwiperProps {}
 export type TopFiveArrayType = {
