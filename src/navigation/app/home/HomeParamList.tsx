@@ -15,6 +15,8 @@ export type HomeParamList = {
   };
   UserPage: undefined;
   SearchPage: undefined;
+  SettingsPage: undefined;
+  EditTopFivePage: undefined;
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {

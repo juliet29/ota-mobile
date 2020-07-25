@@ -22,13 +22,6 @@ export const SearchView: React.FC<HomeStackNavProps<"SearchPage">> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data, loading, error } = useSearchSpotifyQuery({
-    variables: {
-      type: "artist",
-      query: searchQuery,
-    },
-  });
-
   return (
     <ScrollView>
       <StyledColumnView>

@@ -35,15 +35,17 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     }
   };
 
-  // const renderScene = SceneMap({
-  //   first: UserPosts,
-  //   second: UserTopFiveView,
-  // });
-
   return (
     <ScrollView>
       <StyledColumnView>
         <Card>
+          <Button
+            icon="settings-outline"
+            onPress={() => {
+              navigation.navigate("SettingsPage");
+            }}>
+            Settings
+          </Button>
           <View
             style={{
               display: "flex",
@@ -69,14 +71,12 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
           </Card>
         </StyledColumnView>
 
-        <TabView
+        {/* <TabView
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={setIndex}
           initialLayout={initialLayout}
-        />
-
-        {/* <UserPosts navigation={navigation} route={route} /> */}
+        /> */}
       </StyledColumnView>
     </ScrollView>
   );
