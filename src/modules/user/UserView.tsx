@@ -71,12 +71,12 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
           </Card>
         </StyledColumnView>
 
-        {/* <TabView
+        <TabView
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={setIndex}
           initialLayout={initialLayout}
-        /> */}
+        />
       </StyledColumnView>
     </ScrollView>
   );

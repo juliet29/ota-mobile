@@ -27,6 +27,10 @@ export type Query = {
   search?: Maybe<SearchResult>;
   getCurrentUser?: Maybe<User>;
   hello?: Maybe<Scalars['String']>;
+  getComments?: Maybe<Array<Maybe<Comment>>>;
+  searchPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
+  getOtherUser?: Maybe<User>;
+  searchUser?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -70,6 +74,26 @@ export type QuerySearchArgs = {
   query?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryGetCommentsArgs = {
+  data?: Maybe<CommentInput>;
+};
+
+
+export type QuerySearchPostsArgs = {
+  query?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGetOtherUserArgs = {
+  id?: Maybe<Scalars['Float']>;
+};
+
+
+export type QuerySearchUserArgs = {
+  query?: Maybe<Scalars['String']>;
+};
+
 export type GetPostsResult = AlbumPost | ArtistPost | TrackPost;
 
 export type AlbumPost = {
@@ -79,6 +103,7 @@ export type AlbumPost = {
   text?: Maybe<Scalars['String']>;
   externalUrl?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  likes?: Maybe<Scalars['Float']>;
   albumId?: Maybe<Scalars['String']>;
   rating?: Maybe<Scalars['Float']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -94,6 +119,18 @@ export type User = {
   email?: Maybe<Scalars['String']>;
   facebookId?: Maybe<Scalars['String']>;
   googleId?: Maybe<Scalars['String']>;
+  followers?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  topArtists?: Maybe<Array<Maybe<TopFive>>>;
+  topAlbums?: Maybe<Array<Maybe<TopFive>>>;
+  topTracks?: Maybe<Array<Maybe<TopFive>>>;
+};
+
+export type TopFive = {
+  __typename?: 'TopFive';
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type ArtistPost = {
@@ -103,6 +140,7 @@ export type ArtistPost = {
   text?: Maybe<Scalars['String']>;
   externalUrl?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  likes?: Maybe<Scalars['Float']>;
   artistId?: Maybe<Scalars['String']>;
   artistName?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
@@ -115,6 +153,7 @@ export type TrackPost = {
   text?: Maybe<Scalars['String']>;
   externalUrl?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  likes?: Maybe<Scalars['Float']>;
   trackId?: Maybe<Scalars['String']>;
   vote?: Maybe<Scalars['Float']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -246,17 +285,44 @@ export type AlbumItems = {
   items?: Maybe<Array<Maybe<Album>>>;
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  id?: Maybe<Scalars['ID']>;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+  likes?: Maybe<Scalars['Float']>;
+  user?: Maybe<User>;
+  trackPost?: Maybe<TrackPost>;
+  artistPost?: Maybe<ArtistPost>;
+  albumPost?: Maybe<AlbumPost>;
+};
+
+export type CommentInput = {
+  text?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Float']>;
+  postType?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  updateUserTopFive?: Maybe<User>;
   createAlbumPost?: Maybe<AlbumPost>;
   createArtistPost?: Maybe<ArtistPost>;
   createTrackPost?: Maybe<TrackPost>;
-  createPost?: Maybe<Scalars['Boolean']>;
   login?: Maybe<LoginResponse>;
   logout?: Maybe<Scalars['Boolean']>;
   register?: Maybe<Scalars['Boolean']>;
   facebookSSO?: Maybe<LoginResponse>;
   googleSSO?: Maybe<LoginResponse>;
+  createComment?: Maybe<Comment>;
+  updatePostLikes?: Maybe<Array<Maybe<GetPostsResult>>>;
+  updateCommentLikes?: Maybe<Comment>;
+  followOtherUser?: Maybe<User>;
+};
+
+
+export type MutationUpdateUserTopFiveArgs = {
+  data?: Maybe<TopFiveArrayInput>;
 };
 
 
@@ -272,12 +338,6 @@ export type MutationCreateArtistPostArgs = {
 
 export type MutationCreateTrackPostArgs = {
   data?: Maybe<TrackPostInput>;
-};
-
-
-export type MutationCreatePostArgs = {
-  link?: Maybe<Scalars['String']>;
-  text?: Maybe<Scalars['String']>;
 };
 
 
@@ -299,6 +359,41 @@ export type MutationFacebookSsoArgs = {
 
 export type MutationGoogleSsoArgs = {
   data?: Maybe<SsoRegisterInput>;
+};
+
+
+export type MutationCreateCommentArgs = {
+  data?: Maybe<CommentInput>;
+};
+
+
+export type MutationUpdatePostLikesArgs = {
+  data?: Maybe<LikeInput>;
+};
+
+
+export type MutationUpdateCommentLikesArgs = {
+  data?: Maybe<LikeInput>;
+};
+
+
+export type MutationFollowOtherUserArgs = {
+  follow?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
+export type TopFiveArrayInput = {
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
+  dataArray?: Maybe<Array<Maybe<TopFiveInput>>>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type TopFiveInput = {
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  imageUrl?: Maybe<Scalars['String']>;
 };
 
 export type AlbumPostInput = {
@@ -347,6 +442,61 @@ export type SsoRegisterInput = {
   email?: Maybe<Scalars['String']>;
 };
 
+export type LikeInput = {
+  postType?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Float']>;
+  value?: Maybe<Scalars['Boolean']>;
+};
+
+export type CreateCommentMutationVariables = Exact<{
+  data?: Maybe<CommentInput>;
+}>;
+
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createComment?: Maybe<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'likes' | 'timeSubmitted' | 'text'>
+    & { trackPost?: Maybe<(
+      { __typename?: 'TrackPost' }
+      & Pick<TrackPost, 'trackName'>
+    )>, artistPost?: Maybe<(
+      { __typename?: 'ArtistPost' }
+      & Pick<ArtistPost, 'artistName'>
+    )>, albumPost?: Maybe<(
+      { __typename?: 'AlbumPost' }
+      & Pick<AlbumPost, 'albumName'>
+    )> }
+  )> }
+);
+
+export type UpdateCommentLikesMutationVariables = Exact<{
+  data?: Maybe<LikeInput>;
+}>;
+
+
+export type UpdateCommentLikesMutation = (
+  { __typename?: 'Mutation' }
+  & { updateCommentLikes?: Maybe<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'likes'>
+  )> }
+);
+
+export type GetCommentsQueryVariables = Exact<{
+  data?: Maybe<CommentInput>;
+}>;
+
+
+export type GetCommentsQuery = (
+  { __typename?: 'Query' }
+  & { getComments?: Maybe<Array<Maybe<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'text' | 'timeSubmitted'>
+  )>>> }
+);
+
 export type CreateAlbumPostMutationVariables = Exact<{
   data: AlbumPostInput;
 }>;
@@ -373,17 +523,6 @@ export type CreateArtistPostMutation = (
   )> }
 );
 
-export type CreatePostMutationVariables = Exact<{
-  text: Scalars['String'];
-  link: Scalars['String'];
-}>;
-
-
-export type CreatePostMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createPost'>
-);
-
 export type CreateTrackPostMutationVariables = Exact<{
   data: TrackPostInput;
 }>;
@@ -395,6 +534,25 @@ export type CreateTrackPostMutation = (
     { __typename?: 'TrackPost' }
     & Pick<TrackPost, 'id'>
   )> }
+);
+
+export type UpdatePostLikesMutationVariables = Exact<{
+  data?: Maybe<LikeInput>;
+}>;
+
+
+export type UpdatePostLikesMutation = (
+  { __typename?: 'Mutation' }
+  & { updatePostLikes?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'likes'>
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'likes'>
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'likes'>
+  )>>> }
 );
 
 export type GetAlbumPostsQueryVariables = Exact<{
@@ -501,6 +659,37 @@ export type GetUserPostsQuery = (
   ) | (
     { __typename?: 'TrackPost' }
     & Pick<TrackPost, 'text' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  )>>> }
+);
+
+export type SearchPostsQueryVariables = Exact<{
+  query?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SearchPostsQuery = (
+  { __typename?: 'Query' }
+  & { searchPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'text' | 'externalUrl' | 'artistNames' | 'albumName' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'text' | 'imageUrl' | 'artistName' | 'timeSubmitted' | 'artistId'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    )> }
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'text' | 'artistNames' | 'externalUrl' | 'trackName' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -656,6 +845,20 @@ export type FacebookSsoMutation = (
   )> }
 );
 
+export type FollowOtherUserMutationVariables = Exact<{
+  id?: Maybe<Scalars['Float']>;
+  follow?: Maybe<Scalars['Boolean']>;
+}>;
+
+
+export type FollowOtherUserMutation = (
+  { __typename?: 'Mutation' }
+  & { followOtherUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'followers'>
+  )> }
+);
+
 export type GoogleSsoMutationVariables = Exact<{
   data: SsoRegisterInput;
 }>;
@@ -701,6 +904,29 @@ export type RegisterMutation = (
   & Pick<Mutation, 'register'>
 );
 
+export type UpdateUserTopFiveMutationVariables = Exact<{
+  data?: Maybe<TopFiveArrayInput>;
+}>;
+
+
+export type UpdateUserTopFiveMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUserTopFive?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'email'>
+    & { topAlbums?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>>, topArtists?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id'>
+    )>>>, topTracks?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>> }
+  )> }
+);
+
 export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -708,11 +934,167 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { getCurrentUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'id' | 'email'>
+    & Pick<User, 'id' | 'username' | 'email'>
+    & { topAlbums?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>>, topArtists?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id'>
+    )>>>, topTracks?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>> }
   )> }
 );
 
+export type GetOtherUserQueryVariables = Exact<{
+  id?: Maybe<Scalars['Float']>;
+}>;
 
+
+export type GetOtherUserQuery = (
+  { __typename?: 'Query' }
+  & { getOtherUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'email'>
+    & { topAlbums?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>>, topArtists?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id'>
+    )>>>, topTracks?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>> }
+  )> }
+);
+
+export type SearchUserQueryVariables = Exact<{
+  query?: Maybe<Scalars['String']>;
+}>;
+
+
+export type SearchUserQuery = (
+  { __typename?: 'Query' }
+  & { searchUser?: Maybe<Array<Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'id'>
+  )>>> }
+);
+
+
+export const CreateCommentDocument = gql`
+    mutation CreateComment($data: CommentInput) {
+  createComment(data: $data) {
+    likes
+    timeSubmitted
+    text
+    trackPost {
+      trackName
+    }
+    artistPost {
+      artistName
+    }
+    albumPost {
+      albumName
+    }
+  }
+}
+    `;
+export type CreateCommentMutationFn = ApolloReactCommon.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = ApolloReactCommon.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
+export const UpdateCommentLikesDocument = gql`
+    mutation updateCommentLikes($data: LikeInput) {
+  updateCommentLikes(data: $data) {
+    likes
+  }
+}
+    `;
+export type UpdateCommentLikesMutationFn = ApolloReactCommon.MutationFunction<UpdateCommentLikesMutation, UpdateCommentLikesMutationVariables>;
+
+/**
+ * __useUpdateCommentLikesMutation__
+ *
+ * To run a mutation, you first call `useUpdateCommentLikesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCommentLikesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCommentLikesMutation, { data, loading, error }] = useUpdateCommentLikesMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateCommentLikesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateCommentLikesMutation, UpdateCommentLikesMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateCommentLikesMutation, UpdateCommentLikesMutationVariables>(UpdateCommentLikesDocument, baseOptions);
+      }
+export type UpdateCommentLikesMutationHookResult = ReturnType<typeof useUpdateCommentLikesMutation>;
+export type UpdateCommentLikesMutationResult = ApolloReactCommon.MutationResult<UpdateCommentLikesMutation>;
+export type UpdateCommentLikesMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateCommentLikesMutation, UpdateCommentLikesMutationVariables>;
+export const GetCommentsDocument = gql`
+    query getComments($data: CommentInput) {
+  getComments(data: $data) {
+    id
+    text
+    timeSubmitted
+  }
+}
+    `;
+
+/**
+ * __useGetCommentsQuery__
+ *
+ * To run a query within a React component, call `useGetCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommentsQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useGetCommentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetCommentsQuery, GetCommentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetCommentsQuery, GetCommentsQueryVariables>(GetCommentsDocument, baseOptions);
+      }
+export function useGetCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetCommentsQuery, GetCommentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetCommentsQuery, GetCommentsQueryVariables>(GetCommentsDocument, baseOptions);
+        }
+export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
+export type GetCommentsLazyQueryHookResult = ReturnType<typeof useGetCommentsLazyQuery>;
+export type GetCommentsQueryResult = ApolloReactCommon.QueryResult<GetCommentsQuery, GetCommentsQueryVariables>;
 export const CreateAlbumPostDocument = gql`
     mutation CreateAlbumPost($data: AlbumPostInput!) {
   createAlbumPost(data: $data) {
@@ -777,37 +1159,6 @@ export function useCreateArtistPostMutation(baseOptions?: ApolloReactHooks.Mutat
 export type CreateArtistPostMutationHookResult = ReturnType<typeof useCreateArtistPostMutation>;
 export type CreateArtistPostMutationResult = ApolloReactCommon.MutationResult<CreateArtistPostMutation>;
 export type CreateArtistPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateArtistPostMutation, CreateArtistPostMutationVariables>;
-export const CreatePostDocument = gql`
-    mutation CreatePost($text: String!, $link: String!) {
-  createPost(text: $text, link: $link)
-}
-    `;
-export type CreatePostMutationFn = ApolloReactCommon.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
-
-/**
- * __useCreatePostMutation__
- *
- * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePostMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
- *   variables: {
- *      text: // value for 'text'
- *      link: // value for 'link'
- *   },
- * });
- */
-export function useCreatePostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, baseOptions);
-      }
-export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
-export type CreatePostMutationResult = ApolloReactCommon.MutationResult<CreatePostMutation>;
-export type CreatePostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const CreateTrackPostDocument = gql`
     mutation CreateTrackPost($data: TrackPostInput!) {
   createTrackPost(data: $data) {
@@ -840,6 +1191,46 @@ export function useCreateTrackPostMutation(baseOptions?: ApolloReactHooks.Mutati
 export type CreateTrackPostMutationHookResult = ReturnType<typeof useCreateTrackPostMutation>;
 export type CreateTrackPostMutationResult = ApolloReactCommon.MutationResult<CreateTrackPostMutation>;
 export type CreateTrackPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTrackPostMutation, CreateTrackPostMutationVariables>;
+export const UpdatePostLikesDocument = gql`
+    mutation updatePostLikes($data: LikeInput) {
+  updatePostLikes(data: $data) {
+    ... on AlbumPost {
+      likes
+    }
+    ... on TrackPost {
+      likes
+    }
+    ... on ArtistPost {
+      likes
+    }
+  }
+}
+    `;
+export type UpdatePostLikesMutationFn = ApolloReactCommon.MutationFunction<UpdatePostLikesMutation, UpdatePostLikesMutationVariables>;
+
+/**
+ * __useUpdatePostLikesMutation__
+ *
+ * To run a mutation, you first call `useUpdatePostLikesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePostLikesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePostLikesMutation, { data, loading, error }] = useUpdatePostLikesMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdatePostLikesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdatePostLikesMutation, UpdatePostLikesMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdatePostLikesMutation, UpdatePostLikesMutationVariables>(UpdatePostLikesDocument, baseOptions);
+      }
+export type UpdatePostLikesMutationHookResult = ReturnType<typeof useUpdatePostLikesMutation>;
+export type UpdatePostLikesMutationResult = ApolloReactCommon.MutationResult<UpdatePostLikesMutation>;
+export type UpdatePostLikesMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdatePostLikesMutation, UpdatePostLikesMutationVariables>;
 export const GetAlbumPostsDocument = gql`
     query getAlbumPosts($id: String!) {
   getAlbumPosts(id: $id) {
@@ -1097,6 +1488,74 @@ export function useGetUserPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type GetUserPostsQueryHookResult = ReturnType<typeof useGetUserPostsQuery>;
 export type GetUserPostsLazyQueryHookResult = ReturnType<typeof useGetUserPostsLazyQuery>;
 export type GetUserPostsQueryResult = ApolloReactCommon.QueryResult<GetUserPostsQuery, GetUserPostsQueryVariables>;
+export const SearchPostsDocument = gql`
+    query searchPosts($query: String) {
+  searchPosts(query: $query) {
+    ... on AlbumPost {
+      text
+      externalUrl
+      artistNames
+      albumName
+      rating
+      imageUrl
+      timeSubmitted
+      albumId
+      user {
+        username
+      }
+    }
+    ... on TrackPost {
+      text
+      artistNames
+      externalUrl
+      trackName
+      vote
+      imageUrl
+      timeSubmitted
+      trackId
+      user {
+        username
+      }
+    }
+    ... on ArtistPost {
+      text
+      imageUrl
+      artistName
+      timeSubmitted
+      artistId
+      user {
+        username
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchPostsQuery__
+ *
+ * To run a query within a React component, call `useSearchPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchPostsQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchPostsQuery, SearchPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchPostsQuery, SearchPostsQueryVariables>(SearchPostsDocument, baseOptions);
+      }
+export function useSearchPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchPostsQuery, SearchPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchPostsQuery, SearchPostsQueryVariables>(SearchPostsDocument, baseOptions);
+        }
+export type SearchPostsQueryHookResult = ReturnType<typeof useSearchPostsQuery>;
+export type SearchPostsLazyQueryHookResult = ReturnType<typeof useSearchPostsLazyQuery>;
+export type SearchPostsQueryResult = ApolloReactCommon.QueryResult<SearchPostsQuery, SearchPostsQueryVariables>;
 export const GetAlbumTracksDocument = gql`
     query getAlbumTracks($id: String) {
   getAlbumTracks(id: $id) {
@@ -1342,6 +1801,40 @@ export function useFacebookSsoMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type FacebookSsoMutationHookResult = ReturnType<typeof useFacebookSsoMutation>;
 export type FacebookSsoMutationResult = ApolloReactCommon.MutationResult<FacebookSsoMutation>;
 export type FacebookSsoMutationOptions = ApolloReactCommon.BaseMutationOptions<FacebookSsoMutation, FacebookSsoMutationVariables>;
+export const FollowOtherUserDocument = gql`
+    mutation followOtherUser($id: Float, $follow: Boolean) {
+  followOtherUser(id: $id, follow: $follow) {
+    username
+    followers
+  }
+}
+    `;
+export type FollowOtherUserMutationFn = ApolloReactCommon.MutationFunction<FollowOtherUserMutation, FollowOtherUserMutationVariables>;
+
+/**
+ * __useFollowOtherUserMutation__
+ *
+ * To run a mutation, you first call `useFollowOtherUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFollowOtherUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [followOtherUserMutation, { data, loading, error }] = useFollowOtherUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      follow: // value for 'follow'
+ *   },
+ * });
+ */
+export function useFollowOtherUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<FollowOtherUserMutation, FollowOtherUserMutationVariables>) {
+        return ApolloReactHooks.useMutation<FollowOtherUserMutation, FollowOtherUserMutationVariables>(FollowOtherUserDocument, baseOptions);
+      }
+export type FollowOtherUserMutationHookResult = ReturnType<typeof useFollowOtherUserMutation>;
+export type FollowOtherUserMutationResult = ApolloReactCommon.MutationResult<FollowOtherUserMutation>;
+export type FollowOtherUserMutationOptions = ApolloReactCommon.BaseMutationOptions<FollowOtherUserMutation, FollowOtherUserMutationVariables>;
 export const GoogleSsoDocument = gql`
     mutation GoogleSSO($data: SSORegisterInput!) {
   googleSSO(data: $data) {
@@ -1466,12 +1959,80 @@ export function useRegisterMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const UpdateUserTopFiveDocument = gql`
+    mutation updateUserTopFive($data: TopFiveArrayInput) {
+  updateUserTopFive(data: $data) {
+    id
+    username
+    email
+    topAlbums {
+      name
+      imageUrl
+      id
+      artistNames
+    }
+    topArtists {
+      name
+      imageUrl
+      id
+    }
+    topTracks {
+      name
+      imageUrl
+      id
+      artistNames
+    }
+  }
+}
+    `;
+export type UpdateUserTopFiveMutationFn = ApolloReactCommon.MutationFunction<UpdateUserTopFiveMutation, UpdateUserTopFiveMutationVariables>;
+
+/**
+ * __useUpdateUserTopFiveMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserTopFiveMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserTopFiveMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserTopFiveMutation, { data, loading, error }] = useUpdateUserTopFiveMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateUserTopFiveMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateUserTopFiveMutation, UpdateUserTopFiveMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateUserTopFiveMutation, UpdateUserTopFiveMutationVariables>(UpdateUserTopFiveDocument, baseOptions);
+      }
+export type UpdateUserTopFiveMutationHookResult = ReturnType<typeof useUpdateUserTopFiveMutation>;
+export type UpdateUserTopFiveMutationResult = ApolloReactCommon.MutationResult<UpdateUserTopFiveMutation>;
+export type UpdateUserTopFiveMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateUserTopFiveMutation, UpdateUserTopFiveMutationVariables>;
 export const GetCurrentUserDocument = gql`
     query GetCurrentUser {
   getCurrentUser {
-    username
     id
+    username
     email
+    topAlbums {
+      name
+      imageUrl
+      id
+      artistNames
+    }
+    topArtists {
+      name
+      imageUrl
+      id
+    }
+    topTracks {
+      name
+      imageUrl
+      id
+      artistNames
+    }
   }
 }
     `;
@@ -1500,3 +2061,89 @@ export function useGetCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const GetOtherUserDocument = gql`
+    query getOtherUser($id: Float) {
+  getOtherUser(id: $id) {
+    id
+    username
+    email
+    topAlbums {
+      name
+      imageUrl
+      id
+      artistNames
+    }
+    topArtists {
+      name
+      imageUrl
+      id
+    }
+    topTracks {
+      name
+      imageUrl
+      id
+      artistNames
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOtherUserQuery__
+ *
+ * To run a query within a React component, call `useGetOtherUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOtherUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOtherUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOtherUserQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOtherUserQuery, GetOtherUserQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetOtherUserQuery, GetOtherUserQueryVariables>(GetOtherUserDocument, baseOptions);
+      }
+export function useGetOtherUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOtherUserQuery, GetOtherUserQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetOtherUserQuery, GetOtherUserQueryVariables>(GetOtherUserDocument, baseOptions);
+        }
+export type GetOtherUserQueryHookResult = ReturnType<typeof useGetOtherUserQuery>;
+export type GetOtherUserLazyQueryHookResult = ReturnType<typeof useGetOtherUserLazyQuery>;
+export type GetOtherUserQueryResult = ApolloReactCommon.QueryResult<GetOtherUserQuery, GetOtherUserQueryVariables>;
+export const SearchUserDocument = gql`
+    query searchUser($query: String) {
+  searchUser(query: $query) {
+    username
+    id
+  }
+}
+    `;
+
+/**
+ * __useSearchUserQuery__
+ *
+ * To run a query within a React component, call `useSearchUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchUserQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useSearchUserQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchUserQuery, SearchUserQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchUserQuery, SearchUserQueryVariables>(SearchUserDocument, baseOptions);
+      }
+export function useSearchUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchUserQuery, SearchUserQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchUserQuery, SearchUserQueryVariables>(SearchUserDocument, baseOptions);
+        }
+export type SearchUserQueryHookResult = ReturnType<typeof useSearchUserQuery>;
+export type SearchUserLazyQueryHookResult = ReturnType<typeof useSearchUserLazyQuery>;
+export type SearchUserQueryResult = ApolloReactCommon.QueryResult<SearchUserQuery, SearchUserQueryVariables>;

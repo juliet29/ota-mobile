@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
-export const GET_CURRENT_USER = gql`
-  query GetCurrentUser {
-    getCurrentUser {
+export const GET_OTHER_USER = gql`
+  query getOtherUser($id: Float) {
+    getOtherUser(id: $id) {
       id
       username
       email

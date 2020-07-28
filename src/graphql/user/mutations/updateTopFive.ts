@@ -1,8 +1,8 @@
 import { gql } from "apollo-boost";
 
-export const GET_CURRENT_USER = gql`
-  query GetCurrentUser {
-    getCurrentUser {
+export const UPDATE_USER_TOP_FIVE = gql`
+  mutation updateUserTopFive($data: TopFiveArrayInput) {
+    updateUserTopFive(data: $data) {
       id
       username
       email
