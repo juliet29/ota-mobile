@@ -14,6 +14,7 @@ import { TrackSearchType } from "./search-types/TrackSearchType";
 import { ScrollView } from "react-native-gesture-handler";
 import { AlbumSearchType } from "./search-types/AlbumSearchType";
 import { PostSearchType } from "./search-types/PostSearchType";
+import { UserSearchType } from "./search-types/UserSearchType";
 
 interface SearchViewProps {}
 
@@ -31,28 +32,36 @@ export const SearchView: React.FC<HomeStackNavProps<"SearchPage">> = ({
           onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
           value={searchQuery}
         />
-
-        <ArtistSearchType
-          searchQuery={searchQuery}
-          navigation={navigation}
-          route={route}
-        />
-        <TrackSearchType
-          searchQuery={searchQuery}
-          navigation={navigation}
-          route={route}
-        />
-        <AlbumSearchType
-          searchQuery={searchQuery}
-          navigation={navigation}
-          route={route}
-        />
         {searchQuery ? (
-          <PostSearchType
-            searchQuery={searchQuery}
-            navigation={navigation}
-            route={route}
-          />
+          <StyledColumnView>
+            <ArtistSearchType
+              searchQuery={searchQuery}
+              navigation={navigation}
+              route={route}
+            />
+            <TrackSearchType
+              searchQuery={searchQuery}
+              navigation={navigation}
+              route={route}
+            />
+            <AlbumSearchType
+              searchQuery={searchQuery}
+              navigation={navigation}
+              route={route}
+            />
+
+            <PostSearchType
+              searchQuery={searchQuery}
+              navigation={navigation}
+              route={route}
+            />
+
+            <UserSearchType
+              searchQuery={searchQuery}
+              navigation={navigation}
+              route={route}
+            />
+          </StyledColumnView>
         ) : (
           <></>
         )}
