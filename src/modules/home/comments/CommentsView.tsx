@@ -16,7 +16,7 @@ import { useGetCommentsQuery } from "../../../generated-components/apolloCompone
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { AddComment } from "./AddComment";
-import { LikeButton } from "../../../functional-components/LikeButton";
+import { CommentLikeButton } from "./CommentLikeButton";
 
 interface CommentsViewProps {}
 
@@ -62,7 +62,7 @@ export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
                 {/* <Subheading>{results.item.user}</Subheading> */}
                 <Caption>{results.item.timeSubmitted}</Caption>
                 <Paragraph>{results.item.text}</Paragraph>
-                <LikeButton
+                <CommentLikeButton
                   commentId={+results.item.id}
                   postType={postType}
                   postId={postId}

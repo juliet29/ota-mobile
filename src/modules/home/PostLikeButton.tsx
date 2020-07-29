@@ -4,20 +4,22 @@ import {
   useUpdateCommentLikesMutation,
   LikeInput,
   GetCommentsDocument,
-} from "../generated-components/apolloComponents";
+} from "../../generated-components/apolloComponents";
+import {
+  useUpdatePostLikesMutation,
+  GetPostsDocument,
+} from "../../generated-components/apolloComponents";
 
-interface LikeButtonProps {
-  commentId: number;
+interface PostLikeButtonProps {
   postType: string;
   postId: number;
 }
 type Status = "checked" | "unchecked";
-export const LikeButton: React.FC<LikeButtonProps> = ({
-  commentId,
-  postType,
+export const PostLikeButton: React.FC<PostLikeButtonProps> = ({
   postId,
+  postType,
 }) => {
-  const [setLikeUnlike] = useUpdateCommentLikesMutation();
+  const [setLikeUnlike] = useUpdatePostLikesMutation();
   const [status, setStatus] = React.useState("unchecked");
 
   const firstUpdate = useRef(true);
@@ -38,7 +40,8 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
     let value: boolean = true;
     status === "unchecked" ? (value = false) : value;
     const data: LikeInput = {
-      id: commentId,
+      id: postId,
+      postType,
       value,
     };
     try {
@@ -46,8 +49,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
         variables: { data },
         refetchQueries: [
           {
-            query: GetCommentsDocument,
-            variables: { data: { id: postId, postType } },
+            query: GetPostsDocument,
           },
         ],
       });
@@ -60,7 +62,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
   return (
     <ToggleButton
       icon="heart"
-      color={Colors.red500}
+      color={status === "unchecked" ? Colors.red300 : Colors.red500}
       value="heart"
       status={status as Status}
       onPress={onButtonToggle}

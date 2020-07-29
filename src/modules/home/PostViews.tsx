@@ -16,6 +16,7 @@ import {
 } from "react-native-paper";
 import { Image, Linking } from "react-native";
 import StarRating from "react-native-star-rating";
+import { PostLikeButton } from "./PostLikeButton";
 
 interface AlbumPostProps {
   item: {
@@ -24,6 +25,7 @@ interface AlbumPostProps {
     AlbumPost,
     | "text"
     | "id"
+    | "likes"
     | "artistNames"
     | "rating"
     | "imageUrl"
@@ -45,6 +47,7 @@ interface TrackPostProps {
     TrackPost,
     | "text"
     | "id"
+    | "likes"
     | "imageUrl"
     | "timeSubmitted"
     | "artistNames"
@@ -65,6 +68,7 @@ interface ArtistPostProps {
   } & Pick<
     ArtistPost,
     | "text"
+    | "likes"
     | "id"
     | "imageUrl"
     | "timeSubmitted"
@@ -81,6 +85,7 @@ interface ArtistPostProps {
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
+  console.log(item);
   return (
     <Card>
       {/* TODO: make a global style for centering */}
@@ -121,6 +126,8 @@ export const ArtistPostView: React.FC<
           }}>
           SEE COMMENTS
         </Button>
+        <PostLikeButton postType={"artist"} postId={+item.id} />
+        <Paragraph>{`Likes: ${item.likes}`}</Paragraph>
       </Card.Content>
     </Card>
   );

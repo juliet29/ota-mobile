@@ -6,6 +6,7 @@ export const GET_POSTS = gql`
       ... on AlbumPost {
         id
         text
+        likes
         externalUrl
         artistNames
         rating
@@ -20,6 +21,7 @@ export const GET_POSTS = gql`
       ... on TrackPost {
         id
         text
+        likes
         artistNames
         externalUrl
         vote
@@ -34,6 +36,7 @@ export const GET_POSTS = gql`
       ... on ArtistPost {
         id
         text
+        likes
         imageUrl
         externalUrl
         timeSubmitted

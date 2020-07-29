@@ -600,21 +600,21 @@ export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'id' | 'text' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'id' | 'text' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'id' | 'text' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -1327,6 +1327,7 @@ export const GetPostsDocument = gql`
     ... on AlbumPost {
       id
       text
+      likes
       externalUrl
       artistNames
       rating
@@ -1341,6 +1342,7 @@ export const GetPostsDocument = gql`
     ... on TrackPost {
       id
       text
+      likes
       artistNames
       externalUrl
       vote
@@ -1355,6 +1357,7 @@ export const GetPostsDocument = gql`
     ... on ArtistPost {
       id
       text
+      likes
       imageUrl
       externalUrl
       timeSubmitted
