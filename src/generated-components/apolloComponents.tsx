@@ -675,21 +675,21 @@ export type SearchPostsQuery = (
   { __typename?: 'Query' }
   & { searchPosts?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'text' | 'externalUrl' | 'artistNames' | 'albumName' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId'>
+    & Pick<AlbumPost, 'text' | 'id' | 'externalUrl' | 'artistNames' | 'albumName' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'text' | 'imageUrl' | 'artistName' | 'timeSubmitted' | 'artistId'>
+    & Pick<ArtistPost, 'text' | 'id' | 'imageUrl' | 'artistName' | 'timeSubmitted' | 'artistId'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'text' | 'artistNames' | 'externalUrl' | 'trackName' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId'>
+    & Pick<TrackPost, 'text' | 'id' | 'artistNames' | 'externalUrl' | 'trackName' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -1493,6 +1493,7 @@ export const SearchPostsDocument = gql`
   searchPosts(query: $query) {
     ... on AlbumPost {
       text
+      id
       externalUrl
       artistNames
       albumName
@@ -1506,6 +1507,7 @@ export const SearchPostsDocument = gql`
     }
     ... on TrackPost {
       text
+      id
       artistNames
       externalUrl
       trackName
@@ -1519,6 +1521,7 @@ export const SearchPostsDocument = gql`
     }
     ... on ArtistPost {
       text
+      id
       imageUrl
       artistName
       timeSubmitted

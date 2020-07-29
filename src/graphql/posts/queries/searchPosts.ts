@@ -5,6 +5,7 @@ export const SEARCH_POSTS = gql`
     searchPosts(query: $query) {
       ... on AlbumPost {
         text
+        id
         externalUrl
         artistNames
         albumName
@@ -18,6 +19,7 @@ export const SEARCH_POSTS = gql`
       }
       ... on TrackPost {
         text
+        id
         artistNames
         externalUrl
         trackName
@@ -32,6 +34,7 @@ export const SEARCH_POSTS = gql`
       }
       ... on ArtistPost {
         text
+        id
         imageUrl
         artistName
         timeSubmitted

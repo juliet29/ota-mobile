@@ -13,6 +13,7 @@ import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { TrackSearchType } from "./search-types/TrackSearchType";
 import { ScrollView } from "react-native-gesture-handler";
 import { AlbumSearchType } from "./search-types/AlbumSearchType";
+import { PostSearchType } from "./search-types/PostSearchType";
 
 interface SearchViewProps {}
 
@@ -46,6 +47,15 @@ export const SearchView: React.FC<HomeStackNavProps<"SearchPage">> = ({
           navigation={navigation}
           route={route}
         />
+        {searchQuery ? (
+          <PostSearchType
+            searchQuery={searchQuery}
+            navigation={navigation}
+            route={route}
+          />
+        ) : (
+          <></>
+        )}
       </StyledColumnView>
     </ScrollView>
   );
