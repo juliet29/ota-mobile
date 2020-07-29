@@ -9,20 +9,20 @@ import {
 import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
 import { TopFiveArrayType, TopFiveWrapperProps } from "../../UserTopFiveView";
-import { AlbumTopFiveEdit } from "./AlbumTopFiveEdit";
+import { ArtistTopFiveEdit } from "./ArtistTopFiveEdit";
 
-export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
-  const [albumArray, setAlbumArray] = useState(Array<TopFiveArrayType>());
+export const ArtistTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
+  const [artistArray, setArtistArray] = useState(Array<TopFiveArrayType>());
   const [searchQuery, setSearchQuery] = useState("");
   //   const [showSettings, setShowSettings] = useState(false);
   const [updateTopFive, { data: mdata }] = useUpdateUserTopFiveMutation();
-  console.log("mdataAlbum", mdata ? mdata.updateUserTopFive.topAlbums : null);
+  console.log("mdataArtist", mdata ? mdata.updateUserTopFive.topAlbums : null);
 
   const submitUpdateTopFive = async () => {
-    const dataArray: TopFiveInput[] = albumArray;
+    const dataArray: TopFiveInput[] = artistArray;
     const data: TopFiveArrayInput = {
       dataArray,
-      type: "album",
+      type: "artist",
     };
     try {
       // make the mutation
@@ -34,7 +34,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
       });
       // clean up
       setSearchQuery("");
-      setAlbumArray([]);
+      setArtistArray([]);
     } catch (err) {
       console.log("error in album top five wrapper", err);
     }
@@ -43,17 +43,17 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
 
   return (
     <StyledColumnView>
-      <Title>Top Albums</Title>
+      <Title>Top Artists</Title>
 
       <TypeDisplay
         id={id}
-        freshData={mdata ? mdata.updateUserTopFive.topAlbums : null}
-        type={"album"}
+        freshData={mdata ? mdata.updateUserTopFive.topArtists : null}
+        type={"artist"}
       />
       <List.Accordion title="Edit Top Five">
-        <AlbumTopFiveEdit
-          array={albumArray}
-          setArray={setAlbumArray}
+        <ArtistTopFiveEdit
+          array={artistArray}
+          setArray={setArtistArray}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
         />

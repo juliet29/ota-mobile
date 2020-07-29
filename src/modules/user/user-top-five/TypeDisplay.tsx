@@ -13,7 +13,11 @@ interface TypeDisplayProps {
   type: string;
 }
 
-export const TypeDisplay: React.FC<TypeDisplayProps> = ({ id, freshData }) => {
+export const TypeDisplay: React.FC<TypeDisplayProps> = ({
+  id,
+  freshData,
+  type,
+}) => {
   const { data, loading, error } = useGetOtherUserQuery({
     variables: {
       id,
@@ -31,13 +35,22 @@ export const TypeDisplay: React.FC<TypeDisplayProps> = ({ id, freshData }) => {
   console.log("type display data", data);
   console.log("mdata", freshData);
 
+  let localData =
+    type === "track"
+      ? data.getOtherUser.topTracks
+      : type === "artist"
+      ? data.getOtherUser.topArtists
+      : type === "album"
+      ? data.getOtherUser.topAlbums
+      : null;
+
   return (
     <FlatList
       contentContainerStyle={{
         justifyContent: "space-around",
         flexDirection: "row",
       }}
-      data={freshData ? freshData : data.getOtherUser.topAlbums}
+      data={freshData ? freshData : localData}
       keyExtractor={(item, index) => item!?.id!?.toString() + index}
       renderItem={(item) => (
         <StyledColumnView>

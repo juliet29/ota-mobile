@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Chip, Searchbar, Title } from "react-native-paper";
-import { TopFiveArrayType } from "../TopFiveSwiper";
+import { TopFiveEditProps } from "../../UserTopFiveView";
 import { TrackTopFiveQuery } from "./TrackTopFiveQuery";
-
-interface TopFiveEditProps {
-  array: TopFiveArrayType[];
-  setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
-}
 
 export const TrackTopFiveEdit: React.FC<TopFiveEditProps> = ({
   array,

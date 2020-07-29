@@ -2,15 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Chip, Searchbar, Title } from "react-native-paper";
-import { TopFiveArrayType } from "../../UserTopFiveView";
+import { TopFiveArrayType, TopFiveEditProps } from "../../UserTopFiveView";
 import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
-
-interface TopFiveEditProps {
-  array: TopFiveArrayType[];
-  setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-}
 
 export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
   array,
