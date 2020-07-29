@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { AlbumTopFiveEdit } from "./AlbumTopFiveEdit";
-import { TopFiveArrayType } from "../../UserTopFiveView";
-import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
-import { Button, Caption, Avatar, Title } from "react-native-paper";
+import { Button, List, Title } from "react-native-paper";
 import {
-  useUpdateUserTopFiveMutation,
-  TopFiveArrayInput,
   GetOtherUserDocument,
+  TopFiveArrayInput,
   TopFiveInput,
-  TopFive,
+  useUpdateUserTopFiveMutation,
 } from "../../../../../generated-components/apolloComponents";
-import { FlatList } from "react-native-gesture-handler";
+import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
+import { TopFiveArrayType } from "../../UserTopFiveView";
+import { AlbumTopFiveEdit } from "./AlbumTopFiveEdit";
 
 interface AlbumTopFiveWrapperProps {
   id: number;
@@ -21,8 +19,10 @@ export const AlbumTopFiveWrapper: React.FC<AlbumTopFiveWrapperProps> = ({
   id,
 }) => {
   const [albumArray, setAlbumArray] = useState(Array<TopFiveArrayType>());
+  const [searchQuery, setSearchQuery] = useState("");
+  //   const [showSettings, setShowSettings] = useState(false);
   const [updateTopFive, { data: mdata }] = useUpdateUserTopFiveMutation();
-  console.log("mdata", mdata.updateUserTopFive.topAlbums);
+  //   console.log("mdata", mdata ? mdata.updateUserTopFive.topAlbums : null);
 
   const submitUpdateTopFive = async () => {
     const dataArray: TopFiveInput[] = albumArray;
@@ -31,30 +31,40 @@ export const AlbumTopFiveWrapper: React.FC<AlbumTopFiveWrapperProps> = ({
       type: "album",
     };
     try {
-      const response = await updateTopFive({
+      // make the mutation
+      await updateTopFive({
         variables: { data },
         refetchQueries: [
           { query: GetOtherUserDocument, variables: { data: { id } } },
         ],
       });
-      console.log(response);
-      return response;
+      // clean up
+      setSearchQuery("");
+      setAlbumArray([]);
     } catch (err) {
-      return err;
+      console.log("error in album top five wrapper", err);
     }
+    // setShowSettings(false);
   };
 
   return (
     <StyledColumnView>
       <Title>Top Albums</Title>
+
       <TypeDisplay
         id={id}
-        freshData={mdata.updateUserTopFive.topAlbums}
+        freshData={mdata ? mdata.updateUserTopFive.topAlbums : null}
         type={"album"}
       />
-
-      <AlbumTopFiveEdit array={albumArray} setArray={setAlbumArray} />
-      <Button onPress={submitUpdateTopFive}>Submit</Button>
+      <List.Accordion title="Edit Top Five">
+        <AlbumTopFiveEdit
+          array={albumArray}
+          setArray={setAlbumArray}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+        <Button onPress={submitUpdateTopFive}>Submit</Button>
+      </List.Accordion>
     </StyledColumnView>
   );
 };

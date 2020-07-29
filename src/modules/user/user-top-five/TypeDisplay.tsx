@@ -29,6 +29,7 @@ export const TypeDisplay: React.FC<TypeDisplayProps> = ({ id, freshData }) => {
   }
 
   console.log("type display data", data);
+  console.log("mdata", freshData);
 
   return (
     <FlatList

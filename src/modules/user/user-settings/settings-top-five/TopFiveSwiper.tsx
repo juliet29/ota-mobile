@@ -25,7 +25,7 @@ export const TopFiveSwiper: React.FC<TopFiveSwiperProps> = ({}) => {
         <ArtistTopFiveEdit array={artistArray} setArray={setArtistArray} />
       </View>
       <View style={styles.slide2}>
-        <AlbumTopFiveEdit array={albumArray} setArray={setAlbumArray} />
+        {/* <AlbumTopFiveEdit array={albumArray} setArray={setAlbumArray} /> */}
       </View>
       <View style={styles.slide3}>
         <TrackTopFiveEdit array={trackArray} setArray={setTrackArray} />

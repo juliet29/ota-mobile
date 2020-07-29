@@ -8,14 +8,16 @@ import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
 interface TopFiveEditProps {
   array: TopFiveArrayType[];
   setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
   array,
   setArray,
+  searchQuery,
+  setSearchQuery,
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-
   useEffect(() => {
     // console.log("useeffects array", topFiveArray);
   }, [array]);
@@ -34,7 +36,7 @@ export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
       />
       <FlatList
         data={array}
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item, index) => item!?.id!?.toString() + index}
         renderItem={({ item }) => (
           <Chip
             onClose={() => {
