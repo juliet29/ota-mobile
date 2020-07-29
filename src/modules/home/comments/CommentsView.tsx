@@ -16,6 +16,7 @@ import { useGetCommentsQuery } from "../../../generated-components/apolloCompone
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { AddComment } from "./AddComment";
+import { LikeButton } from "../../../functional-components/LikeButton";
 
 interface CommentsViewProps {}
 
@@ -27,7 +28,7 @@ export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
   const { data, loading, error } = useGetCommentsQuery({
     variables: {
       data: {
-        id: +postId,
+        id: postId,
         postType: postType,
       },
     },
@@ -52,14 +53,21 @@ export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
         </Card>
         {data.getComments.length > 0 ? (
           <FlatList
-            data={data.getComments}
+            data={data.getComments.sort((a, b) =>
+              a.timeSubmitted.localeCompare(b.timeSubmitted)
+            )}
             keyExtractor={(results, index) => results!?.id!?.toString() + index}
             renderItem={(results) => (
               <Card>
                 {/* <Subheading>{results.item.user}</Subheading> */}
                 <Caption>{results.item.timeSubmitted}</Caption>
                 <Paragraph>{results.item.text}</Paragraph>
-                <IconButton icon="heart" color={Colors.red500} />
+                <LikeButton
+                  commentId={+results.item.id}
+                  postType={postType}
+                  postId={postId}
+                />
+                <Paragraph>{`Likes: ${results.item.likes}`}</Paragraph>
               </Card>
             )}
           />
