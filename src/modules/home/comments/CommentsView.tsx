@@ -59,7 +59,7 @@ export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
             keyExtractor={(results, index) => results!?.id!?.toString() + index}
             renderItem={(results) => (
               <Card>
-                {/* <Subheading>{results.item.user}</Subheading> */}
+                <Subheading>{results.item.user.username}</Subheading>
                 <Caption>{results.item.timeSubmitted}</Caption>
                 <Paragraph>{results.item.text}</Paragraph>
                 <CommentLikeButton
