@@ -938,7 +938,7 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { getCurrentUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email'>
+    & Pick<User, 'id' | 'username' | 'email' | 'followers'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -2035,6 +2035,7 @@ export const GetCurrentUserDocument = gql`
     id
     username
     email
+    followers
     topAlbums {
       name
       imageUrl

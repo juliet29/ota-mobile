@@ -18,7 +18,7 @@ import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { AddComment } from "./AddComment";
 import { CommentLikeButton } from "./CommentLikeButton";
 
-interface CommentsViewProps {}
+// interface CommentsViewProps {}
 
 export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
   route,

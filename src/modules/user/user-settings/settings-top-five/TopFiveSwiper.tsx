@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import Swiper from "react-native-swiper/src";
-import { AlbumTopFiveEdit } from "./albums/AlbumTopFiveEdit";
+import { AlbumTopFiveEdit } from "../../user-top-five/types/albums/AlbumTopFiveEdit";
 import { ArtistTopFiveEdit } from "./artists/ArtistTopFiveEdit";
 import { TrackTopFiveEdit } from "./tracks/TrackTopFiveEdit";
 import { TopFivePreview } from "./TopFivePreview";

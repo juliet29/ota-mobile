@@ -4,7 +4,7 @@ import { FlatList, Dimensions } from "react-native";
 import { ActivityIndicator, Avatar, List, Title } from "react-native-paper";
 import { useSearchSpotifyQuery } from "../../../../../generated-components/apolloComponents";
 import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
-import { TopFiveArrayType } from "../TopFiveSwiper";
+import { TopFiveArrayType } from "../../../user-settings/settings-top-five/TopFiveSwiper";
 
 interface TopFiveQueryProps {
   searchQuery: string;
@@ -35,7 +35,7 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   if (searchResult?.__typename === "AlbumSearchResult") {
     return (
       <StyledColumnView style={{ height: screenHeight / 4 }}>
-        <Title>Album</Title>
+        {/* <Title>Album</Title> */}
         <FlatList
           data={searchResult.albums?.items}
           keyExtractor={(item, index) => item!?.id!?.toString() + index}

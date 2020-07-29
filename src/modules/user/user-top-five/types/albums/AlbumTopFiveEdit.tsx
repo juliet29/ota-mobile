@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { Chip, Searchbar, Title } from "react-native-paper";
-import { TopFiveArrayType } from "../../TopFiveSwiper";
+import { TopFiveArrayType } from "../../UserTopFiveView";
 import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
 
 interface TopFiveEditProps {
@@ -22,9 +22,8 @@ export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
 
   return (
     <View>
-      <Title>Choose Top Five Albums</Title>
       <Searchbar
-        placeholder="Search"
+        placeholder="Search top albums"
         onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
         value={searchQuery}
       />

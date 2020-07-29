@@ -1,4 +1,5 @@
 import { Action, action, Computed, computed, Thunk, thunk } from "easy-peasy";
+import { TopFive } from "../../generated-components/apolloComponents";
 
 // TODO: define interfaces by post type?
 export interface UserTypeInterface {
@@ -6,6 +7,10 @@ export interface UserTypeInterface {
   username?: string;
   email?: string;
   accessToken?: string;
+  followers?: number[];
+  topArtists?: TopFive[];
+  topAlbums?: TopFive[];
+  topTracks?: TopFive[];
 }
 
 export interface UserInterface {

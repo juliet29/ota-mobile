@@ -1,12 +1,24 @@
 import React from "react";
 import { Card, Caption } from "react-native-paper";
+import { StyledColumnView } from "../../../styled-components/ReusedUI";
+import { AlbumTopFiveWrapper } from "./types/albums/AlbumTopFiveWrapper";
+import { TopFive } from "../../../generated-components/apolloComponents";
 
-interface UserTopFiveViewProps {}
+interface UserTopFiveViewProps {
+  id: number;
+}
+export type TopFiveArrayType = {
+  id?: string;
+  name?: string;
+  imageUrl?: string;
+  artistNames?: string[];
+};
 
-export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({}) => {
+export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({ id }) => {
+  console.log(id);
   return (
-    <Card>
-      <Caption>Hello</Caption>
-    </Card>
+    <StyledColumnView>
+      <AlbumTopFiveWrapper id={id} />
+    </StyledColumnView>
   );
 };

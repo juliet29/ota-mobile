@@ -29,7 +29,8 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
       case "first":
         return <UserPosts navigation={navigation} route={route} />;
       case "second":
-        return <UserTopFiveView />;
+        // TODO: take this as a prop from the navigation ...
+        return <UserTopFiveView id={userState.id} />;
       default:
         return null;
     }
