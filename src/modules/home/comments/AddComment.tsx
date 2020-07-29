@@ -7,6 +7,7 @@ import {
   CommentInput,
   GetPostsDocument,
   GetCommentsDocument,
+  useGetCommentsQuery,
 } from "../../../generated-components/apolloComponents";
 
 interface AddCommentProps {}
@@ -29,8 +30,9 @@ export const AddComment: React.FC<HomeStackNavProps<"CommentPage">> = ({
     try {
       const response = await createComment({
         variables: { data },
-        // TODO: fix this query issue
-        refetchQueries: [{ query: GetCommentsDocument }],
+        refetchQueries: [
+          { query: GetCommentsDocument, variables: { data: { id, postType } } },
+        ],
       });
       setText("");
       return response;
