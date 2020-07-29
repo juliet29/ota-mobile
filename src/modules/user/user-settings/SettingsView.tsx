@@ -15,9 +15,9 @@ export const SettingsView: React.FC<HomeStackNavProps<"SettingsPage">> = ({
     <StyledColumnView>
       <Title>Edit Name</Title>
       <Title>Edit Username</Title>
-      <Button onPress={() => navigation.navigate("EditTopFivePage")}>
+      {/* <Button onPress={() => navigation.navigate("EditTopFivePage")}>
         Edit Top Five
-      </Button>
+      </Button> */}
     </StyledColumnView>
   );
 };

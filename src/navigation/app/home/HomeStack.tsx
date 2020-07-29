@@ -1,22 +1,20 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { LogoutButton } from "../../../modules/authentication/components/LogoutButton";
+import { View } from "react-native";
+import { Title } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { AlbumPageView } from "../../../modules/content-pages/AlbumPageView";
 import { ArtistPageView } from "../../../modules/content-pages/artist-page/ArtistPageView";
 import { ArtistPostsView } from "../../../modules/content-pages/ArtistPostsView";
-import { FeedView } from "../../../modules/home/FeedView";
-import { HomeParamList } from "./HomeParamList";
-import { AlbumPageView } from "../../../modules/content-pages/AlbumPageView";
 import { TrackPageView } from "../../../modules/content-pages/TrackPageView";
-import { UserView } from "../../../modules/user/UserView";
-import { View } from "react-native";
-import { UserButton } from "../../../modules/user/UserButton";
-import { Caption, Title } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { SearchView } from "../../../modules/search/SearchView";
-import { SearchButton } from "../../../modules/search/SearchButton";
-import { SettingsView } from "../../../modules/user/user-settings/SettingsView";
-import { TopFiveSwiper } from "../../../modules/user/user-settings/settings-top-five/TopFiveSwiper";
 import { CommentsView } from "../../../modules/home/comments/CommentsView";
+import { FeedView } from "../../../modules/home/FeedView";
+import { SearchButton } from "../../../modules/search/SearchButton";
+import { SearchView } from "../../../modules/search/SearchView";
+import { SettingsView } from "../../../modules/user/user-settings/SettingsView";
+import { UserButton } from "../../../modules/user/UserButton";
+import { UserView } from "../../../modules/user/UserView";
+import { HomeParamList } from "./HomeParamList";
 
 interface HomeStackProps {}
 
@@ -55,7 +53,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="UserPage" component={UserView} />
       <Stack.Screen name="SearchPage" component={SearchView} />
       <Stack.Screen name="SettingsPage" component={SettingsView} />
-      <Stack.Screen name="EditTopFivePage" component={TopFiveSwiper} />
+      {/* <Stack.Screen name="EditTopFivePage" component={TopFiveSwiper} /> */}
       <Stack.Screen name="CommentPage" component={CommentsView} />
     </Stack.Navigator>
   );

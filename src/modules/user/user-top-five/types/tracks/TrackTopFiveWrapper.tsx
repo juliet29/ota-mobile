@@ -16,7 +16,7 @@ export const TrackTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
   const [searchQuery, setSearchQuery] = useState("");
   //   const [showSettings, setShowSettings] = useState(false);
   const [updateTopFive, { data: mdata }] = useUpdateUserTopFiveMutation();
-  //   console.log("mdata", mdata ? mdata.updateUserTopFive.topAlbums : null);
+  console.log("mdataTrack", mdata ? mdata.updateUserTopFive.topTracks : null);
 
   const submitUpdateTopFive = async () => {
     const dataArray: TopFiveInput[] = trackArray;
