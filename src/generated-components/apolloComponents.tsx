@@ -493,7 +493,11 @@ export type GetCommentsQuery = (
   { __typename?: 'Query' }
   & { getComments?: Maybe<Array<Maybe<(
     { __typename?: 'Comment' }
-    & Pick<Comment, 'id' | 'text' | 'timeSubmitted'>
+    & Pick<Comment, 'id' | 'text' | 'timeSubmitted' | 'likes'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id'>
+    )> }
   )>>> }
 );
 
@@ -581,7 +585,7 @@ export type GetArtistPostsQuery = (
   { __typename?: 'Query' }
   & { getArtistPosts?: Maybe<Array<Maybe<(
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'artistName' | 'externalUrl' | 'text' | 'timeSubmitted'>
+    & Pick<ArtistPost, 'id' | 'artistName' | 'externalUrl' | 'text' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -596,21 +600,21 @@ export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'text' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & Pick<AlbumPost, 'id' | 'text' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'text' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & Pick<ArtistPost, 'id' | 'text' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'text' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & Pick<TrackPost, 'id' | 'text' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username'>
@@ -1066,6 +1070,11 @@ export const GetCommentsDocument = gql`
     id
     text
     timeSubmitted
+    likes
+    user {
+      username
+      id
+    }
   }
 }
     `;
@@ -1275,6 +1284,7 @@ export type GetAlbumPostsQueryResult = ApolloReactCommon.QueryResult<GetAlbumPos
 export const GetArtistPostsDocument = gql`
     query getArtistPosts($id: String!) {
   getArtistPosts(id: $id) {
+    id
     artistName
     externalUrl
     text
@@ -1315,6 +1325,7 @@ export const GetPostsDocument = gql`
     query GetPosts {
   getPosts {
     ... on AlbumPost {
+      id
       text
       externalUrl
       artistNames
@@ -1328,6 +1339,7 @@ export const GetPostsDocument = gql`
       }
     }
     ... on TrackPost {
+      id
       text
       artistNames
       externalUrl
@@ -1341,6 +1353,7 @@ export const GetPostsDocument = gql`
       }
     }
     ... on ArtistPost {
+      id
       text
       imageUrl
       externalUrl

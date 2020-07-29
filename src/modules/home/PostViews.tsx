@@ -23,6 +23,7 @@ interface AlbumPostProps {
   } & Pick<
     AlbumPost,
     | "text"
+    | "id"
     | "artistNames"
     | "rating"
     | "imageUrl"
@@ -43,6 +44,7 @@ interface TrackPostProps {
   } & Pick<
     TrackPost,
     | "text"
+    | "id"
     | "imageUrl"
     | "timeSubmitted"
     | "artistNames"
@@ -63,6 +65,7 @@ interface ArtistPostProps {
   } & Pick<
     ArtistPost,
     | "text"
+    | "id"
     | "imageUrl"
     | "timeSubmitted"
     | "artistId"
@@ -104,6 +107,19 @@ export const ArtistPostView: React.FC<
             });
           }}>
           SEE ARTIST
+        </Button>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("CommentPage", {
+              postId: +item.id,
+              postType: "artist",
+              contentId: item?.artistId,
+              name: item?.artistName,
+              imageUrl: item.imageUrl,
+            });
+          }}>
+          SEE COMMENTS
         </Button>
       </Card.Content>
     </Card>

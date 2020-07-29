@@ -4,6 +4,7 @@ export const GET_POSTS = gql`
   query GetPosts {
     getPosts {
       ... on AlbumPost {
+        id
         text
         externalUrl
         artistNames
@@ -17,6 +18,7 @@ export const GET_POSTS = gql`
         }
       }
       ... on TrackPost {
+        id
         text
         artistNames
         externalUrl
@@ -30,6 +32,7 @@ export const GET_POSTS = gql`
         }
       }
       ... on ArtistPost {
+        id
         text
         imageUrl
         externalUrl

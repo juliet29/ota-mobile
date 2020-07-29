@@ -16,6 +16,7 @@ import { SearchView } from "../../../modules/search/SearchView";
 import { SearchButton } from "../../../modules/search/SearchButton";
 import { SettingsView } from "../../../modules/user/user-settings/SettingsView";
 import { TopFiveSwiper } from "../../../modules/user/user-settings/settings-top-five/TopFiveSwiper";
+import { CommentsView } from "../../../modules/home/comments/CommentsView";
 
 interface HomeStackProps {}
 
@@ -55,6 +56,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="SearchPage" component={SearchView} />
       <Stack.Screen name="SettingsPage" component={SettingsView} />
       <Stack.Screen name="EditTopFivePage" component={TopFiveSwiper} />
+      <Stack.Screen name="CommentPage" component={CommentsView} />
     </Stack.Navigator>
   );
 };

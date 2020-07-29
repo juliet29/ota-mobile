@@ -6,6 +6,11 @@ export const GET_COMMENTS = gql`
       id
       text
       timeSubmitted
+      likes
+      user {
+        username
+        id
+      }
     }
   }
 `;

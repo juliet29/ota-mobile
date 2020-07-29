@@ -17,6 +17,13 @@ export type HomeParamList = {
   SearchPage: undefined;
   SettingsPage: undefined;
   EditTopFivePage: undefined;
+  CommentPage: {
+    postId: number;
+    postType: string;
+    contentId: string;
+    name: string;
+    imageUrl?: string;
+  };
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {
