@@ -165,6 +165,21 @@ export const AlbumPostView: React.FC<
           }}>
           SEE ALBUM
         </Button>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("CommentPage", {
+              postId: +item.id,
+              postType: "album",
+              contentId: item?.albumId,
+              name: item?.albumName,
+              imageUrl: item.imageUrl,
+            });
+          }}>
+          SEE COMMENTS
+        </Button>
+        <PostLikeButton postType={"album"} postId={+item.id} />
+        <Paragraph>{`Likes: ${item.likes}`}</Paragraph>
       </Card.Content>
     </Card>
   );
@@ -228,6 +243,21 @@ export const TrackPostView: React.FC<
           }}>
           SEE TRACK ON SPOTIFY
         </Button>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("CommentPage", {
+              postId: +item.id,
+              postType: "track",
+              contentId: item?.trackId,
+              name: item?.trackName,
+              imageUrl: item.imageUrl,
+            });
+          }}>
+          SEE COMMENTS
+        </Button>
+        <PostLikeButton postType={"track"} postId={+item.id} />
+        <Paragraph>{`Likes: ${item.likes}`}</Paragraph>
       </Card.Content>
     </Card>
   );
