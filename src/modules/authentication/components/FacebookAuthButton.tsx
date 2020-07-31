@@ -53,17 +53,19 @@ export default function FacebookAuthButton() {
         console.log(res.token);
 
         const response = await fetch(
-          `https://graph.facebook.com/me?fields=id,name,email&access_token=${res.token}`
+          `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${res.token}`
         );
 
         const userInfo = await response.json();
+        console.log(" user", userInfo);
 
         const goodUserInfo: SsoRegisterInput = {
           username: userInfo.name,
           email: userInfo.email,
           id: userInfo.id,
+          profilePicture: userInfo.picture.data.url,
         };
-        console.log("better user", userInfo);
+        console.log("better user", goodUserInfo);
         const token = await submitSignOnUser(goodUserInfo);
         setLoginUser(token);
         Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
