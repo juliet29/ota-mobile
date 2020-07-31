@@ -1,23 +1,23 @@
 import React, { useEffect } from "react";
-import { Text, View, Dimensions } from "react-native";
-import {
-  Card,
-  Caption,
-  Title,
-  Button,
-  Avatar,
-  ActivityIndicator,
-} from "react-native-paper";
+import { Dimensions, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { StyledColumnView } from "../../styled-components/ReusedUI";
-import { useStoreState } from "../../state-management/hooks";
-import { LogoutButton } from "../authentication/components/LogoutButton";
-import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
-import { UserPosts } from "./user-posts/UserPosts";
-import { TabView, SceneMap } from "react-native-tab-view";
-import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
-import { FollowButton } from "./FollowButton";
+import {
+  ActivityIndicator,
+  Avatar,
+  Button,
+  Caption,
+  Card,
+  Title,
+} from "react-native-paper";
+import { TabView } from "react-native-tab-view";
 import { useGetOtherUserQuery } from "../../generated-components/apolloComponents";
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { useStoreState } from "../../state-management/hooks";
+import { StyledColumnView } from "../../styled-components/ReusedUI";
+import { LogoutButton } from "../authentication/components/LogoutButton";
+import { FollowButton } from "./FollowButton";
+import { UserPosts } from "./user-posts/UserPosts";
+import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
 
 interface UserViewProps {}
 const initialLayout = { width: Dimensions.get("window").width };

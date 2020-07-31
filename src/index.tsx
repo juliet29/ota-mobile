@@ -1,5 +1,5 @@
 import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient from "apollo-boost";
+import ApolloClient from "apollo-client";
 import React, { useMemo, useState } from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { getAccessToken } from "./utils/accessToken";
@@ -14,6 +14,7 @@ import {
 import introspectionQueryResultData from "../fragmentTypes.json";
 import getEnvVars from "../environment";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { createUploadLink } from "apollo-upload-client";
 
 // @ts-ignore
 const { apiUrl } = getEnvVars();
@@ -32,20 +33,22 @@ const cache = new InMemoryCache({ fragmentMatcher });
 
 export const client = new ApolloClient({
   cache,
-  uri: `${apiUrl}/graphql`,
-  credentials: "include",
-  request: (operation) => {
-    // TODO move to easy-peasy
-    const accessToken = getAccessToken();
-    // console.log(accessToken);
-    if (accessToken) {
-      operation.setContext({
-        headers: {
-          authorization: `bearer ${accessToken}`,
-        },
-      });
-    }
-  },
+  link: createUploadLink({
+    uri: `${apiUrl}/graphql`,
+    credentials: "include",
+    request: (operation) => {
+      // TODO move to easy-peasy
+      const accessToken = getAccessToken();
+      // console.log(accessToken);
+      if (accessToken) {
+        operation.setContext({
+          headers: {
+            authorization: `bearer ${accessToken}`,
+          },
+        });
+      }
+    },
+  }),
 });
 
 interface ProvidersProps {}
