@@ -42,6 +42,7 @@ export const useSetUserHook: useSetUserHookType = () => {
         id: +thisData.id,
         email: thisData.email,
         username: thisData.username,
+        profilePicture: thisData.profilePicture,
         followers: thisData.followers,
         topArtists: thisData.topArtists,
         topAlbums: thisData.topAlbums,

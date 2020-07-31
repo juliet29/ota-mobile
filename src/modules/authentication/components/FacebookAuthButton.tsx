@@ -50,6 +50,7 @@ export default function FacebookAuthButton() {
 
       if (res.type === "success") {
         // Get the user's name using Facebook's Graph API
+        console.log(res.token);
 
         const response = await fetch(
           `https://graph.facebook.com/me?fields=id,name,email&access_token=${res.token}`

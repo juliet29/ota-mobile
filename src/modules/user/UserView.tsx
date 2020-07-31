@@ -82,7 +82,16 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
               justifyContent: "space-around",
             }}>
             <View>
-              <Avatar.Icon size={80} icon="account" />
+              {data.getOtherUser.profilePicture ? (
+                <Avatar.Image
+                  size={80}
+                  source={{
+                    uri: `${data.getOtherUser.profilePicture}`,
+                  }}
+                />
+              ) : (
+                <Avatar.Icon size={80} icon="account" />
+              )}
             </View>
 
             <View>

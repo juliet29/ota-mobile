@@ -116,6 +116,7 @@ export type User = {
   __typename?: 'User';
   id?: Maybe<Scalars['ID']>;
   username?: Maybe<Scalars['String']>;
+  profilePicture?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   facebookId?: Maybe<Scalars['String']>;
   googleId?: Maybe<Scalars['String']>;
@@ -440,6 +441,7 @@ export type SsoRegisterInput = {
   id?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  profilePicture?: Maybe<Scalars['String']>;
 };
 
 export type LikeInput = {
@@ -938,7 +940,7 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { getCurrentUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'followers'>
+    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -961,7 +963,7 @@ export type GetOtherUserQuery = (
   { __typename?: 'Query' }
   & { getOtherUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'followers'>
+    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -984,7 +986,7 @@ export type SearchUserQuery = (
   { __typename?: 'Query' }
   & { searchUser?: Maybe<Array<Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'id'>
+    & Pick<User, 'username' | 'id' | 'profilePicture'>
   )>>> }
 );
 
@@ -2035,6 +2037,7 @@ export const GetCurrentUserDocument = gql`
     id
     username
     email
+    profilePicture
     followers
     topAlbums {
       name
@@ -2087,6 +2090,7 @@ export const GetOtherUserDocument = gql`
     id
     username
     email
+    profilePicture
     followers
     topAlbums {
       name
@@ -2139,6 +2143,7 @@ export const SearchUserDocument = gql`
   searchUser(query: $query) {
     username
     id
+    profilePicture
   }
 }
     `;

@@ -1,24 +1,16 @@
+import { useNavigation } from "@react-navigation/native";
 import { ErrorMessage, Formik } from "formik";
-import React, { useEffect, useState, useCallback } from "react";
-import { Button, HelperText, TextInput, Text } from "react-native-paper";
-import {
-  GetPostsDocument,
-  useCreatePostMutation,
-  CreatePostMutationVariables,
-  useCreateArtistPostMutation,
-  useCreateAlbumPostMutation,
-  useCreateTrackPostMutation,
-} from "../../generated-components/apolloComponents";
+import React, { useEffect, useState } from "react";
+import { Button, HelperText, TextInput } from "react-native-paper";
 import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
-import { useStoreState, useStoreActions } from "../../state-management/hooks";
+import { useStoreActions, useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
-import { CreatePostOptions } from "./CreatePostOptions";
 import { ContentPreview } from "./ContentPreview";
-import { TrackVotes } from "./ratings/TrackVotes";
+import { CreatePostOptions } from "./CreatePostOptions";
 import { AlbumStars } from "./ratings/AlbumStars";
+import { TrackVotes } from "./ratings/TrackVotes";
 import { useSubmitContentPost } from "./useSubmitContentPost";
-import { useNavigation } from "@react-navigation/native";
 
 interface CreatePostViewProps {}
 

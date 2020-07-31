@@ -6,6 +6,7 @@ export interface UserTypeInterface {
   id?: number;
   username?: string;
   email?: string;
+  profilePicture?: string;
   accessToken?: string;
   followers?: number[];
   topArtists?: TopFive[];

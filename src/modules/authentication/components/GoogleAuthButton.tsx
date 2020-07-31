@@ -59,13 +59,14 @@ export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({}) => {
         );
 
         const userInfo = await response.json();
-
+        console.log(userInfo);
         const goodUserInfo: SsoRegisterInput = {
           username: userInfo.name,
           email: userInfo.email,
           id: userInfo.id,
+          profilePicture: userInfo.picture,
         };
-        console.log("better google user", userInfo);
+        console.log("better google user", goodUserInfo);
         const token = await submitSignOnUser(goodUserInfo);
         setLoginUser(token);
         Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);

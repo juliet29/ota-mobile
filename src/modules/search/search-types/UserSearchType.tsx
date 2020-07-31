@@ -21,6 +21,9 @@ interface SearchTypeProps {
   searchQuery: string;
 }
 
+const emptyImage =
+  "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
+
 export const UserSearchType: React.FC<
   SearchTypeProps & HomeStackNavProps<"SearchPage">
 > = ({ searchQuery, navigation, route }) => {
@@ -51,6 +54,18 @@ export const UserSearchType: React.FC<
             onPress={() => {
               navigation.navigate("UserPage", { id: +results.item.id });
             }}
+            left={(props) => (
+              <Avatar.Image
+                size={20}
+                source={{
+                  uri: `${
+                    results.item.profilePicture
+                      ? results.item.profilePicture
+                      : emptyImage
+                  }`,
+                }}
+              />
+            )}
           />
         )}
       />

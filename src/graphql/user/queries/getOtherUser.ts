@@ -6,6 +6,7 @@ export const GET_OTHER_USER = gql`
       id
       username
       email
+      profilePicture
       followers
       topAlbums {
         name
