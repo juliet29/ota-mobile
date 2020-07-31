@@ -10,8 +10,10 @@ import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
 import { TopFiveArrayType, TopFiveWrapperProps } from "../../UserTopFiveView";
 import { TrackTopFiveEdit } from "./TrackTopFiveEdit";
+import { useStoreState } from "../../../../../state-management/hooks";
 
 export const TrackTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
+  const userState = useStoreState((state) => state.user.user);
   const [trackArray, setTrackArray] = useState(Array<TopFiveArrayType>());
   const [searchQuery, setSearchQuery] = useState("");
   //   const [showSettings, setShowSettings] = useState(false);
@@ -50,15 +52,19 @@ export const TrackTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
         freshData={mdata ? mdata.updateUserTopFive.topTracks : null}
         type={"track"}
       />
-      <List.Accordion title="Edit Top Five">
-        <TrackTopFiveEdit
-          array={trackArray}
-          setArray={setTrackArray}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-        <Button onPress={submitUpdateTopFive}>Submit</Button>
-      </List.Accordion>
+      {userState.id === id ? (
+        <List.Accordion title="Edit Top Five">
+          <TrackTopFiveEdit
+            array={trackArray}
+            setArray={setTrackArray}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+          <Button onPress={submitUpdateTopFive}>Submit</Button>
+        </List.Accordion>
+      ) : (
+        <></>
+      )}
     </StyledColumnView>
   );
 };

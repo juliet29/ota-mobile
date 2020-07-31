@@ -13,7 +13,7 @@ export type HomeParamList = {
     artistNames: string[];
     imageUrl?: string;
   };
-  UserPage: undefined;
+  UserPage: { id: number };
   SearchPage: undefined;
   SettingsPage: undefined;
   EditTopFivePage: undefined;

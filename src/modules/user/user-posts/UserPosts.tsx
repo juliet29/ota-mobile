@@ -14,15 +14,16 @@ import { AlbumPostView, ArtistPostView, TrackPostView } from "./UserPostTypes";
 // import { UserPostsFilter } from "./UserPostsFilter";
 import { GestureResponderEvent } from "react-native";
 
-interface UserPostsProps {}
+interface UserPostsProps {
+  id: number;
+}
 
 type Status = "checked" | "unchecked";
 type setFx = (value?: string | GestureResponderEvent) => void;
 
-export const UserPosts: React.FC<HomeStackNavProps<"UserPage">> = ({
-  navigation,
-  route,
-}) => {
+export const UserPosts: React.FC<
+  UserPostsProps & HomeStackNavProps<"UserPage">
+> = ({ navigation, route, id }) => {
   // toggle button data
   const [artistStatus, setArtistStatus] = React.useState("checked");
   const [albumStatus, setAlbumStatus] = React.useState("checked");
@@ -50,7 +51,7 @@ export const UserPosts: React.FC<HomeStackNavProps<"UserPage">> = ({
   const userState = useStoreState((state) => state.user.user);
   const { data, loading, error } = useGetUserPostsQuery({
     variables: {
-      id: userState.id,
+      id,
     },
   });
 

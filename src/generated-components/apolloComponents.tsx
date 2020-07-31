@@ -961,7 +961,7 @@ export type GetOtherUserQuery = (
   { __typename?: 'Query' }
   & { getOtherUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email'>
+    & Pick<User, 'id' | 'username' | 'email' | 'followers'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -2087,6 +2087,7 @@ export const GetOtherUserDocument = gql`
     id
     username
     email
+    followers
     topAlbums {
       name
       imageUrl

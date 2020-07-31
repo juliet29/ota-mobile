@@ -10,8 +10,10 @@ import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
 import { TopFiveArrayType, TopFiveWrapperProps } from "../../UserTopFiveView";
 import { AlbumTopFiveEdit } from "./AlbumTopFiveEdit";
+import { useStoreState } from "../../../../../state-management/hooks";
 
 export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
+  const userState = useStoreState((state) => state.user.user);
   const [albumArray, setAlbumArray] = useState(Array<TopFiveArrayType>());
   const [searchQuery, setSearchQuery] = useState("");
   //   const [showSettings, setShowSettings] = useState(false);
@@ -50,15 +52,19 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
         freshData={mdata ? mdata.updateUserTopFive.topAlbums : null}
         type={"album"}
       />
-      <List.Accordion title="Edit Top Five">
-        <AlbumTopFiveEdit
-          array={albumArray}
-          setArray={setAlbumArray}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-        />
-        <Button onPress={submitUpdateTopFive}>Submit</Button>
-      </List.Accordion>
+      {userState.id === id ? (
+        <List.Accordion title="Edit Top Five">
+          <AlbumTopFiveEdit
+            array={albumArray}
+            setArray={setAlbumArray}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+          <Button onPress={submitUpdateTopFive}>Submit</Button>
+        </List.Accordion>
+      ) : (
+        <></>
+      )}
     </StyledColumnView>
   );
 };

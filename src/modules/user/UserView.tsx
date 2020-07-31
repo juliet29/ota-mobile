@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, Dimensions } from "react-native";
-import { Card, Caption, Title, Button, Avatar } from "react-native-paper";
+import {
+  Card,
+  Caption,
+  Title,
+  Button,
+  Avatar,
+  ActivityIndicator,
+} from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { useStoreState } from "../../state-management/hooks";
@@ -9,6 +16,8 @@ import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { UserPosts } from "./user-posts/UserPosts";
 import { TabView, SceneMap } from "react-native-tab-view";
 import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
+import { FollowButton } from "./FollowButton";
+import { useGetOtherUserQuery } from "../../generated-components/apolloComponents";
 
 interface UserViewProps {}
 const initialLayout = { width: Dimensions.get("window").width };
@@ -23,18 +32,37 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     { key: "first", title: "Posts" },
     { key: "second", title: "Top Five" },
   ]);
+  const { id } = route.params;
+  const { data, loading, error } = useGetOtherUserQuery({
+    variables: {
+      id,
+    },
+  });
+
+  useEffect(() => {
+    console.log("user to be followed according to userview useeffect", data);
+  }, [data]);
 
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "first":
-        return <UserPosts navigation={navigation} route={route} />;
+        return <UserPosts navigation={navigation} route={route} id={id} />;
       case "second":
         // TODO: take this as a prop from the navigation ...
-        return <UserTopFiveView id={userState.id} />;
+        return <UserTopFiveView id={id} />;
       default:
         return null;
     }
   };
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+  if (error || !data) {
+    // console.log(error);
+    return <></>;
+  }
+  console.log("user to be followed according to userview", data);
 
   return (
     <ScrollView>
@@ -58,11 +86,15 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
             </View>
 
             <View>
-              <Title>{userState.username}</Title>
+              <Title>{data.getOtherUser.username}</Title>
               <Caption>1 FOLLOWERS</Caption>
               <Caption>1 POSTS</Caption>
-              <Button>FOLLOW</Button>
-              <LogoutButton />
+              {id === userState.id ? (
+                <></>
+              ) : (
+                <FollowButton id={id} userData={data} />
+              )}
+              {id === userState.id ? <LogoutButton /> : <></>}
             </View>
           </View>
         </Card>

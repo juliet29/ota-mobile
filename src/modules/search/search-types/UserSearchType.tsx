@@ -45,7 +45,14 @@ export const UserSearchType: React.FC<
       <FlatList
         data={searchResult}
         keyExtractor={(item, index) => item!?.id!?.toString() + index}
-        renderItem={(results) => <List.Item title={results.item?.username} />}
+        renderItem={(results) => (
+          <List.Item
+            title={results.item?.username}
+            onPress={() => {
+              navigation.navigate("UserPage", { id: +results.item.id });
+            }}
+          />
+        )}
       />
     </StyledColumnView>
   );
