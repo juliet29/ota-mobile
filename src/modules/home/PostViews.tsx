@@ -85,7 +85,7 @@ interface ArtistPostProps {
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
-  console.log(item);
+  //   console.log(item);
   return (
     <Card>
       {/* TODO: make a global style for centering */}
@@ -156,7 +156,7 @@ export const AlbumPostView: React.FC<
         <Button
           mode="contained"
           onPress={() => {
-            console.log("album button");
+            // console.log("album button");
             navigation.navigate("AlbumPage", {
               id: item?.albumId,
               name: item?.albumName,
@@ -232,7 +232,7 @@ export const TrackPostView: React.FC<
         <Button
           mode="contained"
           onPress={() => {
-            console.log(item.externalUrl);
+            // console.log(item.externalUrl);
 
             openURL(`${item.externalUrl}`);
             // navigation.navigate("ArtistPage", {

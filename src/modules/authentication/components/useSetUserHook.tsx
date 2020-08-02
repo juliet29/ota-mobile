@@ -17,7 +17,7 @@ export const useSetUserHook: useSetUserHookType = () => {
 
   useEffect(() => {
     setCurrentUser().then((x) => {
-      // console.log("in set userhook, hope this is true", x);
+      console.log("in set userhook, hope this is true", x);
     });
   }, [data]);
 

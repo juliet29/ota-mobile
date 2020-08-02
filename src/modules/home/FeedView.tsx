@@ -21,7 +21,7 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   const setCurrentUser = useSetUserHook();
 
   if (loading) {
-    // console.log("current user is", userState);
+    console.log("current user is", userState);
     return <ActivityIndicator />;
   }
   if (error || !data) {
