@@ -29,6 +29,7 @@ export const AppWithHeaders: React.FC<Props> = () => {
         credentials: "include",
       }).then(async (x) => {
         const { accessToken } = await x.json();
+        console.log("app w headers", accessToken);
         setLoginUser(accessToken);
         setLoading(false);
       });

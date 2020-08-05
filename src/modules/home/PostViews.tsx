@@ -13,10 +13,13 @@ import {
   Paragraph,
   Button,
   Text,
+  List,
+  Avatar,
 } from "react-native-paper";
 import { Image, Linking } from "react-native";
 import StarRating from "react-native-star-rating";
 import { PostLikeButton } from "./PostLikeButton";
+import { StyledColumnView } from "../../styled-components/ReusedUI";
 
 interface AlbumPostProps {
   item: {
@@ -36,7 +39,7 @@ interface AlbumPostProps {
   > & {
       user?: {
         __typename?: "User";
-      } & Pick<User, "username">;
+      } & Pick<User, "username" | "profilePicture" | "id">;
     };
 }
 
@@ -58,7 +61,7 @@ interface TrackPostProps {
   > & {
       user?: {
         __typename?: "User";
-      } & Pick<User, "username">;
+      } & Pick<User, "username" | "profilePicture" | "id">;
     };
 }
 
@@ -78,14 +81,16 @@ interface ArtistPostProps {
   > & {
       user?: {
         __typename?: "User";
-      } & Pick<User, "username">;
+      } & Pick<User, "username" | "profilePicture" | "id">;
     };
 }
+const emptyImage =
+  "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
 
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
-  //   console.log(item);
+  console.log("artist post", item.user);
   return (
     <Card>
       {/* TODO: make a global style for centering */}
@@ -97,7 +102,33 @@ export const ArtistPostView: React.FC<
             uri: `${item.imageUrl}`,
           }}
         />
-        <Caption>{item?.user?.username}</Caption>
+        {item.user ? (
+          <StyledColumnView>
+            <Caption>{item.user.username}</Caption>
+            <List.Item
+              title={item?.user.username}
+              description={item?.user.username}
+              onPress={() => {
+                navigation.navigate("UserPage", { id: +item?.user.id });
+              }}
+              left={(props) => (
+                <Avatar.Image
+                  size={20}
+                  source={{
+                    uri: `${
+                      item?.user.profilePicture
+                        ? item?.user.profilePicture
+                        : emptyImage
+                    }`,
+                  }}
+                />
+              )}
+            />
+          </StyledColumnView>
+        ) : (
+          <></>
+        )}
+
         <Text>{item?.timeSubmitted}</Text>
         <Caption>ARTIST</Caption>
         <Title>{item?.artistName}</Title>
@@ -147,7 +178,34 @@ export const AlbumPostView: React.FC<
             uri: `${item.imageUrl}`,
           }}
         />
-        <Caption>{item?.user?.username}</Caption>
+
+        {item.user ? (
+          <StyledColumnView>
+            <Caption>{item.user.username}</Caption>
+            <List.Item
+              title={item?.user.username}
+              description={item?.user.username}
+              onPress={() => {
+                navigation.navigate("UserPage", { id: +item?.user.id });
+              }}
+              left={(props) => (
+                <Avatar.Image
+                  size={20}
+                  source={{
+                    uri: `${
+                      item?.user.profilePicture
+                        ? item?.user.profilePicture
+                        : emptyImage
+                    }`,
+                  }}
+                />
+              )}
+            />
+          </StyledColumnView>
+        ) : (
+          <></>
+        )}
+
         <Text>{item?.timeSubmitted}</Text>
         <Caption>ALBUM</Caption>
         {/* <StarRating disabled={true} rating={item?.rating} /> */}
@@ -204,7 +262,32 @@ export const TrackPostView: React.FC<
             uri: `${item.imageUrl}`,
           }}
         />
-        <Caption>{item?.user?.username}</Caption>
+        {item.user ? (
+          <StyledColumnView>
+            <Caption>{item.user.username}</Caption>
+            <List.Item
+              title={item?.user.username}
+              description={item?.user.username}
+              onPress={() => {
+                navigation.navigate("UserPage", { id: +item?.user.id });
+              }}
+              left={(props) => (
+                <Avatar.Image
+                  size={20}
+                  source={{
+                    uri: `${
+                      item?.user.profilePicture
+                        ? item?.user.profilePicture
+                        : emptyImage
+                    }`,
+                  }}
+                />
+              )}
+            />
+          </StyledColumnView>
+        ) : (
+          <></>
+        )}
         <Text>{item?.timeSubmitted}</Text>
         <Caption>TRACK</Caption>
         {item?.vote === 1 ? (

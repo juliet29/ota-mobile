@@ -10,6 +10,8 @@ export const GET_ALBUM_POSTS = gql`
       timeSubmitted
       user {
         username
+        profilePicture
+        id
       }
     }
   }

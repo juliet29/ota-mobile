@@ -1,5 +1,6 @@
 import { ApolloProvider } from "@apollo/react-hooks";
-import ApolloClient from "apollo-client";
+// import ApolloClient from "apollo-client";
+import ApolloClient from "apollo-boost";
 import React, { useMemo, useState } from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { getAccessToken } from "./utils/accessToken";
@@ -50,9 +51,27 @@ const uploadLink = createUploadLink({
   credentials: "include",
 });
 
+// export const client = new ApolloClient({
+//   cache,
+//   link: authLink.concat(uploadLink),
+// });
+
 export const client = new ApolloClient({
   cache,
-  link: authLink.concat(uploadLink),
+  uri: `${apiUrl}/graphql`,
+  credentials: "include",
+  request: (operation) => {
+    // TODO move to easy-peasy
+    const accessToken = getAccessToken();
+    console.log(accessToken);
+    if (accessToken) {
+      operation.setContext({
+        headers: {
+          authorization: `bearer ${accessToken}`,
+        },
+      });
+    }
+  },
 });
 
 interface ProvidersProps {}

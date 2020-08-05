@@ -8,6 +8,7 @@ export const GET_OTHER_USER = gql`
       email
       profilePicture
       followers
+      following
       topAlbums {
         name
         imageUrl

@@ -16,13 +16,11 @@ import {
 } from "../../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
+import { emptyImage } from "../../user/UserView";
 
 interface SearchTypeProps {
   searchQuery: string;
 }
-
-const emptyImage =
-  "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
 
 export const UserSearchType: React.FC<
   SearchTypeProps & HomeStackNavProps<"SearchPage">

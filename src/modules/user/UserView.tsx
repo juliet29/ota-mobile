@@ -19,6 +19,9 @@ import { FollowButton } from "./FollowButton";
 import { UserPosts } from "./user-posts/UserPosts";
 import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
 
+export const emptyImage =
+  "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
+
 interface UserViewProps {}
 const initialLayout = { width: Dimensions.get("window").width };
 
@@ -96,7 +99,30 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
 
             <View>
               <Title>{data.getOtherUser.username}</Title>
-              <Caption>1 FOLLOWERS</Caption>
+              <Button
+                onPress={() => {
+                  navigation.navigate("FollowersPage", {
+                    id: id,
+                    request: "followers",
+                  });
+                }}>
+                FOLLOWERS:{" "}
+                {data.getOtherUser.followers
+                  ? data.getOtherUser.followers.length
+                  : 0}
+              </Button>
+              <Button
+                onPress={() => {
+                  navigation.navigate("FollowersPage", {
+                    id: id,
+                    request: "following",
+                  });
+                }}>
+                FOLLOWING:{" "}
+                {data.getOtherUser.following
+                  ? data.getOtherUser.following.length
+                  : 0}
+              </Button>
               <Caption>1 POSTS</Caption>
               {id === userState.id ? (
                 <></>

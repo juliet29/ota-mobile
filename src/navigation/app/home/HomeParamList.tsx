@@ -1,6 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { PostParamList } from "../shared/PostParamList";
+import { GetOtherUserQuery } from "../../../generated-components/apolloComponents";
 
 export type HomeParamList = {
   Feed: undefined;
@@ -24,6 +25,7 @@ export type HomeParamList = {
     name: string;
     imageUrl?: string;
   };
+  FollowersPage: { id: number; request: "following" | "followers" };
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {

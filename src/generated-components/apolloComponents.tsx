@@ -31,6 +31,8 @@ export type Query = {
   searchPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
   getOtherUser?: Maybe<User>;
   searchUser?: Maybe<Array<Maybe<User>>>;
+  getFollowers?: Maybe<Array<Maybe<User>>>;
+  getFollowingorFollowers?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -94,6 +96,17 @@ export type QuerySearchUserArgs = {
   query?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryGetFollowersArgs = {
+  id?: Maybe<Scalars['Float']>;
+};
+
+
+export type QueryGetFollowingorFollowersArgs = {
+  request?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Float']>;
+};
+
 export type GetPostsResult = AlbumPost | ArtistPost | TrackPost;
 
 export type AlbumPost = {
@@ -121,6 +134,7 @@ export type User = {
   facebookId?: Maybe<Scalars['String']>;
   googleId?: Maybe<Scalars['String']>;
   followers?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  following?: Maybe<Array<Maybe<Scalars['Float']>>>;
   topArtists?: Maybe<Array<Maybe<TopFive>>>;
   topAlbums?: Maybe<Array<Maybe<TopFive>>>;
   topTracks?: Maybe<Array<Maybe<TopFive>>>;
@@ -319,6 +333,7 @@ export type Mutation = {
   updatePostLikes?: Maybe<Array<Maybe<GetPostsResult>>>;
   updateCommentLikes?: Maybe<Comment>;
   followOtherUser?: Maybe<User>;
+  uploadImage?: Maybe<User>;
 };
 
 
@@ -573,7 +588,7 @@ export type GetAlbumPostsQuery = (
     & Pick<AlbumPost, 'albumName' | 'externalUrl' | 'artistNames' | 'text' | 'rating' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'username' | 'profilePicture' | 'id'>
     )> }
   )>>> }
 );
@@ -590,7 +605,7 @@ export type GetArtistPostsQuery = (
     & Pick<ArtistPost, 'id' | 'artistName' | 'externalUrl' | 'text' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'username' | 'profilePicture' | 'id'>
     )> }
   )>>> }
 );
@@ -605,21 +620,21 @@ export type GetPostsQuery = (
     & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
     & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
     & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -636,7 +651,7 @@ export type GetTrackPostsQuery = (
     & Pick<TrackPost, 'trackName' | 'externalUrl' | 'text' | 'vote' | 'timeSubmitted'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'username' | 'profilePicture' | 'id'>
     )> }
   )>>> }
 );
@@ -940,7 +955,7 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { getCurrentUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers'>
+    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers' | 'following'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -954,6 +969,20 @@ export type GetCurrentUserQuery = (
   )> }
 );
 
+export type GetFollowingorFollowersQueryVariables = Exact<{
+  id?: Maybe<Scalars['Float']>;
+  request?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetFollowingorFollowersQuery = (
+  { __typename?: 'Query' }
+  & { getFollowingorFollowers?: Maybe<Array<Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture'>
+  )>>> }
+);
+
 export type GetOtherUserQueryVariables = Exact<{
   id?: Maybe<Scalars['Float']>;
 }>;
@@ -963,7 +992,7 @@ export type GetOtherUserQuery = (
   { __typename?: 'Query' }
   & { getOtherUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers'>
+    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers' | 'following'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -1253,6 +1282,8 @@ export const GetAlbumPostsDocument = gql`
     timeSubmitted
     user {
       username
+      profilePicture
+      id
     }
   }
 }
@@ -1293,6 +1324,8 @@ export const GetArtistPostsDocument = gql`
     timeSubmitted
     user {
       username
+      profilePicture
+      id
     }
   }
 }
@@ -1339,6 +1372,8 @@ export const GetPostsDocument = gql`
       albumName
       user {
         username
+        id
+        profilePicture
       }
     }
     ... on TrackPost {
@@ -1354,6 +1389,8 @@ export const GetPostsDocument = gql`
       trackName
       user {
         username
+        id
+        profilePicture
       }
     }
     ... on ArtistPost {
@@ -1367,6 +1404,8 @@ export const GetPostsDocument = gql`
       artistName
       user {
         username
+        id
+        profilePicture
       }
     }
   }
@@ -1407,6 +1446,8 @@ export const GetTrackPostsDocument = gql`
     timeSubmitted
     user {
       username
+      profilePicture
+      id
     }
   }
 }
@@ -2039,6 +2080,7 @@ export const GetCurrentUserDocument = gql`
     email
     profilePicture
     followers
+    following
     topAlbums {
       name
       imageUrl
@@ -2084,6 +2126,43 @@ export function useGetCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQu
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = ApolloReactCommon.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const GetFollowingorFollowersDocument = gql`
+    query getFollowingorFollowers($id: Float, $request: String) {
+  getFollowingorFollowers(id: $id, request: $request) {
+    id
+    username
+    email
+    profilePicture
+  }
+}
+    `;
+
+/**
+ * __useGetFollowingorFollowersQuery__
+ *
+ * To run a query within a React component, call `useGetFollowingorFollowersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFollowingorFollowersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFollowingorFollowersQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      request: // value for 'request'
+ *   },
+ * });
+ */
+export function useGetFollowingorFollowersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetFollowingorFollowersQuery, GetFollowingorFollowersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetFollowingorFollowersQuery, GetFollowingorFollowersQueryVariables>(GetFollowingorFollowersDocument, baseOptions);
+      }
+export function useGetFollowingorFollowersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetFollowingorFollowersQuery, GetFollowingorFollowersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetFollowingorFollowersQuery, GetFollowingorFollowersQueryVariables>(GetFollowingorFollowersDocument, baseOptions);
+        }
+export type GetFollowingorFollowersQueryHookResult = ReturnType<typeof useGetFollowingorFollowersQuery>;
+export type GetFollowingorFollowersLazyQueryHookResult = ReturnType<typeof useGetFollowingorFollowersLazyQuery>;
+export type GetFollowingorFollowersQueryResult = ApolloReactCommon.QueryResult<GetFollowingorFollowersQuery, GetFollowingorFollowersQueryVariables>;
 export const GetOtherUserDocument = gql`
     query getOtherUser($id: Float) {
   getOtherUser(id: $id) {
@@ -2092,6 +2171,7 @@ export const GetOtherUserDocument = gql`
     email
     profilePicture
     followers
+    following
     topAlbums {
       name
       imageUrl

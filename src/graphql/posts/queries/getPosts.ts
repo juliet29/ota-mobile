@@ -16,6 +16,8 @@ export const GET_POSTS = gql`
         albumName
         user {
           username
+          id
+          profilePicture
         }
       }
       ... on TrackPost {
@@ -31,6 +33,8 @@ export const GET_POSTS = gql`
         trackName
         user {
           username
+          id
+          profilePicture
         }
       }
       ... on ArtistPost {
@@ -44,6 +48,8 @@ export const GET_POSTS = gql`
         artistName
         user {
           username
+          id
+          profilePicture
         }
       }
     }
