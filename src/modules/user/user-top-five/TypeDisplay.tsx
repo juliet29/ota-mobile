@@ -32,7 +32,7 @@ export const TypeDisplay: React.FC<TypeDisplayProps> = ({
     return <></>;
   }
 
-  console.log("type display data", data);
+  // console.log("type display data", data);
   // console.log("mdata", freshData);
 
   let localData =

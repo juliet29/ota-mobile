@@ -4,7 +4,8 @@ import { FlatList, Dimensions } from "react-native";
 import { ActivityIndicator, Avatar, List, Title } from "react-native-paper";
 import { useSearchSpotifyQuery } from "../../../../../generated-components/apolloComponents";
 import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
-import { TopFiveArrayType } from "../../../user-settings/settings-top-five/TopFiveSwiper";
+import { TopFiveArrayType } from "../../UserTopFiveView";
+// import { TopFiveArrayType } from "../../../user-settings/settings-top-five/TopFiveSwiper";
 
 interface TopFiveQueryProps {
   searchQuery: string;

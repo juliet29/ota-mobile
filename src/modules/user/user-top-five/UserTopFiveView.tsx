@@ -29,7 +29,7 @@ export type TopFiveArrayType = {
 };
 
 export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({ id }) => {
-  console.log(id);
+  // console.log(id);
   return (
     <StyledColumnView>
       <AlbumTopFiveWrapper id={id} />

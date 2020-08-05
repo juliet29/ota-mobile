@@ -18,8 +18,8 @@ export const ArtistTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
   const [searchQuery, setSearchQuery] = useState("");
   //   const [showSettings, setShowSettings] = useState(false);
   const [updateTopFive, { data: mdata }] = useUpdateUserTopFiveMutation();
-  console.log("mdata1Artist", mdata);
-  console.log("mdataArtist", mdata ? mdata.updateUserTopFive.topArtists : null);
+  // console.log("mdata1Artist", mdata);
+  // console.log("mdataArtist", mdata ? mdata.updateUserTopFive.topArtists : null);
 
   const submitUpdateTopFive = async () => {
     const dataArray: TopFiveInput[] = artistArray;
