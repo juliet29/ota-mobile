@@ -63,7 +63,7 @@ export const client = new ApolloClient({
   request: (operation) => {
     // TODO move to easy-peasy
     const accessToken = getAccessToken();
-    console.log(accessToken);
+    // console.log(accessToken);
     if (accessToken) {
       operation.setContext({
         headers: {

@@ -876,7 +876,17 @@ export type FollowOtherUserMutation = (
   { __typename?: 'Mutation' }
   & { followOtherUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'followers'>
+    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture' | 'followers' | 'following'>
+    & { topAlbums?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>>, topArtists?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id'>
+    )>>>, topTracks?: Maybe<Array<Maybe<(
+      { __typename?: 'TopFive' }
+      & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
+    )>>> }
   )> }
 );
 
@@ -1866,8 +1876,29 @@ export type FacebookSsoMutationOptions = ApolloReactCommon.BaseMutationOptions<F
 export const FollowOtherUserDocument = gql`
     mutation followOtherUser($id: Float, $follow: Boolean) {
   followOtherUser(id: $id, follow: $follow) {
+    id
     username
+    email
+    profilePicture
     followers
+    following
+    topAlbums {
+      name
+      imageUrl
+      id
+      artistNames
+    }
+    topArtists {
+      name
+      imageUrl
+      id
+    }
+    topTracks {
+      name
+      imageUrl
+      id
+      artistNames
+    }
   }
 }
     `;

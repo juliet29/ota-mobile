@@ -10,7 +10,15 @@ import {
   Title,
 } from "react-native-paper";
 import { TabView } from "react-native-tab-view";
-import { useGetOtherUserQuery } from "../../generated-components/apolloComponents";
+import {
+  useGetOtherUserQuery,
+  GetOtherUserDocument,
+  useFollowOtherUserMutation,
+  GetOtherUserQuery,
+  User,
+  Maybe,
+  TopFive,
+} from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
@@ -18,6 +26,7 @@ import { LogoutButton } from "../authentication/components/LogoutButton";
 import { FollowButton } from "./FollowButton";
 import { UserPosts } from "./user-posts/UserPosts";
 import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
+import { client } from "../..";
 
 export const emptyImage =
   "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
@@ -31,6 +40,7 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
 }) => {
   const userState = useStoreState((state) => state.user.user);
   const [index, setIndex] = React.useState(0);
+  const [otherUser, setOtherUser] = React.useState<OtherUserData>({});
   const [routes] = React.useState([
     { key: "first", title: "Posts" },
     { key: "second", title: "Top Five" },
@@ -43,8 +53,20 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
   });
 
   useEffect(() => {
-    console.log("user to be followed according to userview useeffect", data);
-  }, [data]);
+    if (data) {
+      setOtherUser(data.getOtherUser);
+      console.log("data in userview ue", otherUser);
+    }
+    if (error) {
+      console.log("error", error);
+    } else {
+      console.log("loafing", loading);
+    }
+  }, [data, loading, error]);
+
+  useEffect(() => {
+    console.log("brand new data in userview ue!!!", otherUser);
+  }, [otherUser]);
 
   const renderScene = ({ route }) => {
     switch (route.key) {
@@ -65,7 +87,19 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     // console.log(error);
     return <></>;
   }
-  console.log("user to be followed according to userview", data);
+
+  // const followingOtherUser = data.getOtherUser.followers.includes(userState.id);
+  console.log(
+    `i am following this user ${data.getOtherUser.followers.includes(
+      userState.id
+    )}. I know this because their followers are ${
+      data.getOtherUser.followers
+    } and my id is ${userState.id}`
+  );
+
+  // useEffect(() => {
+  //   console.log("user to be followed according to userview useeffect", data);
+  // }, [data]);
 
   return (
     <ScrollView>
@@ -123,12 +157,23 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
                   ? data.getOtherUser.following.length
                   : 0}
               </Button>
+
               <Caption>1 POSTS</Caption>
+
               {id === userState.id ? (
                 <></>
               ) : (
-                <FollowButton id={id} userData={data} />
+                <FollowButton
+                  id={id}
+                  setOtherUser={setOtherUser}
+                  follow={
+                    data.getOtherUser.followers.includes(userState.id)
+                      ? false
+                      : true
+                  }
+                />
               )}
+
               {id === userState.id ? <LogoutButton /> : <></>}
             </View>
           </View>
@@ -149,3 +194,36 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     </ScrollView>
   );
 };
+
+export type OtherUserData = { __typename?: "User" } & Pick<
+  User,
+  "id" | "username" | "email" | "profilePicture" | "followers" | "following"
+> & {
+    topAlbums?: Maybe<
+      Array<
+        Maybe<
+          { __typename?: "TopFive" } & Pick<
+            TopFive,
+            "name" | "imageUrl" | "id" | "artistNames"
+          >
+        >
+      >
+    >;
+    topArtists?: Maybe<
+      Array<
+        Maybe<
+          { __typename?: "TopFive" } & Pick<TopFive, "name" | "imageUrl" | "id">
+        >
+      >
+    >;
+    topTracks?: Maybe<
+      Array<
+        Maybe<
+          { __typename?: "TopFive" } & Pick<
+            TopFive,
+            "name" | "imageUrl" | "id" | "artistNames"
+          >
+        >
+      >
+    >;
+  };
