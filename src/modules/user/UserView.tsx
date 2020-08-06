@@ -150,7 +150,7 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
                     }}>
                     FOLLOWERS:{" "}
                     {otherUser.followers.length > 1
-                      ? otherUser.followers.length
+                      ? otherUser.followers.length - 1
                       : 0}
                   </Button>
                   <Button
@@ -162,7 +162,7 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
                     }}>
                     FOLLOWING:{" "}
                     {otherUser.following.length > 1
-                      ? otherUser.following.length
+                      ? otherUser.following.length - 1
                       : 0}
                   </Button>
                 </View>

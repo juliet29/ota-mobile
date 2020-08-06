@@ -35,7 +35,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
   follow,
   setOtherUser,
 }) => {
-  let [followUser, { data: mdata }] = useFollowOtherUserMutation();
+  let [followUser, { data: mdata, loading }] = useFollowOtherUserMutation();
 
   const submitFollowUser = async (id: number, follow: boolean) => {
     try {
@@ -46,7 +46,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
         ],
       });
       console.log("submit follow button response", res);
-      console.log("submit follow button mutattion data", mdata);
+      // console.log("submit follow button mutattion data", mdata);
       res.data.followOtherUser
         ? setOtherUser(res.data.followOtherUser)
         : console.log("submitted already folled");
@@ -57,7 +57,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
   console.log("i am going to try to follow this user", follow);
 
   return (
-    <Button onPress={() => submitFollowUser(id, follow)}>
+    <Button disabled={loading} onPress={() => submitFollowUser(id, follow)}>
       {follow ? "FOLLOW" : "UNFOLLOW"}
     </Button>
   );
