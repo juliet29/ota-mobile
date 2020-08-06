@@ -42,6 +42,10 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     },
   });
 
+  useEffect(() => {
+    console.log("user to be followed according to userview useeffect", data);
+  }, [data]);
+
   const renderScene = ({ route }) => {
     switch (route.key) {
       case "first":
@@ -61,19 +65,7 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     // console.log(error);
     return <></>;
   }
-
-  // const followingOtherUser = data.getOtherUser.followers.includes(userState.id);
-  console.log(
-    `i am following this user ${data.getOtherUser.followers.includes(
-      userState.id
-    )}. I know this because their followers are ${
-      data.getOtherUser.followers
-    } and my id is ${userState.id}`
-  );
-
-  // useEffect(() => {
-  //   console.log("user to be followed according to userview useeffect", data);
-  // }, [data]);
+  console.log("user to be followed according to userview", data);
 
   return (
     <ScrollView>
@@ -131,22 +123,12 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
                   ? data.getOtherUser.following.length
                   : 0}
               </Button>
-
               <Caption>1 POSTS</Caption>
-
               {id === userState.id ? (
                 <></>
               ) : (
-                <FollowButton
-                  id={id}
-                  follow={
-                    data.getOtherUser.followers.includes(userState.id)
-                      ? false
-                      : true
-                  }
-                />
+                <FollowButton id={id} userData={data} />
               )}
-
               {id === userState.id ? <LogoutButton /> : <></>}
             </View>
           </View>
