@@ -47,7 +47,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       });
       console.log("submit follow button response", res);
       console.log("submit follow button mutattion data", mdata);
-      res.data
+      res.data.followOtherUser
         ? setOtherUser(res.data.followOtherUser)
         : console.log("submitted already folled");
     } catch (err) {
