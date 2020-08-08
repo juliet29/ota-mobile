@@ -54,12 +54,12 @@ export const AlbumTopFiveWrapper2: React.FC<TopFiveWrapperProps> = ({ id }) => {
       />
       {userState.id === id ? (
         <List.Accordion title="Edit Top Five">
-          <AlbumTopFiveEdit
+          {/* <AlbumTopFiveEdit
             array={albumArray}
             setArray={setAlbumArray}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-          />
+          /> */}
           <Button onPress={submitUpdateTopFive}>Submit</Button>
         </List.Accordion>
       ) : (

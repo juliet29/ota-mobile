@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 import {
   ActivityIndicator,
   Caption,
@@ -64,7 +64,7 @@ export const UserPosts: React.FC<
   }
 
   return (
-    <Card>
+    <StyledColumnView>
       <FlatList
         contentContainerStyle={{
           justifyContent: "space-around",
@@ -81,38 +81,40 @@ export const UserPosts: React.FC<
         )}
         keyExtractor={(item, ix) => ix.toString()}
       />
-
-      <FlatList
-        data={data.getUserPosts}
-        renderItem={({ item }) => (
-          <StyledColumnView>
-            {artistStatus === "checked" && item?.__typename === "ArtistPost" ? (
-              <ArtistPostView
-                item={item}
-                navigation={navigation}
-                route={route}
-              />
-            ) : albumStatus === "checked" &&
-              item?.__typename === "AlbumPost" ? (
-              <AlbumPostView
-                item={item}
-                navigation={navigation}
-                route={route}
-              />
-            ) : trackStatus === "checked" &&
-              item?.__typename === "TrackPost" ? (
-              <TrackPostView
-                item={item}
-                navigation={navigation}
-                route={route}
-              />
-            ) : (
-              <></>
-            )}
-          </StyledColumnView>
-        )}
-        keyExtractor={(item, ix) => ix.toString()}
-      />
-    </Card>
+      <ScrollView>
+        <FlatList
+          data={data.getUserPosts}
+          renderItem={({ item }) => (
+            <StyledColumnView>
+              {artistStatus === "checked" &&
+              item?.__typename === "ArtistPost" ? (
+                <ArtistPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              ) : albumStatus === "checked" &&
+                item?.__typename === "AlbumPost" ? (
+                <AlbumPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              ) : trackStatus === "checked" &&
+                item?.__typename === "TrackPost" ? (
+                <TrackPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              ) : (
+                <></>
+              )}
+            </StyledColumnView>
+          )}
+          keyExtractor={(item, ix) => ix.toString()}
+        />
+      </ScrollView>
+    </StyledColumnView>
   );
 };

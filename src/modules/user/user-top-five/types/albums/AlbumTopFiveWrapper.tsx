@@ -6,6 +6,9 @@ import {
   ActivityIndicator,
   Chip,
   Avatar,
+  Surface,
+  IconButton,
+  Colors,
 } from "react-native-paper";
 import {
   GetOtherUserDocument,
@@ -23,9 +26,14 @@ import { Caption } from "react-native-paper";
 import { FlatList } from "react-native-gesture-handler";
 import { array } from "yup";
 import { View } from "react-native";
+import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
 
 export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
   const [array, setArray] = useState(Array<TopFiveArrayType>());
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [index, setIndex] = useState(-1);
+  const [editMode, setEditMode] = useState(false);
   // console.log("id", id);
 
   const { data, loading, error } = useGetOtherUserQuery({
@@ -70,36 +78,104 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log("new arr", array);
+  }, [array, setArray]);
+
   return (
     <StyledColumnView>
-      <FlatList
-        data={array}
-        keyExtractor={(item, index) => index.toString() + item}
-        renderItem={({ item, index }) => (
-          <View>
-            {item.name ? (
-              <Chip
-                avatar={
-                  <Avatar.Image
-                    size={30}
-                    source={{
-                      uri: `${item.imageUrl}`,
-                    }}
-                  />
-                }
-                onClose={() => {
-                  console.log("chip closed", index);
-                  array[index] = {};
-                  setArray(Object.assign([...array], { index: {} }));
-                }}>
-                {item.name}
-              </Chip>
-            ) : (
-              <Caption>Empty Slot </Caption>
+      {!editMode ? (
+        // SIMPLE FLATLIST
+
+        <View>
+          <IconButton
+            icon="circle-edit-outline"
+            size={20}
+            onPress={() => {
+              console.log("edit button pressed");
+              setEditMode(true);
+            }}
+          />
+          <FlatList
+            data={array}
+            keyExtractor={(item, index) => index.toString() + item}
+            renderItem={({ item, index }) => (
+              <View>
+                <Chip
+                  avatar={
+                    <Avatar.Image
+                      size={30}
+                      source={{
+                        uri: `${item.imageUrl}`,
+                      }}
+                    />
+                  }>
+                  {item.name}
+                </Chip>
+              </View>
             )}
-          </View>
-        )}
-      />
+          />
+        </View>
+      ) : (
+        // EDIT MODE FLATLIST
+        <View>
+          <IconButton
+            icon="content-save-all"
+            size={20}
+            onPress={() => {
+              console.log("save button pressed");
+              setEditMode(false);
+            }}
+          />
+          <FlatList
+            data={array}
+            keyExtractor={(item, index) => index.toString() + item}
+            renderItem={({ item, index }) => (
+              <View>
+                {item.name ? (
+                  <Chip
+                    avatar={
+                      <Avatar.Image
+                        size={30}
+                        source={{
+                          uri: `${item.imageUrl}`,
+                        }}
+                      />
+                    }
+                    onClose={() => {
+                      console.log("chip closed", index);
+                      setArray(Object.assign([...array], { [index]: {} }));
+                    }}>
+                    {item.name}
+                  </Chip>
+                ) : (
+                  <Chip
+                    icon="plus"
+                    onPress={() => {
+                      console.log("add");
+                      setShowSearch(true);
+                      setIndex(index);
+                    }}>
+                    New Item
+                  </Chip>
+                )}
+              </View>
+            )}
+          />
+        </View>
+      )}
+      {showSearch ? (
+        <AlbumTopFiveEdit
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          array={array}
+          setArray={setArray}
+          arrayIndex={index}
+          setShowSearch={setShowSearch}
+        />
+      ) : (
+        <></>
+      )}
     </StyledColumnView>
   );
 };

@@ -1,7 +1,13 @@
 // Displaying search results for the different content types
 import React from "react";
 import { FlatList, Dimensions } from "react-native";
-import { ActivityIndicator, Avatar, List, Title } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Avatar,
+  List,
+  Title,
+  Searchbar,
+} from "react-native-paper";
 import { useSearchSpotifyQuery } from "../../../../../generated-components/apolloComponents";
 import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
 import { TopFiveArrayType } from "../../UserTopFiveView";
@@ -9,14 +15,20 @@ import { TopFiveArrayType } from "../../UserTopFiveView";
 
 interface TopFiveQueryProps {
   searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   array: TopFiveArrayType[];
   setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
+  arrayIndex: number;
+  setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 let screenHeight = Dimensions.get("window").height;
 export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   searchQuery,
+  setSearchQuery,
+  arrayIndex,
   array,
   setArray,
+  setShowSearch,
 }) => {
   const { data, loading, error } = useSearchSpotifyQuery({
     variables: {
@@ -33,43 +45,53 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
     return <></>;
   }
   const searchResult = data?.search;
+  console.log(searchResult);
   if (searchResult?.__typename === "AlbumSearchResult") {
     return (
-      <StyledColumnView style={{ height: screenHeight / 4 }}>
-        {/* <Title>Album</Title> */}
-        <FlatList
-          data={searchResult.albums?.items}
-          keyExtractor={(item, index) => item!?.id!?.toString() + index}
-          renderItem={(results) => (
-            <List.Item
-              onPress={() => {
-                setArray((array) => [
-                  ...array,
-                  {
-                    id: results.item?.id,
-                    name: results.item?.name,
-                    imageUrl: results.item?.images?.map((item, ix) => {
-                      return item?.url;
-                    })[1],
-                  },
-                ]);
-              }}
-              title={results.item?.name}
-              left={(props) => (
-                <Avatar.Image
-                  size={20}
-                  source={{
-                    uri: `${
-                      results.item?.images?.map((item, ix) => {
-                        return item?.url;
-                      })[1]
-                    }`,
-                  }}
-                />
-              )}
-            />
-          )}
-        />
+      <StyledColumnView style={{ height: screenHeight / 2 }}>
+        {searchResult?.__typename === "AlbumSearchResult" ? (
+          <FlatList
+            data={searchResult.albums?.items}
+            keyExtractor={(item, index) => item!?.id!?.toString() + index}
+            renderItem={(results) => (
+              <List.Item
+                onPress={() => {
+                  console.log("press item", results.item.name);
+                  console.log("query index", arrayIndex.valueOf);
+
+                  setArray(
+                    Object.assign([...array], {
+                      [arrayIndex]: {
+                        id: results.item?.id,
+                        name: results.item?.name,
+                        imageUrl: results.item?.images?.map((item, ix) => {
+                          return item?.url;
+                        })[1],
+                      },
+                    })
+                  );
+                  setSearchQuery("");
+                  setShowSearch(false);
+                }}
+                title={results.item?.name}
+                left={(props) => (
+                  <Avatar.Image
+                    size={20}
+                    source={{
+                      uri: `${
+                        results.item?.images?.map((item, ix) => {
+                          return item?.url;
+                        })[1]
+                      }`,
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+        ) : (
+          <></>
+        )}
       </StyledColumnView>
     );
   }

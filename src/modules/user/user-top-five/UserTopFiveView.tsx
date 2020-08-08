@@ -15,6 +15,8 @@ export interface TopFiveEditProps {
   setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  arrayIndex: number;
+  setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface TopFiveWrapperProps {
@@ -33,8 +35,8 @@ export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({ id }) => {
   return (
     <StyledColumnView>
       <AlbumTopFiveWrapper id={id} />
-      <ArtistTopFiveWrapper id={id} />
-      <TrackTopFiveWrapper id={id} />
+      {/* <ArtistTopFiveWrapper id={id} />
+      <TrackTopFiveWrapper id={id} /> */}
     </StyledColumnView>
   );
 };
