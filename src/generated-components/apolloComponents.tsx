@@ -399,9 +399,6 @@ export type MutationFollowOtherUserArgs = {
 };
 
 export type TopFiveArrayInput = {
-  id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  imageUrl?: Maybe<Scalars['String']>;
   dataArray?: Maybe<Array<Maybe<TopFiveInput>>>;
   type?: Maybe<Scalars['String']>;
 };
@@ -410,6 +407,7 @@ export type TopFiveInput = {
   id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
+  artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type AlbumPostInput = {

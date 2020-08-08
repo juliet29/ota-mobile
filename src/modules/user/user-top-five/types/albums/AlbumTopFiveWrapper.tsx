@@ -16,6 +16,7 @@ import {
   TopFiveInput,
   useUpdateUserTopFiveMutation,
   useGetOtherUserQuery,
+  TopFive,
 } from "../../../../../generated-components/apolloComponents";
 import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
@@ -34,6 +35,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [index, setIndex] = useState(-1);
   const [editMode, setEditMode] = useState(false);
+  const [updateTopFive, { data: mdata }] = useUpdateUserTopFiveMutation();
   // console.log("id", id);
 
   const { data, loading, error } = useGetOtherUserQuery({
@@ -41,6 +43,29 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
       id,
     },
   });
+
+  const submitUpdateTopFive = async () => {
+    // make sure everything has the right type
+    array.map((value) => console.log(Object.keys(value).length));
+    const goodArray = array.filter((value) => Object.keys(value).length !== 0);
+    console.log("goodArray", goodArray);
+    const dataArray = goodArray as TopFiveInput[];
+    const data: TopFiveArrayInput = {
+      dataArray,
+      type: "album",
+    };
+    try {
+      // make the mutation
+      await updateTopFive({
+        variables: { data },
+        refetchQueries: [
+          { query: GetOtherUserDocument, variables: { data: { id } } },
+        ],
+      });
+    } catch (err) {
+      console.log("error in album top five wrapper", err);
+    }
+  };
 
   if (loading) {
     return <ActivityIndicator />;
@@ -50,25 +75,29 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
     return <></>;
   }
 
-  // // process the top five
-  // let topAlbums = data.getOtherUser.topAlbums;
-  // console.log(topAlbums.length);
-  // if (topAlbums.length > 5) {
-  //   console.log("g than 5 ");
-  //   let topAlbums5 = topAlbums.slice(0, 5);
-  // }
-
   useEffect(() => {
-    console.log("data", data);
+    console.log("DATA CHANGED 1");
     if (data && data.getOtherUser.topAlbums) {
       // might want to switch to get last 5 items in list ...
-      const topAlbums = data.getOtherUser.topAlbums.slice(0, 5);
-      console.log("top albums length:", topAlbums.length);
+      const topAlbums = data.getOtherUser.topAlbums
+        .slice(0, 5)
+        .map(({ __typename, ...item }) => {
+          return item;
+        });
+
+      // console.log("top albums length:", topAlbums.length);
+      console.log("top albums fresh DATA CHANGED", topAlbums);
+      // console.log(
+      //   "we wish",
+      //   topAlbums.map(({ __typename, ...item }) => {
+      //     return item;
+      //   })
+      // );
       if (topAlbums.length < 5) {
         const emptyNum = 5 - topAlbums.length;
-        console.log("empty num", emptyNum);
+        // console.log("empty num", emptyNum);
         const topAlbumsWithEmpty = topAlbums.concat(
-          new Array<TopFiveArrayType>(emptyNum).fill({})
+          new Array(emptyNum).fill({})
         );
         console.log(topAlbumsWithEmpty);
         setArray(topAlbumsWithEmpty);
@@ -124,6 +153,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
             size={20}
             onPress={() => {
               console.log("save button pressed");
+              submitUpdateTopFive();
               setEditMode(false);
             }}
           />
