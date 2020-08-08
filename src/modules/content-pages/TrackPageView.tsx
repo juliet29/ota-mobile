@@ -56,9 +56,11 @@ export const TrackPageView: React.FC<HomeStackNavProps<"TrackPage">> = ({
             />
             <Title>{name}</Title>
             <Caption>Performed By</Caption>
-            {artistNames.map((i) => (
-              <Caption>{i}</Caption>
-            ))}
+            {artistNames ? (
+              artistNames.map((i) => <Caption>{i}</Caption>)
+            ) : (
+              <></>
+            )}
             <Caption>Thubmbs Up/ Thumbs Down: {getAvgVote()}</Caption>
           </Card.Content>
         </Card>

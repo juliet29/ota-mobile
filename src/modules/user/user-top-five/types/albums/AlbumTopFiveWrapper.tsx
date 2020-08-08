@@ -32,6 +32,7 @@ import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
 export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
   id,
   type,
+  navigation,
 }) => {
   const userState = useStoreState((state) => state.user.user);
   const [array, setArray] = useState(Array<TopFiveArrayType>());
@@ -146,6 +147,21 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
             renderItem={({ item, index }) => (
               <View>
                 <Chip
+                  onPress={() => {
+                    const pageType =
+                      type === "track"
+                        ? "TrackPage"
+                        : type === "artist"
+                        ? "ArtistPage"
+                        : type === "album"
+                        ? "AlbumPage"
+                        : null;
+                    navigation.navigate(pageType, {
+                      id: item.id,
+                      name: item?.name,
+                      imageUrl: item.imageUrl,
+                    });
+                  }}
                   avatar={
                     <Avatar.Image
                       size={30}

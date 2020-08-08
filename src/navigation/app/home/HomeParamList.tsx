@@ -11,7 +11,7 @@ export type HomeParamList = {
   TrackPage: {
     id: string;
     name: string;
-    artistNames: string[];
+    artistNames?: string[];
     imageUrl?: string;
   };
   UserPage: { id: number };

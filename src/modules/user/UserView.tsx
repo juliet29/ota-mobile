@@ -75,7 +75,7 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
         return <UserPosts navigation={navigation} route={route} id={id} />;
       case "second":
         // TODO: take this as a prop from the navigation ...
-        return <UserTopFiveView id={id} />;
+        return <UserTopFiveView id={id} navigation={navigation} />;
       default:
         return null;
     }
@@ -98,24 +98,8 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     } and my id is ${userState.id}`
   );
 
-  // useEffect(() => {
-  //   console.log("user to be followed according to userview useeffect", data);
-  // }, [data]);
-  let screenHeight = Dimensions.get("window").height;
-  let bottomSheetRef = React.createRef<BottomSheet>();
-
   return (
     <StyledColumnView>
-      {/* <BottomSheet
-        snapPoints={[450, 300, 0]}
-        renderContent={() => (
-          <View style={{ backgroundColor: "orange", height: screenHeight / 2 }}>
-            <Caption>Helllooooo</Caption>
-          </View>
-        )}
-        // renderHeader={() => <Caption>Search ALbums</Caption>}
-      /> */}
-
       <ScrollView>
         {otherUser && otherUser.followers ? (
           <StyledColumnView>

@@ -5,10 +5,8 @@ import { AlbumTopFiveWrapper } from "./types/albums/AlbumTopFiveWrapper";
 import { TopFive } from "../../../generated-components/apolloComponents";
 import { ArtistTopFiveWrapper } from "./types/artists/ArtistTopFiveWrapper";
 import { TrackTopFiveWrapper } from "./types/tracks/TrackTopFiveWrapper";
-
-interface UserTopFiveViewProps {
-  id: number;
-}
+import { StackNavigationProp } from "@react-navigation/stack";
+import { HomeParamList } from "../../../navigation/app/home/HomeParamList";
 
 export interface TopFiveEditProps {
   array: TopFiveArrayType[];
@@ -23,6 +21,7 @@ export interface TopFiveEditProps {
 export interface TopFiveWrapperProps {
   id: number;
   type: string;
+  navigation: StackNavigationProp<HomeParamList, "UserPage">;
 }
 
 export type TopFiveArrayType = {
@@ -32,18 +31,26 @@ export type TopFiveArrayType = {
   artistNames?: string[];
 };
 
-export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({ id }) => {
+interface UserTopFiveViewProps {
+  id: number;
+  navigation: StackNavigationProp<HomeParamList, "UserPage">;
+}
+
+export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({
+  id,
+  navigation,
+}) => {
   // console.log(id);
   return (
     <StyledColumnView>
       <Subheading>Album Top Five</Subheading>
-      <AlbumTopFiveWrapper id={id} type={"album"} />
+      <AlbumTopFiveWrapper id={id} type={"album"} navigation={navigation} />
 
       <Subheading>Artist Top Five</Subheading>
-      <AlbumTopFiveWrapper id={id} type={"artist"} />
+      <AlbumTopFiveWrapper id={id} type={"artist"} navigation={navigation} />
 
       <Subheading>Track Top Five</Subheading>
-      <AlbumTopFiveWrapper id={id} type={"track"} />
+      <AlbumTopFiveWrapper id={id} type={"track"} navigation={navigation} />
       {/* <ArtistTopFiveWrapper id={id} />
       <TrackTopFiveWrapper id={id} /> */}
     </StyledColumnView>
