@@ -99,7 +99,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
             </HelperText>
 
             <LineBreak />
-            <Button mode="contained" onPress={handleSubmit}>
+            <Button disabled={loading} mode="contained" onPress={handleSubmit}>
               SIGN IN
             </Button>
           </StyledColumnView>

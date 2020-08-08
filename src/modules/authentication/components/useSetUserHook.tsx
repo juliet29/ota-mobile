@@ -18,8 +18,10 @@ export const useSetUserHook: useSetUserHookType = () => {
   useEffect(() => {
     setCurrentUser().then((x) => {
       console.log("in set userhook, hope this is true", x);
+      console.log("this is my data", data);
+      console.log("got that access token tho", userState.accessToken);
     });
-  }, [data]);
+  }, [data, loading, error]);
 
   const setCurrentUser = async () => {
     if (error) {

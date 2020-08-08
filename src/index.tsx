@@ -41,14 +41,16 @@ export const client = new ApolloClient({
     const accessToken = getAccessToken();
     // console.log(accessToken);
     if (accessToken) {
-      console.log("we have an access token in index");
+      console.log("we have an access token in index", accessToken);
       operation.setContext({
         headers: {
           authorization: `bearer ${accessToken}`,
         },
       });
     }
-    console.log("we dont have an access token in index");
+    if (!accessToken) {
+      console.log("we dont have an access token in index");
+    }
   },
 });
 
