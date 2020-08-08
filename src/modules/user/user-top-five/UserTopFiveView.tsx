@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Caption } from "react-native-paper";
+import { Card, Caption, Subheading } from "react-native-paper";
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
 import { AlbumTopFiveWrapper } from "./types/albums/AlbumTopFiveWrapper";
 import { TopFive } from "../../../generated-components/apolloComponents";
@@ -17,10 +17,12 @@ export interface TopFiveEditProps {
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   arrayIndex: number;
   setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  type: string;
 }
 
 export interface TopFiveWrapperProps {
   id: number;
+  type: string;
 }
 
 export type TopFiveArrayType = {
@@ -34,7 +36,14 @@ export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({ id }) => {
   // console.log(id);
   return (
     <StyledColumnView>
-      <AlbumTopFiveWrapper id={id} />
+      <Subheading>Album Top Five</Subheading>
+      <AlbumTopFiveWrapper id={id} type={"album"} />
+
+      <Subheading>Artist Top Five</Subheading>
+      <AlbumTopFiveWrapper id={id} type={"artist"} />
+
+      <Subheading>Track Top Five</Subheading>
+      <AlbumTopFiveWrapper id={id} type={"track"} />
       {/* <ArtistTopFiveWrapper id={id} />
       <TrackTopFiveWrapper id={id} /> */}
     </StyledColumnView>

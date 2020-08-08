@@ -29,13 +29,17 @@ import { array } from "yup";
 import { View } from "react-native";
 import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
 
-export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
+export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
+  id,
+  type,
+}) => {
+  const userState = useStoreState((state) => state.user.user);
   const [array, setArray] = useState(Array<TopFiveArrayType>());
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [index, setIndex] = useState(-1);
   const [editMode, setEditMode] = useState(false);
-  const [updateTopFive, { data: mdata }] = useUpdateUserTopFiveMutation();
+  const [updateTopFive, { loading: mloading }] = useUpdateUserTopFiveMutation();
   // console.log("id", id);
 
   const { data, loading, error } = useGetOtherUserQuery({
@@ -52,7 +56,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
     const dataArray = goodArray as TopFiveInput[];
     const data: TopFiveArrayInput = {
       dataArray,
-      type: "album",
+      type,
     };
     try {
       // make the mutation
@@ -64,6 +68,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
       });
     } catch (err) {
       console.log("error in album top five wrapper", err);
+      return <Caption>Submission Failed</Caption>;
     }
   };
 
@@ -77,34 +82,38 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
 
   useEffect(() => {
     console.log("DATA CHANGED 1");
-    if (data && data.getOtherUser.topAlbums) {
+    if (data && data.getOtherUser) {
       // might want to switch to get last 5 items in list ...
-      const topAlbums = data.getOtherUser.topAlbums
-        .slice(0, 5)
-        .map(({ __typename, ...item }) => {
-          return item;
-        });
+      const content =
+        type === "track"
+          ? data.getOtherUser.topTracks
+          : type === "artist"
+          ? data.getOtherUser.topArtists
+          : type === "album"
+          ? data.getOtherUser.topAlbums
+          : null;
 
-      // console.log("top albums length:", topAlbums.length);
+      const topAlbums = content
+        ? content.slice(0, 5).map(({ __typename, ...item }) => {
+            return item;
+          })
+        : null;
+
       console.log("top albums fresh DATA CHANGED", topAlbums);
-      // console.log(
-      //   "we wish",
-      //   topAlbums.map(({ __typename, ...item }) => {
-      //     return item;
-      //   })
-      // );
-      if (topAlbums.length < 5) {
-        const emptyNum = 5 - topAlbums.length;
-        // console.log("empty num", emptyNum);
-        const topAlbumsWithEmpty = topAlbums.concat(
-          new Array(emptyNum).fill({})
-        );
+
+      if (!topAlbums || topAlbums.length < 5) {
+        const emptyNum = !topAlbums ? 5 : 5 - topAlbums.length;
+        console.log("empty num", emptyNum);
+        const topAlbumsWithEmpty = !topAlbums
+          ? new Array(emptyNum).fill({})
+          : topAlbums.concat(new Array(emptyNum).fill({}));
         console.log(topAlbumsWithEmpty);
         setArray(topAlbumsWithEmpty);
         return;
       }
       setArray(topAlbums);
     }
+    console.log("final array b4 change", array);
   }, [data]);
 
   useEffect(() => {
@@ -117,14 +126,20 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
         // SIMPLE FLATLIST
 
         <View>
-          <IconButton
-            icon="circle-edit-outline"
-            size={20}
-            onPress={() => {
-              console.log("edit button pressed");
-              setEditMode(true);
-            }}
-          />
+          {userState.id === id ? (
+            <IconButton
+              icon="circle-edit-outline"
+              size={20}
+              disabled={mloading}
+              onPress={() => {
+                console.log("edit button pressed");
+                setEditMode(true);
+              }}
+            />
+          ) : (
+            <></>
+          )}
+
           <FlatList
             data={array}
             keyExtractor={(item, index) => index.toString() + item}
@@ -147,6 +162,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
         </View>
       ) : (
         // EDIT MODE FLATLIST
+
         <View>
           <IconButton
             icon="content-save-all"
@@ -196,6 +212,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({ id }) => {
       )}
       {showSearch ? (
         <AlbumTopFiveEdit
+          type={type}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           array={array}

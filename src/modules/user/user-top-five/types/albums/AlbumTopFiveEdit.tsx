@@ -12,6 +12,7 @@ export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
   setSearchQuery,
   arrayIndex,
   setShowSearch,
+  type,
 }) => {
   // useEffect(() => {
   //   // console.log("useeffects array", topFiveArray);
@@ -31,21 +32,8 @@ export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
         setArray={setArray}
         arrayIndex={arrayIndex}
         setShowSearch={setShowSearch}
+        type={type}
       />
-      {/* <FlatList
-        data={array}
-        keyExtractor={(item, index) => item!?.id!?.toString() + index}
-        renderItem={({ item }) => (
-          <Chip
-            onClose={() => {
-              let filteredArray = array.filter((el) => el.name !== item.name);
-              //   console.log("filtered Arr", filteredArray);
-              setArray(filteredArray);
-            }}>
-            {item.name}
-          </Chip>
-        )}
-      /> */}
     </View>
   );
 };

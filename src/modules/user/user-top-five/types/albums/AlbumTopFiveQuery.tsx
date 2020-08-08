@@ -20,6 +20,7 @@ interface TopFiveQueryProps {
   setArray: React.Dispatch<React.SetStateAction<TopFiveArrayType[]>>;
   arrayIndex: number;
   setShowSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  type: string;
 }
 let screenHeight = Dimensions.get("window").height;
 export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
@@ -29,10 +30,11 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   array,
   setArray,
   setShowSearch,
+  type,
 }) => {
   const { data, loading, error } = useSearchSpotifyQuery({
     variables: {
-      type: "album",
+      type,
       query: searchQuery,
     },
   });
@@ -46,12 +48,94 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   }
   const searchResult = data?.search;
   console.log(searchResult);
-  if (searchResult?.__typename === "AlbumSearchResult") {
+  if (searchResult?.__typename) {
     return (
       <StyledColumnView style={{ height: screenHeight / 2 }}>
         {searchResult?.__typename === "AlbumSearchResult" ? (
           <FlatList
             data={searchResult.albums?.items}
+            keyExtractor={(item, index) => item!?.id!?.toString() + index}
+            renderItem={(results) => (
+              <List.Item
+                onPress={() => {
+                  console.log("press item", results.item.name);
+                  console.log("query index", arrayIndex.valueOf);
+
+                  setArray(
+                    Object.assign([...array], {
+                      [arrayIndex]: {
+                        id: results.item?.id,
+                        name: results.item?.name,
+                        imageUrl: results.item?.images?.map((item, ix) => {
+                          return item?.url;
+                        })[1],
+                      },
+                    })
+                  );
+                  setSearchQuery("");
+                  setShowSearch(false);
+                }}
+                title={results.item?.name}
+                left={(props) => (
+                  <Avatar.Image
+                    size={20}
+                    source={{
+                      uri: `${
+                        results.item?.images?.map((item, ix) => {
+                          return item?.url;
+                        })[1]
+                      }`,
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+        ) : searchResult?.__typename === "TrackSearchResult" ? (
+          <FlatList
+            data={searchResult.tracks?.items}
+            keyExtractor={(item, index) => item!?.id!?.toString() + index}
+            renderItem={(results) => (
+              <List.Item
+                onPress={() => {
+                  console.log("press item", results.item.name);
+                  console.log("query index", arrayIndex.valueOf);
+
+                  setArray(
+                    Object.assign([...array], {
+                      [arrayIndex]: {
+                        id: results.item?.id,
+                        name: results.item?.name,
+                        imageUrl: results.item?.album.images?.map(
+                          (item, ix) => {
+                            return item?.url;
+                          }
+                        )[1],
+                      },
+                    })
+                  );
+                  setSearchQuery("");
+                  setShowSearch(false);
+                }}
+                title={results.item?.name}
+                left={(props) => (
+                  <Avatar.Image
+                    size={20}
+                    source={{
+                      uri: `${
+                        results.item?.album.images?.map((item, ix) => {
+                          return item?.url;
+                        })[1]
+                      }`,
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+        ) : searchResult?.__typename === "ArtistSearchResult" ? (
+          <FlatList
+            data={searchResult.artists?.items}
             keyExtractor={(item, index) => item!?.id!?.toString() + index}
             renderItem={(results) => (
               <List.Item
