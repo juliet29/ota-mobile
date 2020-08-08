@@ -36,6 +36,7 @@ export const useLoginHook: useLoginHookType = () => {
     setUser(payload);
     // setUser(accessToken);
     // setCurrentUser();
+    console.log("we are logged in");
   };
 
   const setLogoutUser = async () => {
@@ -44,6 +45,7 @@ export const useLoginHook: useLoginHookType = () => {
     // clear the apollo cache
     await client.clearStore();
     client.resetStore();
+    console.log("we are logged out");
 
     // setUser(accessToken);
   };

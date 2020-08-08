@@ -36,6 +36,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
   // const accessToken = getAccessToken();
   return (
     <NavigationContainer>
+      {/* {user.accessToken ? <RootStack /> : <AuthStack />} */}
       {user.accessToken ? <RootStack /> : <AuthStack />}
     </NavigationContainer>
   );

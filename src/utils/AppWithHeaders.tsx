@@ -21,6 +21,7 @@ export const AppWithHeaders: React.FC<Props> = () => {
   // const setCurrentUser = useSetUserHook();
   //"http://localhost:4000/refresh_token"
   // "https://peaceful-oasis-92942.herokuapp.com/refresh_token"
+  console.log("app w headers running");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +30,7 @@ export const AppWithHeaders: React.FC<Props> = () => {
         credentials: "include",
       }).then(async (x) => {
         const { accessToken } = await x.json();
-        console.log("app w headers", accessToken);
+        console.log("app w headers token", accessToken);
         setLoginUser(accessToken);
         setLoading(false);
       });

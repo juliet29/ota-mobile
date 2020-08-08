@@ -23,10 +23,13 @@ export const useSetUserHook: useSetUserHookType = () => {
 
   const setCurrentUser = async () => {
     if (error) {
+      console.log("err0 in usesetuserhook straightup", error);
       return false;
     }
 
     if (!data) {
+      console.log("no data in usesetuserhook");
+      console.log(data);
       return false;
     }
 
@@ -49,6 +52,7 @@ export const useSetUserHook: useSetUserHookType = () => {
         topTracks: thisData.topTracks,
       });
     } catch (error) {
+      console.log("err1 in usesetuserhook function", error);
       return false;
     }
     return true;
