@@ -21,7 +21,7 @@ export const AlbumTopFiveEdit: React.FC<TopFiveEditProps> = ({
   return (
     <View>
       <Searchbar
-        placeholder="Search top albums"
+        placeholder="Search"
         onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
         value={searchQuery}
       />
