@@ -1,20 +1,23 @@
 import React, { useState } from "react";
-import { Caption } from "react-native-paper";
+import { Caption, Button, Title } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import { View, StyleSheet, Text } from "react-native";
-import { EditNames } from "./user-settings/EditNames";
-import { PickGenres } from "./user-settings/PickGenres";
+import { EditNames } from "./EditNames";
+import { PickGenres } from "./PickGenres";
+import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 // import {  } from "react";
 
 interface UserOnBoardingProps {}
 
-export const UserOnBoarding: React.FC<UserOnBoardingProps> = ({}) => {
+export const UserOnBoarding: React.FC<
+  UserOnBoardingProps & HomeStackNavProps<"UserOnBoarding">
+> = ({ navigation }) => {
   const [next, setNext] = useState(true);
   return (
     <Swiper loop={false} style={styles.wrapper} showsButtons={next}>
       <View style={styles.slide1}>
         <View>
-          <Caption>Welcome to OnTheAux*</Caption>
+          <Title>Welcome to OnTheAux*</Title>
         </View>
       </View>
       <View style={styles.slide2}>
@@ -23,8 +26,16 @@ export const UserOnBoarding: React.FC<UserOnBoardingProps> = ({}) => {
       <View style={styles.slide3}>
         <PickGenres />
       </View>
-      <View style={styles.slide4}>
-        <Caption>Hello 1</Caption>
+      <View style={styles.slide3}>
+        <View>
+          <Title>Thank you!</Title>
+          <Button
+            onPress={() => {
+              navigation.navigate("Feed");
+            }}>
+            Enter the App
+          </Button>
+        </View>
       </View>
     </Swiper>
   );

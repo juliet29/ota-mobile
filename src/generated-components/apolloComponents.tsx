@@ -33,6 +33,7 @@ export type Query = {
   searchUser?: Maybe<Array<Maybe<User>>>;
   getFollowers?: Maybe<Array<Maybe<User>>>;
   getFollowingorFollowers?: Maybe<Array<Maybe<User>>>;
+  getGenres?: Maybe<GenreList>;
 };
 
 
@@ -321,6 +322,11 @@ export type CommentInput = {
   postType?: Maybe<Scalars['String']>;
 };
 
+export type GenreList = {
+  __typename?: 'GenreList';
+  genres?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   updateUserTopFive?: Maybe<User>;
@@ -337,7 +343,8 @@ export type Mutation = {
   updateCommentLikes?: Maybe<Comment>;
   followOtherUser?: Maybe<User>;
   uploadImage?: Maybe<User>;
-  EditUserNames?: Maybe<Scalars['Boolean']>;
+  editUserNames?: Maybe<Scalars['Boolean']>;
+  editUserGenres?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -404,6 +411,11 @@ export type MutationFollowOtherUserArgs = {
 
 
 export type MutationEditUserNamesArgs = {
+  data?: Maybe<EditUserInput>;
+};
+
+
+export type MutationEditUserGenresArgs = {
   data?: Maybe<EditUserInput>;
 };
 
@@ -475,7 +487,7 @@ export type LikeInput = {
 export type EditUserInput = {
   name?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
-  genres?: Maybe<Scalars['String']>;
+  genres?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -797,6 +809,17 @@ export type GetArtistTopTracksQuery = (
   )> }
 );
 
+export type GetGenresQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGenresQuery = (
+  { __typename?: 'Query' }
+  & { getGenres?: Maybe<(
+    { __typename?: 'GenreList' }
+    & Pick<GenreList, 'genres'>
+  )> }
+);
+
 export type SearchSpotifyQueryVariables = Exact<{
   type: Scalars['String'];
   query: Scalars['String'];
@@ -866,6 +889,16 @@ export type SearchSpotifyQuery = (
   )> }
 );
 
+export type EditUserGenresMutationVariables = Exact<{
+  data: EditUserInput;
+}>;
+
+
+export type EditUserGenresMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editUserGenres'>
+);
+
 export type EditUserNamesMutationVariables = Exact<{
   data: EditUserInput;
 }>;
@@ -873,7 +906,7 @@ export type EditUserNamesMutationVariables = Exact<{
 
 export type EditUserNamesMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'EditUserNames'>
+  & Pick<Mutation, 'editUserNames'>
 );
 
 export type FacebookSsoMutationVariables = Exact<{
@@ -1776,6 +1809,38 @@ export function useGetArtistTopTracksLazyQuery(baseOptions?: ApolloReactHooks.La
 export type GetArtistTopTracksQueryHookResult = ReturnType<typeof useGetArtistTopTracksQuery>;
 export type GetArtistTopTracksLazyQueryHookResult = ReturnType<typeof useGetArtistTopTracksLazyQuery>;
 export type GetArtistTopTracksQueryResult = ApolloReactCommon.QueryResult<GetArtistTopTracksQuery, GetArtistTopTracksQueryVariables>;
+export const GetGenresDocument = gql`
+    query getGenres {
+  getGenres {
+    genres
+  }
+}
+    `;
+
+/**
+ * __useGetGenresQuery__
+ *
+ * To run a query within a React component, call `useGetGenresQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGenresQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGenresQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetGenresQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetGenresQuery, GetGenresQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetGenresQuery, GetGenresQueryVariables>(GetGenresDocument, baseOptions);
+      }
+export function useGetGenresLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetGenresQuery, GetGenresQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetGenresQuery, GetGenresQueryVariables>(GetGenresDocument, baseOptions);
+        }
+export type GetGenresQueryHookResult = ReturnType<typeof useGetGenresQuery>;
+export type GetGenresLazyQueryHookResult = ReturnType<typeof useGetGenresLazyQuery>;
+export type GetGenresQueryResult = ApolloReactCommon.QueryResult<GetGenresQuery, GetGenresQueryVariables>;
 export const SearchSpotifyDocument = gql`
     query searchSpotify($type: String!, $query: String!) {
   search(type: $type, query: $query) {
@@ -1864,9 +1929,39 @@ export function useSearchSpotifyLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type SearchSpotifyQueryHookResult = ReturnType<typeof useSearchSpotifyQuery>;
 export type SearchSpotifyLazyQueryHookResult = ReturnType<typeof useSearchSpotifyLazyQuery>;
 export type SearchSpotifyQueryResult = ApolloReactCommon.QueryResult<SearchSpotifyQuery, SearchSpotifyQueryVariables>;
+export const EditUserGenresDocument = gql`
+    mutation editUserGenres($data: EditUserInput!) {
+  editUserGenres(data: $data)
+}
+    `;
+export type EditUserGenresMutationFn = ApolloReactCommon.MutationFunction<EditUserGenresMutation, EditUserGenresMutationVariables>;
+
+/**
+ * __useEditUserGenresMutation__
+ *
+ * To run a mutation, you first call `useEditUserGenresMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditUserGenresMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editUserGenresMutation, { data, loading, error }] = useEditUserGenresMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditUserGenresMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditUserGenresMutation, EditUserGenresMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditUserGenresMutation, EditUserGenresMutationVariables>(EditUserGenresDocument, baseOptions);
+      }
+export type EditUserGenresMutationHookResult = ReturnType<typeof useEditUserGenresMutation>;
+export type EditUserGenresMutationResult = ApolloReactCommon.MutationResult<EditUserGenresMutation>;
+export type EditUserGenresMutationOptions = ApolloReactCommon.BaseMutationOptions<EditUserGenresMutation, EditUserGenresMutationVariables>;
 export const EditUserNamesDocument = gql`
-    mutation EditUserNames($data: EditUserInput!) {
-  EditUserNames(data: $data)
+    mutation editUserNames($data: EditUserInput!) {
+  editUserNames(data: $data)
 }
     `;
 export type EditUserNamesMutationFn = ApolloReactCommon.MutationFunction<EditUserNamesMutation, EditUserNamesMutationVariables>;

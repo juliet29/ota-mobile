@@ -16,7 +16,7 @@ import { UserButton } from "../../../modules/user/UserButton";
 import { UserView } from "../../../modules/user/UserView";
 import { HomeParamList } from "./HomeParamList";
 import { Followers } from "../../../modules/user/Followers";
-import { UserOnBoarding } from "../../../modules/user/UserOnBoarding";
+import { UserOnBoarding } from "../../../modules/user/user-settings/UserOnBoarding";
 
 interface HomeStackProps {}
 

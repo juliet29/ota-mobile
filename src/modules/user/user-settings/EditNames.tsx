@@ -6,6 +6,7 @@ import {
   HelperText,
   TextInput,
   Title,
+  Caption,
 } from "react-native-paper";
 import {
   useGetCurrentUserQuery,
@@ -46,7 +47,7 @@ export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
         refetchQueries: [{ query: GetCurrentUserDocument }],
       });
       console.log("resp", response);
-      if (response.data.EditUserNames) {
+      if (response.data.editUserNames) {
         setNext(true);
       }
     } catch (err) {
@@ -105,7 +106,7 @@ export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
         )}
       </Formik>
 
-      <Button>Skip For Now</Button>
+      <Caption>Use Side Arrows to Skip for Now</Caption>
     </StyledColumnView>
   );
 };
