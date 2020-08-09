@@ -21,6 +21,7 @@ import {
 } from "../../../styled-components/ReusedUI";
 import { EditNameValidationSchema } from "../../../utils/FormValidationSchemas";
 import { client } from "../../../index";
+import { useStoreState } from "../../../state-management/hooks";
 
 interface EditNamesProps {
   setNext: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,10 +29,10 @@ interface EditNamesProps {
 // TODO make placeholder existing username
 export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
   const [editUserNames] = useEditUserNamesMutation();
-  const { getCurrentUser: data } = client.readQuery<GetCurrentUserQuery>({
-    query: GetCurrentUserDocument,
-  });
-
+  // const { getCurrentUser: data } = client.readQuery<GetCurrentUserQuery>({
+  //   query: GetCurrentUserDocument,
+  // });
+  const data = useStoreState((state) => state.user.user);
   // useEffect(() => {
   //   setNext(false);
   // }, []);

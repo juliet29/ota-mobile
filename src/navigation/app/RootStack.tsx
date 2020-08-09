@@ -19,6 +19,7 @@ export const RootStack: React.FC<RootStackProps> = ({}) => {
         component={AppTabs}
         options={{ headerShown: false }}
       />
+      {/* this is a modal */}
       <Root.Screen name="AddContentToPost" component={AddContentToPost} />
     </Root.Navigator>
   );

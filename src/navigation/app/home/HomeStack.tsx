@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { View } from "react-native";
-import { Title } from "react-native-paper";
+import { Title, ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AlbumPageView } from "../../../modules/content-pages/AlbumPageView";
 import { ArtistPageView } from "../../../modules/content-pages/artist-page/ArtistPageView";
@@ -17,14 +17,37 @@ import { UserView } from "../../../modules/user/UserView";
 import { HomeParamList } from "./HomeParamList";
 import { Followers } from "../../../modules/user/Followers";
 import { UserOnBoarding } from "../../../modules/user/user-settings/UserOnBoarding";
+import {
+  GetCurrentUserDocument,
+  GetCurrentUserQuery,
+  useGetCurrentUserQuery,
+} from "../../../generated-components/apolloComponents";
+import { client } from "../../../index";
+import { useStoreState } from "../../../state-management/hooks";
+import { useSetUserHook } from "../../../modules/authentication/components/useSetUserHook";
 
 interface HomeStackProps {}
 
 const Stack = createStackNavigator<HomeParamList>();
 // more things will go here!!!
 export const HomeStack: React.FC<HomeStackProps> = ({}) => {
+  const userState = useStoreState((state) => state.user.user);
+  const setCurrentUser = useSetUserHook();
+  // const userData = client.readQuery<GetCurrentUserQuery>({
+  //   query: GetCurrentUserDocument,
+  // });
+
+  if (!userState || !userState.firstLogin) {
+    console.log("no user data in cache yest", userState);
+    return <ActivityIndicator />;
+  }
+
+  console.log("first login?", userState.firstLogin);
+
   return (
-    <Stack.Navigator initialRouteName="Feed">
+    <Stack.Navigator
+      initialRouteName={userState.firstLogin ? "UserOnBoarding" : "Feed"}>
+      {/* initialRouteName="UserOnBoarding"> */}
       <Stack.Screen
         name="Feed"
         options={{
@@ -57,6 +80,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="SettingsPage" component={SettingsView} />
       <Stack.Screen name="CommentPage" component={CommentsView} />
       <Stack.Screen name="FollowersPage" component={Followers} />
+      {/* TODO: hide tabs on this view later  */}
       <Stack.Screen name="UserOnBoarding" component={UserOnBoarding} />
     </Stack.Navigator>
   );

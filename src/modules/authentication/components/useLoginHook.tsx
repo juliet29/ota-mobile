@@ -8,6 +8,7 @@ import userModel, {
 } from "../../../state-management/model/userModel";
 import { useSetUserHook } from "./useSetUserHook";
 import { client } from "../../../index";
+import { useGetCurrentUserQuery } from "../../../generated-components/apolloComponents";
 
 interface LoginHookProps {}
 
@@ -20,7 +21,7 @@ export const useLoginHook: useLoginHookType = () => {
   //   const { setUser } = useContext(AuthContext);
   const setUser = useStoreActions((actions) => actions.user.setUser);
   const clearUser = useStoreActions((actions) => actions.user.clearUser);
-  // const setCurrentUser = useSetUserHook();
+  // calling this so it will be on the cache
 
   const setLoginUser = (myToken: string, userData?: UserTypeInterface) => {
     setAccessToken(myToken);

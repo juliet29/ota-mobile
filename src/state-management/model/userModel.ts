@@ -6,6 +6,9 @@ export interface UserTypeInterface {
   id?: number;
   username?: string;
   email?: string;
+  firstLogin?: boolean;
+  facebookId?: string;
+  googleId?: string;
   profilePicture?: string;
   accessToken?: string;
   followers?: number[];
