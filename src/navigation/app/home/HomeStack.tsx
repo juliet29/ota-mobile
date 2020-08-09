@@ -16,6 +16,7 @@ import { UserButton } from "../../../modules/user/UserButton";
 import { UserView } from "../../../modules/user/UserView";
 import { HomeParamList } from "./HomeParamList";
 import { Followers } from "../../../modules/user/Followers";
+import { UserOnBoarding } from "../../../modules/user/UserOnBoarding";
 
 interface HomeStackProps {}
 
@@ -54,9 +55,9 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="UserPage" component={UserView} />
       <Stack.Screen name="SearchPage" component={SearchView} />
       <Stack.Screen name="SettingsPage" component={SettingsView} />
-      {/* <Stack.Screen name="EditTopFivePage" component={TopFiveSwiper} /> */}
       <Stack.Screen name="CommentPage" component={CommentsView} />
       <Stack.Screen name="FollowersPage" component={Followers} />
+      <Stack.Screen name="UserOnBoarding" component={UserOnBoarding} />
     </Stack.Navigator>
   );
 };

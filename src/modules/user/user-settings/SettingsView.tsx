@@ -38,6 +38,9 @@ export const SettingsView: React.FC<HomeStackNavProps<"SettingsPage">> = ({
         }}>
         Change Profile Picture
       </Button>
+      <Button onPress={() => navigation.navigate("UserOnBoarding")}>
+        User OnBoarding (move later)
+      </Button>
     </StyledColumnView>
   );
 };

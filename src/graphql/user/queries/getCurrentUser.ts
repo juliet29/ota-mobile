@@ -5,6 +5,8 @@ export const GET_CURRENT_USER = gql`
     getCurrentUser {
       id
       username
+      googleId
+      facebookId
       email
       profilePicture
       followers

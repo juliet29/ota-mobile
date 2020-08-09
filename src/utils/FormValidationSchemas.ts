@@ -20,3 +20,8 @@ export const LoginValidationSchema = yup.object({
 export const CreatePostValidationSchema = yup.object({
   text: yup.string().required(),
 });
+
+export const EditNameValidationSchema = yup.object({
+  name: yup.string().required().min(2),
+  username: yup.string().required().min(5),
+});

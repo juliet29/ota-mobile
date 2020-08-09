@@ -26,6 +26,7 @@ export type HomeParamList = {
     imageUrl?: string;
   };
   FollowersPage: { id: number; request: "following" | "followers" };
+  UserOnBoarding: undefined;
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {
