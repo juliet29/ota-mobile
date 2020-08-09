@@ -4,6 +4,7 @@ export const GET_CURRENT_USER = gql`
   query GetCurrentUser {
     getCurrentUser {
       id
+      name
       username
       googleId
       facebookId
@@ -11,6 +12,8 @@ export const GET_CURRENT_USER = gql`
       profilePicture
       followers
       following
+      genres
+      firstLogin
       topAlbums {
         name
         imageUrl

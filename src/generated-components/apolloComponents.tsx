@@ -129,10 +129,13 @@ export type User = {
   __typename?: 'User';
   id?: Maybe<Scalars['ID']>;
   username?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
   profilePicture?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   facebookId?: Maybe<Scalars['String']>;
   googleId?: Maybe<Scalars['String']>;
+  firstLogin?: Maybe<Scalars['Boolean']>;
+  genres?: Maybe<Array<Maybe<Scalars['String']>>>;
   followers?: Maybe<Array<Maybe<Scalars['Float']>>>;
   following?: Maybe<Array<Maybe<Scalars['Float']>>>;
   topArtists?: Maybe<Array<Maybe<TopFive>>>;
@@ -334,6 +337,7 @@ export type Mutation = {
   updateCommentLikes?: Maybe<Comment>;
   followOtherUser?: Maybe<User>;
   uploadImage?: Maybe<User>;
+  EditUserNames?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -396,6 +400,11 @@ export type MutationUpdateCommentLikesArgs = {
 export type MutationFollowOtherUserArgs = {
   follow?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+
+export type MutationEditUserNamesArgs = {
+  data?: Maybe<EditUserInput>;
 };
 
 export type TopFiveArrayInput = {
@@ -461,6 +470,12 @@ export type LikeInput = {
   postType?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Boolean']>;
+};
+
+export type EditUserInput = {
+  name?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  genres?: Maybe<Scalars['String']>;
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -851,6 +866,16 @@ export type SearchSpotifyQuery = (
   )> }
 );
 
+export type EditUserNamesMutationVariables = Exact<{
+  data: EditUserInput;
+}>;
+
+
+export type EditUserNamesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'EditUserNames'>
+);
+
 export type FacebookSsoMutationVariables = Exact<{
   data: SsoRegisterInput;
 }>;
@@ -963,7 +988,7 @@ export type GetCurrentUserQuery = (
   { __typename?: 'Query' }
   & { getCurrentUser?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'googleId' | 'facebookId' | 'email' | 'profilePicture' | 'followers' | 'following'>
+    & Pick<User, 'id' | 'name' | 'username' | 'googleId' | 'facebookId' | 'email' | 'profilePicture' | 'followers' | 'following' | 'genres' | 'firstLogin'>
     & { topAlbums?: Maybe<Array<Maybe<(
       { __typename?: 'TopFive' }
       & Pick<TopFive, 'name' | 'imageUrl' | 'id' | 'artistNames'>
@@ -1839,6 +1864,36 @@ export function useSearchSpotifyLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type SearchSpotifyQueryHookResult = ReturnType<typeof useSearchSpotifyQuery>;
 export type SearchSpotifyLazyQueryHookResult = ReturnType<typeof useSearchSpotifyLazyQuery>;
 export type SearchSpotifyQueryResult = ApolloReactCommon.QueryResult<SearchSpotifyQuery, SearchSpotifyQueryVariables>;
+export const EditUserNamesDocument = gql`
+    mutation EditUserNames($data: EditUserInput!) {
+  EditUserNames(data: $data)
+}
+    `;
+export type EditUserNamesMutationFn = ApolloReactCommon.MutationFunction<EditUserNamesMutation, EditUserNamesMutationVariables>;
+
+/**
+ * __useEditUserNamesMutation__
+ *
+ * To run a mutation, you first call `useEditUserNamesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditUserNamesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editUserNamesMutation, { data, loading, error }] = useEditUserNamesMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useEditUserNamesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditUserNamesMutation, EditUserNamesMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditUserNamesMutation, EditUserNamesMutationVariables>(EditUserNamesDocument, baseOptions);
+      }
+export type EditUserNamesMutationHookResult = ReturnType<typeof useEditUserNamesMutation>;
+export type EditUserNamesMutationResult = ApolloReactCommon.MutationResult<EditUserNamesMutation>;
+export type EditUserNamesMutationOptions = ApolloReactCommon.BaseMutationOptions<EditUserNamesMutation, EditUserNamesMutationVariables>;
 export const FacebookSsoDocument = gql`
     mutation FacebookSSO($data: SSORegisterInput!) {
   facebookSSO(data: $data) {
@@ -2105,6 +2160,7 @@ export const GetCurrentUserDocument = gql`
     query GetCurrentUser {
   getCurrentUser {
     id
+    name
     username
     googleId
     facebookId
@@ -2112,6 +2168,8 @@ export const GetCurrentUserDocument = gql`
     profilePicture
     followers
     following
+    genres
+    firstLogin
     topAlbums {
       name
       imageUrl

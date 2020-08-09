@@ -30,8 +30,6 @@ export const SettingsView: React.FC<HomeStackNavProps<"SettingsPage">> = ({
 
   return (
     <StyledColumnView>
-      <Title>Edit Name</Title>
-      <Title>Edit Username</Title>
       <Button
         onPress={() => {
           pickImage();

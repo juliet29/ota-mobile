@@ -1,43 +1,62 @@
-import React, { useState } from "react";
+import { ErrorMessage, Formik } from "formik";
+import React, { useState, useEffect } from "react";
 import {
-  TextInput,
-  Title,
+  ActivityIndicator,
   Button,
   HelperText,
-  ActivityIndicator,
+  TextInput,
+  Title,
 } from "react-native-paper";
 import {
-  StyledColumnView,
-  LineBreak,
-} from "../../../styled-components/ReusedUI";
-import { Formik, ErrorMessage } from "formik";
+  useGetCurrentUserQuery,
+  GetCurrentUserDocument,
+  GetCurrentUserQuery,
+  useEditUserNamesMutation,
+  EditUserInput,
+} from "../../../generated-components/apolloComponents";
 import {
-  LoginValidationSchema,
-  EditNameValidationSchema,
-} from "../../../utils/FormValidationSchemas";
-import { useStoreState } from "../../../state-management/hooks";
-import { useGetCurrentUserQuery } from "../../../generated-components/apolloComponents";
+  LineBreak,
+  StyledColumnView,
+} from "../../../styled-components/ReusedUI";
+import { EditNameValidationSchema } from "../../../utils/FormValidationSchemas";
+import { client } from "../../../index";
 
-interface EditNamesProps {}
+interface EditNamesProps {
+  setNext: React.Dispatch<React.SetStateAction<boolean>>;
+}
 // TODO make placeholder existing username
-export const EditNames: React.FC<EditNamesProps> = ({}) => {
-  const { data, loading, error } = useGetCurrentUserQuery();
+export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
+  const [editUserNames] = useEditUserNamesMutation();
+  const { getCurrentUser: data } = client.readQuery<GetCurrentUserQuery>({
+    query: GetCurrentUserDocument,
+  });
 
-  if (loading) {
-    return <ActivityIndicator />;
-  }
-  if (error || !data) {
-    // console.log(error);
-    return <></>;
-  }
+  // useEffect(() => {
+  //   setNext(false);
+  // }, []);
+
+  const submitEditUserNames = async (name: string, username: string) => {
+    const data: EditUserInput = {
+      username,
+      name,
+    };
+    try {
+      const response = await editUserNames({
+        variables: { data },
+        refetchQueries: [{ query: GetCurrentUserDocument }],
+      });
+      console.log("resp", response);
+      if (response.data.EditUserNames) {
+        setNext(true);
+      }
+    } catch (err) {
+      return err;
+    }
+  };
 
   const initialName: string =
-    data.getCurrentUser.googleId || data.getCurrentUser.facebookId
-      ? data.getCurrentUser.username
-      : "";
-  const initialUsername: string = initialName
-    ? ""
-    : data.getCurrentUser.username;
+    data.googleId || data.facebookId ? data.username : "";
+  const initialUsername: string = initialName ? "" : data.username;
 
   return (
     <StyledColumnView>
@@ -47,9 +66,10 @@ export const EditNames: React.FC<EditNamesProps> = ({}) => {
         initialValues={{ name: initialName, username: initialUsername }}
         onSubmit={({ name, username }) => {
           console.log("usename form submit");
+          submitEditUserNames(name, username);
         }}
         validationSchema={EditNameValidationSchema}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, resetForm }) => (
           <StyledColumnView>
             <TextInput
               label="name"
@@ -76,24 +96,15 @@ export const EditNames: React.FC<EditNamesProps> = ({}) => {
             <Button
               //   disabled={!values.name && !values.username}
               mode="contained"
-              onPress={handleSubmit}>
+              onPress={() => {
+                handleSubmit();
+              }}>
               Save Changes
             </Button>
           </StyledColumnView>
         )}
       </Formik>
 
-      {/* <TextInput
-        label="Username"
-        value={username}
-        onChangeText={(username) => setUsername(username)}></TextInput>
-      <TextInput
-        label="name"
-        value={name}
-        onChangeText={(name) => setName(name)}></TextInput>
-      <Button mode="contained" disabled={!name && !username}>
-        Save Changes
-      </Button> */}
       <Button>Skip For Now</Button>
     </StyledColumnView>
   );

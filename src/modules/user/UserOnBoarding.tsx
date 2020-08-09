@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Caption } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { EditNames } from "./user-settings/EditNames";
 import { PickGenres } from "./user-settings/PickGenres";
+// import {  } from "react";
 
 interface UserOnBoardingProps {}
 
 export const UserOnBoarding: React.FC<UserOnBoardingProps> = ({}) => {
+  const [next, setNext] = useState(true);
   return (
-    <Swiper loop={false} style={styles.wrapper} showsButtons={true}>
+    <Swiper loop={false} style={styles.wrapper} showsButtons={next}>
       <View style={styles.slide1}>
-        <Caption>Welcome to OnTheAux*</Caption>
+        <View>
+          <Caption>Welcome to OnTheAux*</Caption>
+        </View>
       </View>
       <View style={styles.slide2}>
-        <EditNames />
+        <EditNames setNext={setNext} />
       </View>
       <View style={styles.slide3}>
         <PickGenres />
