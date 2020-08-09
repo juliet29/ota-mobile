@@ -345,6 +345,7 @@ export type Mutation = {
   uploadImage?: Maybe<User>;
   editUserNames?: Maybe<Scalars['Boolean']>;
   editUserGenres?: Maybe<Scalars['Boolean']>;
+  editFirstLogin?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -887,6 +888,14 @@ export type SearchSpotifyQuery = (
       )>>> }
     )> }
   )> }
+);
+
+export type EditFirstLoginMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type EditFirstLoginMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'editFirstLogin'>
 );
 
 export type EditUserGenresMutationVariables = Exact<{
@@ -1929,6 +1938,35 @@ export function useSearchSpotifyLazyQuery(baseOptions?: ApolloReactHooks.LazyQue
 export type SearchSpotifyQueryHookResult = ReturnType<typeof useSearchSpotifyQuery>;
 export type SearchSpotifyLazyQueryHookResult = ReturnType<typeof useSearchSpotifyLazyQuery>;
 export type SearchSpotifyQueryResult = ApolloReactCommon.QueryResult<SearchSpotifyQuery, SearchSpotifyQueryVariables>;
+export const EditFirstLoginDocument = gql`
+    mutation editFirstLogin {
+  editFirstLogin
+}
+    `;
+export type EditFirstLoginMutationFn = ApolloReactCommon.MutationFunction<EditFirstLoginMutation, EditFirstLoginMutationVariables>;
+
+/**
+ * __useEditFirstLoginMutation__
+ *
+ * To run a mutation, you first call `useEditFirstLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditFirstLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editFirstLoginMutation, { data, loading, error }] = useEditFirstLoginMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useEditFirstLoginMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<EditFirstLoginMutation, EditFirstLoginMutationVariables>) {
+        return ApolloReactHooks.useMutation<EditFirstLoginMutation, EditFirstLoginMutationVariables>(EditFirstLoginDocument, baseOptions);
+      }
+export type EditFirstLoginMutationHookResult = ReturnType<typeof useEditFirstLoginMutation>;
+export type EditFirstLoginMutationResult = ApolloReactCommon.MutationResult<EditFirstLoginMutation>;
+export type EditFirstLoginMutationOptions = ApolloReactCommon.BaseMutationOptions<EditFirstLoginMutation, EditFirstLoginMutationVariables>;
 export const EditUserGenresDocument = gql`
     mutation editUserGenres($data: EditUserInput!) {
   editUserGenres(data: $data)

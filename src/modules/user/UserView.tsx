@@ -26,8 +26,9 @@ import { LogoutButton } from "../authentication/components/LogoutButton";
 import { FollowButton } from "./FollowButton";
 import { UserPosts } from "./user-posts/UserPosts";
 import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
-import { client } from "../..";
+// import { client } from "../..";
 import BottomSheet from "reanimated-bottom-sheet";
+import { client } from "../../index";
 
 export const emptyImage =
   "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
@@ -51,6 +52,20 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
     variables: {
       id,
     },
+  });
+
+  useEffect(() => {
+    try {
+      const { getOtherUser: cacheData } = client.readQuery<GetOtherUserQuery>({
+        query: GetOtherUserDocument,
+        variables: {
+          id,
+        },
+      });
+      console.log("new cache data", cacheData);
+    } catch (err) {
+      console.log("no data yet", err);
+    }
   });
 
   useEffect(() => {

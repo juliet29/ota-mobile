@@ -5,6 +5,10 @@ import { View, StyleSheet, Text } from "react-native";
 import { EditNames } from "./EditNames";
 import { PickGenres } from "./PickGenres";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
+import {
+  useEditFirstLoginMutation,
+  GetCurrentUserDocument,
+} from "../../../generated-components/apolloComponents";
 // import {  } from "react";
 
 interface UserOnBoardingProps {}
@@ -13,6 +17,21 @@ export const UserOnBoarding: React.FC<
   UserOnBoardingProps & HomeStackNavProps<"UserOnBoarding">
 > = ({ navigation }) => {
   const [next, setNext] = useState(true);
+
+  const [editFirstLogin] = useEditFirstLoginMutation();
+
+  const submitEditFirstLogin = async () => {
+    try {
+      const response = await editFirstLogin({
+        refetchQueries: [{ query: GetCurrentUserDocument }],
+      });
+      console.log("resp", response.data.editFirstLogin);
+      return response.data.editFirstLogin;
+    } catch (err) {
+      return err;
+    }
+  };
+
   return (
     <Swiper loop={false} style={styles.wrapper} showsButtons={next}>
       <View style={styles.slide1}>
@@ -31,7 +50,9 @@ export const UserOnBoarding: React.FC<
           <Title>Thank you!</Title>
           <Button
             onPress={() => {
-              navigation.navigate("Feed");
+              submitEditFirstLogin()
+                .then((x) => navigation.navigate("Feed"))
+                .catch((err) => console.log("err use onboard", err));
             }}>
             Enter the App
           </Button>

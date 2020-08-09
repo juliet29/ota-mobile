@@ -37,6 +37,20 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
 }) => {
   let [followUser, { data: mdata, loading }] = useFollowOtherUserMutation();
 
+  useEffect(() => {
+    try {
+      const { getOtherUser: cacheData } = client.readQuery<GetOtherUserQuery>({
+        query: GetOtherUserDocument,
+        variables: {
+          id,
+        },
+      });
+      console.log("new cache data in follow", cacheData);
+    } catch (err) {
+      console.log("no data yet in follow", err);
+    }
+  });
+
   const submitFollowUser = async (id: number, follow: boolean) => {
     try {
       let res = await followUser({

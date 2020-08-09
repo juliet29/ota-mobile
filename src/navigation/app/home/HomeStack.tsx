@@ -37,8 +37,9 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
   //   query: GetCurrentUserDocument,
   // });
 
-  if (!userState || !userState.firstLogin) {
+  if (!userState || !userState.username) {
     console.log("no user data in cache yest", userState);
+
     return <ActivityIndicator />;
   }
 
