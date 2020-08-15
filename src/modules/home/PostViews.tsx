@@ -20,6 +20,7 @@ import { Image, Linking } from "react-native";
 import StarRating from "react-native-star-rating";
 import { PostLikeButton } from "./PostLikeButton";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
+import { emptyImage } from "./FeedView";
 
 interface AlbumPostProps {
   item: {
@@ -84,8 +85,6 @@ interface ArtistPostProps {
       } & Pick<User, "username" | "profilePicture" | "id">;
     };
 }
-const emptyImage =
-  "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
 
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
