@@ -13,6 +13,12 @@ import {
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
 import { TrackSearchPlaylist } from "./TrackSearchPlaylist";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
+import {
+  useCreatePlaylistMutation,
+  PlaylistTrackInput,
+  PlaylistInput,
+  GetPostsDocument,
+} from "../../../generated-components/apolloComponents";
 
 interface CreatePlaylistProps {}
 export type PlaylistItemType = {
@@ -28,17 +34,45 @@ export const CreatePlaylist: React.FC<CreatePlaylistProps> = ({}) => {
   const [description, setDescription] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [array, setArray] = useState(Array<PlaylistItemType>().fill({}));
+  const [createPlaylist] = useCreatePlaylistMutation();
   //   useEffect(() => {
   //     console.log("update array", array);
   //   }, [array]);
-  const submitPlaylist = () => {
-    const playlistData = {
+
+  const submitPlaylist = async () => {
+    const tracks: PlaylistTrackInput[] = array.map((i) => {
+      const trackImageUrl = i.imageUrl;
+      delete i.imageUrl;
+      return { ...i, trackImageUrl };
+    });
+    const playlistData: PlaylistInput = {
       title,
       description,
-      array,
+      tracks,
     };
-    console.log(" playlist published", playlistData);
+    console.log(" playlist to submit", playlistData);
+    try {
+      const response = await createPlaylist({
+        variables: { data: playlistData },
+        refetchQueries: [{ query: GetPostsDocument }],
+      });
+
+      console.log("response success  playlistlData", response);
+    } catch (err) {
+      return err;
+    } finally {
+      //TODO:  need to check for an error... or lool at the behave of this
+
+      setTitle("");
+      setDescription("");
+      setArray(Array<PlaylistItemType>().fill({}));
+      setSearchQuery("");
+
+      // redirect to home page
+      // let know post was succesfule
+    }
   };
+
   return (
     <ScrollView>
       <StyledColumnView style={{ marginLeft: 20, marginRight: 20 }}>

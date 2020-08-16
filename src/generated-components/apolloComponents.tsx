@@ -202,6 +202,8 @@ export type Playlist = {
   id?: Maybe<Scalars['ID']>;
   playlistPicture?: Maybe<Scalars['String']>;
   tracks?: Maybe<Array<Maybe<PlaylistTrack>>>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   likes?: Maybe<Scalars['Float']>;
   user?: Maybe<User>;
@@ -560,6 +562,8 @@ export type PollOptionInput = {
 
 export type PlaylistInput = {
   tracks?: Maybe<Array<Maybe<PlaylistTrackInput>>>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
 };
 
 export type PlaylistTrackInput = {
