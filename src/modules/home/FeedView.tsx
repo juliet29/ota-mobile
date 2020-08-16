@@ -12,6 +12,7 @@ import { AlbumPostView, ArtistPostView, TrackPostView } from "./PostViews";
 import { useStoreActions, useStoreState } from "../../state-management/hooks";
 import { useSetUserHook } from "../../modules/authentication/components/useSetUserHook";
 import { PollView } from "./PollView";
+import { PlaylistView } from "./PlaylistView";
 export const emptyImage =
   "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
 export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
@@ -76,6 +77,12 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
                 />
               ) : item?.__typename === "Poll" ? (
                 <PollView item={item} navigation={navigation} route={route} />
+              ) : item?.__typename === "Playlist" ? (
+                <PlaylistView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
               ) : (
                 <></>
               )}

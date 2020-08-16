@@ -802,7 +802,7 @@ export type GetPostsQuery = (
     )> }
   ) | (
     { __typename?: 'Playlist' }
-    & Pick<Playlist, 'id' | 'playlistPicture' | 'timeSubmitted'>
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
     & { tracks?: Maybe<Array<Maybe<(
       { __typename?: 'PlaylistTrack' }
       & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
@@ -870,7 +870,7 @@ export type GetUserPostsQuery = (
     )> }
   ) | (
     { __typename?: 'Playlist' }
-    & Pick<Playlist, 'id' | 'playlistPicture' | 'timeSubmitted'>
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
     & { tracks?: Maybe<Array<Maybe<(
       { __typename?: 'PlaylistTrack' }
       & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
@@ -1707,6 +1707,9 @@ export const GetPostsDocument = gql`
     ... on Playlist {
       id
       playlistPicture
+      title
+      description
+      likes
       tracks {
         id
         artists
@@ -1862,6 +1865,9 @@ export const GetUserPostsDocument = gql`
     ... on Playlist {
       id
       playlistPicture
+      title
+      description
+      likes
       tracks {
         id
         artists

@@ -6,6 +6,9 @@ export const GET_USER_POSTS = gql`
       ... on Playlist {
         id
         playlistPicture
+        title
+        description
+        likes
         tracks {
           id
           artists

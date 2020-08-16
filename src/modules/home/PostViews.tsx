@@ -91,7 +91,7 @@ interface ArtistPostProps {
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
-  console.log("artist post", item.user);
+  // console.log("artist post", item.user);
   return (
     <Card>
       {/* TODO: make a global style for centering */}
