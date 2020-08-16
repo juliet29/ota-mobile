@@ -3,6 +3,23 @@ import { gql } from "apollo-boost";
 export const GET_USER_POSTS = gql`
   query GetUserPosts($id: Float) {
     getUserPosts(id: $id) {
+      ... on Poll {
+        id
+        question
+        timeSubmitted
+        length
+        likes
+        options {
+          option
+          votes
+        }
+
+        user {
+          username
+          id
+          profilePicture
+        }
+      }
       ... on AlbumPost {
         text
         externalUrl

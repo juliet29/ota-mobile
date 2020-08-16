@@ -108,7 +108,7 @@ export type QueryGetFollowingorFollowersArgs = {
   id?: Maybe<Scalars['Float']>;
 };
 
-export type GetPostsResult = AlbumPost | ArtistPost | TrackPost;
+export type GetPostsResult = AlbumPost | ArtistPost | TrackPost | Poll;
 
 export type AlbumPost = {
   __typename?: 'AlbumPost';
@@ -178,6 +178,23 @@ export type TrackPost = {
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
   trackName?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
+};
+
+export type Poll = {
+  __typename?: 'Poll';
+  id?: Maybe<Scalars['ID']>;
+  question?: Maybe<Scalars['String']>;
+  length?: Maybe<Scalars['Float']>;
+  options?: Maybe<Array<Maybe<PollOption>>>;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  likes?: Maybe<Scalars['Float']>;
+  user?: Maybe<User>;
+};
+
+export type PollOption = {
+  __typename?: 'PollOption';
+  option?: Maybe<Scalars['String']>;
+  votes?: Maybe<Scalars['Float']>;
 };
 
 export type AlbumTracks = {
@@ -314,6 +331,7 @@ export type Comment = {
   trackPost?: Maybe<TrackPost>;
   artistPost?: Maybe<ArtistPost>;
   albumPost?: Maybe<AlbumPost>;
+  poll?: Maybe<AlbumPost>;
 };
 
 export type CommentInput = {
@@ -346,6 +364,7 @@ export type Mutation = {
   editUserNames?: Maybe<Scalars['Boolean']>;
   editUserGenres?: Maybe<Scalars['Boolean']>;
   editFirstLogin?: Maybe<Scalars['Boolean']>;
+  createPoll?: Maybe<Poll>;
 };
 
 
@@ -420,6 +439,11 @@ export type MutationEditUserGenresArgs = {
   data?: Maybe<EditUserInput>;
 };
 
+
+export type MutationCreatePollArgs = {
+  data?: Maybe<PollInput>;
+};
+
 export type TopFiveArrayInput = {
   dataArray?: Maybe<Array<Maybe<TopFiveInput>>>;
   type?: Maybe<Scalars['String']>;
@@ -489,6 +513,17 @@ export type EditUserInput = {
   name?: Maybe<Scalars['String']>;
   username?: Maybe<Scalars['String']>;
   genres?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type PollInput = {
+  question?: Maybe<Scalars['String']>;
+  length?: Maybe<Scalars['Float']>;
+  options?: Maybe<Array<Maybe<PollOptionInput>>>;
+};
+
+export type PollOptionInput = {
+  option?: Maybe<Scalars['String']>;
+  votes?: Maybe<Scalars['Float']>;
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -599,6 +634,9 @@ export type UpdatePostLikesMutation = (
   ) | (
     { __typename?: 'TrackPost' }
     & Pick<TrackPost, 'likes'>
+  ) | (
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'likes'>
   )>>> }
 );
 
@@ -662,6 +700,16 @@ export type GetPostsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
+  ) | (
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'length' | 'likes'>
+    & { options?: Maybe<Array<Maybe<(
+      { __typename?: 'PollOption' }
+      & Pick<PollOption, 'option' | 'votes'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
   )>>> }
 );
 
@@ -710,6 +758,16 @@ export type GetUserPostsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
+  ) | (
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'length' | 'likes'>
+    & { options?: Maybe<Array<Maybe<(
+      { __typename?: 'PollOption' }
+      & Pick<PollOption, 'option' | 'votes'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
   )>>> }
 );
 
@@ -741,7 +799,7 @@ export type SearchPostsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
-  )>>> }
+  ) | { __typename?: 'Poll' }>>> }
 );
 
 export type GetAlbumTracksQueryVariables = Exact<{
@@ -1318,6 +1376,9 @@ export const UpdatePostLikesDocument = gql`
     ... on ArtistPost {
       likes
     }
+    ... on Poll {
+      likes
+    }
   }
 }
     `;
@@ -1434,6 +1495,22 @@ export type GetArtistPostsQueryResult = ApolloReactCommon.QueryResult<GetArtistP
 export const GetPostsDocument = gql`
     query GetPosts {
   getPosts {
+    ... on Poll {
+      id
+      question
+      timeSubmitted
+      length
+      likes
+      options {
+        option
+        votes
+      }
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
     ... on AlbumPost {
       id
       text
@@ -1556,6 +1633,22 @@ export type GetTrackPostsQueryResult = ApolloReactCommon.QueryResult<GetTrackPos
 export const GetUserPostsDocument = gql`
     query GetUserPosts($id: Float) {
   getUserPosts(id: $id) {
+    ... on Poll {
+      id
+      question
+      timeSubmitted
+      length
+      likes
+      options {
+        option
+        votes
+      }
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
     ... on AlbumPost {
       text
       externalUrl

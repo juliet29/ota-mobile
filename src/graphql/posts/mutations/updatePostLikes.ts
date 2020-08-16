@@ -12,6 +12,9 @@ export const UPDATE_POST_LIKES = gql`
       ... on ArtistPost {
         likes
       }
+      ... on Poll {
+        likes
+      }
     }
   }
 `;

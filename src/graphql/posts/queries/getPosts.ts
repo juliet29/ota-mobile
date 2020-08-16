@@ -3,6 +3,23 @@ import { gql } from "apollo-boost";
 export const GET_POSTS = gql`
   query GetPosts {
     getPosts {
+      ... on Poll {
+        id
+        question
+        timeSubmitted
+        length
+        likes
+        options {
+          option
+          votes
+        }
+
+        user {
+          username
+          id
+          profilePicture
+        }
+      }
       ... on AlbumPost {
         id
         text
