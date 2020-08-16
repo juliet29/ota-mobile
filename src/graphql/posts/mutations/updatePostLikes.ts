@@ -15,6 +15,9 @@ export const UPDATE_POST_LIKES = gql`
       ... on Poll {
         likes
       }
+      ... on Playlist {
+        likes
+      }
     }
   }
 `;

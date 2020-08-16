@@ -108,7 +108,7 @@ export type QueryGetFollowingorFollowersArgs = {
   id?: Maybe<Scalars['Float']>;
 };
 
-export type GetPostsResult = AlbumPost | ArtistPost | TrackPost | Poll;
+export type GetPostsResult = AlbumPost | ArtistPost | TrackPost | Poll | Playlist;
 
 export type AlbumPost = {
   __typename?: 'AlbumPost';
@@ -195,6 +195,25 @@ export type PollOption = {
   __typename?: 'PollOption';
   option?: Maybe<Scalars['String']>;
   votes?: Maybe<Scalars['Float']>;
+};
+
+export type Playlist = {
+  __typename?: 'Playlist';
+  id?: Maybe<Scalars['ID']>;
+  playlistPicture?: Maybe<Scalars['String']>;
+  tracks?: Maybe<Array<Maybe<PlaylistTrack>>>;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  likes?: Maybe<Scalars['Float']>;
+  user?: Maybe<User>;
+};
+
+export type PlaylistTrack = {
+  __typename?: 'PlaylistTrack';
+  trackImageUrl?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  artists?: Maybe<Array<Maybe<Scalars['String']>>>;
+  externalUrl?: Maybe<Scalars['String']>;
 };
 
 export type AlbumTracks = {
@@ -365,6 +384,8 @@ export type Mutation = {
   editUserGenres?: Maybe<Scalars['Boolean']>;
   editFirstLogin?: Maybe<Scalars['Boolean']>;
   createPoll?: Maybe<Poll>;
+  updatePoll?: Maybe<Poll>;
+  createPlaylist?: Maybe<Playlist>;
 };
 
 
@@ -444,6 +465,16 @@ export type MutationCreatePollArgs = {
   data?: Maybe<PollInput>;
 };
 
+
+export type MutationUpdatePollArgs = {
+  data?: Maybe<PollInput>;
+};
+
+
+export type MutationCreatePlaylistArgs = {
+  data?: Maybe<PlaylistInput>;
+};
+
 export type TopFiveArrayInput = {
   dataArray?: Maybe<Array<Maybe<TopFiveInput>>>;
   type?: Maybe<Scalars['String']>;
@@ -519,11 +550,24 @@ export type PollInput = {
   question?: Maybe<Scalars['String']>;
   length?: Maybe<Scalars['Float']>;
   options?: Maybe<Array<Maybe<PollOptionInput>>>;
+  id?: Maybe<Scalars['Float']>;
 };
 
 export type PollOptionInput = {
   option?: Maybe<Scalars['String']>;
   votes?: Maybe<Scalars['Float']>;
+};
+
+export type PlaylistInput = {
+  tracks?: Maybe<Array<Maybe<PlaylistTrackInput>>>;
+};
+
+export type PlaylistTrackInput = {
+  trackImageUrl?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  artists?: Maybe<Array<Maybe<Scalars['String']>>>;
+  externalUrl?: Maybe<Scalars['String']>;
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -605,6 +649,32 @@ export type CreateArtistPostMutation = (
   )> }
 );
 
+export type CreatePlaylistMutationVariables = Exact<{
+  data: PlaylistInput;
+}>;
+
+
+export type CreatePlaylistMutation = (
+  { __typename?: 'Mutation' }
+  & { createPlaylist?: Maybe<(
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id'>
+  )> }
+);
+
+export type CreatePollMutationVariables = Exact<{
+  data: PollInput;
+}>;
+
+
+export type CreatePollMutation = (
+  { __typename?: 'Mutation' }
+  & { createPoll?: Maybe<(
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id'>
+  )> }
+);
+
 export type CreateTrackPostMutationVariables = Exact<{
   data: TrackPostInput;
 }>;
@@ -637,7 +707,7 @@ export type UpdatePostLikesMutation = (
   ) | (
     { __typename?: 'Poll' }
     & Pick<Poll, 'likes'>
-  )>>> }
+  ) | { __typename?: 'Playlist' }>>> }
 );
 
 export type GetAlbumPostsQueryVariables = Exact<{
@@ -710,6 +780,16 @@ export type GetPostsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
+  ) | (
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'timeSubmitted'>
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'PlaylistTrack' }
+      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
   )>>> }
 );
 
@@ -768,6 +848,16 @@ export type GetUserPostsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
+  ) | (
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'timeSubmitted'>
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'PlaylistTrack' }
+      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
   )>>> }
 );
 
@@ -799,7 +889,7 @@ export type SearchPostsQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username'>
     )> }
-  ) | { __typename?: 'Poll' }>>> }
+  ) | { __typename?: 'Poll' } | { __typename?: 'Playlist' }>>> }
 );
 
 export type GetAlbumTracksQueryVariables = Exact<{
@@ -1332,6 +1422,70 @@ export function useCreateArtistPostMutation(baseOptions?: ApolloReactHooks.Mutat
 export type CreateArtistPostMutationHookResult = ReturnType<typeof useCreateArtistPostMutation>;
 export type CreateArtistPostMutationResult = ApolloReactCommon.MutationResult<CreateArtistPostMutation>;
 export type CreateArtistPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateArtistPostMutation, CreateArtistPostMutationVariables>;
+export const CreatePlaylistDocument = gql`
+    mutation createPlaylist($data: PlaylistInput!) {
+  createPlaylist(data: $data) {
+    id
+  }
+}
+    `;
+export type CreatePlaylistMutationFn = ApolloReactCommon.MutationFunction<CreatePlaylistMutation, CreatePlaylistMutationVariables>;
+
+/**
+ * __useCreatePlaylistMutation__
+ *
+ * To run a mutation, you first call `useCreatePlaylistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePlaylistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPlaylistMutation, { data, loading, error }] = useCreatePlaylistMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreatePlaylistMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreatePlaylistMutation, CreatePlaylistMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreatePlaylistMutation, CreatePlaylistMutationVariables>(CreatePlaylistDocument, baseOptions);
+      }
+export type CreatePlaylistMutationHookResult = ReturnType<typeof useCreatePlaylistMutation>;
+export type CreatePlaylistMutationResult = ApolloReactCommon.MutationResult<CreatePlaylistMutation>;
+export type CreatePlaylistMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePlaylistMutation, CreatePlaylistMutationVariables>;
+export const CreatePollDocument = gql`
+    mutation createPoll($data: PollInput!) {
+  createPoll(data: $data) {
+    id
+  }
+}
+    `;
+export type CreatePollMutationFn = ApolloReactCommon.MutationFunction<CreatePollMutation, CreatePollMutationVariables>;
+
+/**
+ * __useCreatePollMutation__
+ *
+ * To run a mutation, you first call `useCreatePollMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePollMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPollMutation, { data, loading, error }] = useCreatePollMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreatePollMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreatePollMutation, CreatePollMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreatePollMutation, CreatePollMutationVariables>(CreatePollDocument, baseOptions);
+      }
+export type CreatePollMutationHookResult = ReturnType<typeof useCreatePollMutation>;
+export type CreatePollMutationResult = ApolloReactCommon.MutationResult<CreatePollMutation>;
+export type CreatePollMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePollMutation, CreatePollMutationVariables>;
 export const CreateTrackPostDocument = gql`
     mutation CreateTrackPost($data: TrackPostInput!) {
   createTrackPost(data: $data) {
@@ -1495,6 +1649,23 @@ export type GetArtistPostsQueryResult = ApolloReactCommon.QueryResult<GetArtistP
 export const GetPostsDocument = gql`
     query GetPosts {
   getPosts {
+    ... on Playlist {
+      id
+      playlistPicture
+      tracks {
+        id
+        artists
+        name
+        trackImageUrl
+        externalUrl
+      }
+      timeSubmitted
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
     ... on Poll {
       id
       question
@@ -1633,6 +1804,23 @@ export type GetTrackPostsQueryResult = ApolloReactCommon.QueryResult<GetTrackPos
 export const GetUserPostsDocument = gql`
     query GetUserPosts($id: Float) {
   getUserPosts(id: $id) {
+    ... on Playlist {
+      id
+      playlistPicture
+      tracks {
+        id
+        artists
+        name
+        trackImageUrl
+        externalUrl
+      }
+      timeSubmitted
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
     ... on Poll {
       id
       question
