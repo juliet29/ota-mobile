@@ -87,7 +87,7 @@ export const TrackPageView: React.FC<HomeStackNavProps<"TrackPage">> = ({
                   </Card.Content>
                 </Card>
               )}
-              keyExtractor={(item, ix) => ix.toString()}
+              keyExtractor={(item, ix) => ix.toString().concat(item.toString())}
             />
           </StyledColumnView>
         )}

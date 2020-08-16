@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Text } from "react-native";
+import { Text, Linking } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { ActivityIndicator, Caption, Card } from "react-native-paper";
 import {
@@ -13,6 +13,11 @@ import { useStoreActions, useStoreState } from "../../state-management/hooks";
 import { useSetUserHook } from "../../modules/authentication/components/useSetUserHook";
 import { PollView } from "./PollView";
 import { PlaylistView } from "./PlaylistView";
+export const openURL = (url: string) => {
+  Linking.openURL(url).catch((err) =>
+    console.error("An error occurred while opening url", err)
+  );
+};
 export const emptyImage =
   "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
 export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({

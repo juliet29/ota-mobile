@@ -20,7 +20,7 @@ import { Image, Linking } from "react-native";
 import StarRating from "react-native-star-rating";
 import { PostLikeButton } from "./PostLikeButton";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
-import { emptyImage } from "./FeedView";
+import { emptyImage, openURL } from "./FeedView";
 
 interface AlbumPostProps {
   item: {
@@ -247,11 +247,6 @@ export const AlbumPostView: React.FC<
 export const TrackPostView: React.FC<
   TrackPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
-  const openURL = (url: string) => {
-    Linking.openURL(url).catch((err) =>
-      console.error("An error occurred while opening url", err)
-    );
-  };
   return (
     <Card>
       {/* TODO: make a global style for centering */}
