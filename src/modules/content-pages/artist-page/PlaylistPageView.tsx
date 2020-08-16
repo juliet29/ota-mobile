@@ -33,7 +33,7 @@ export const PlaylistPageView: React.FC<HomeStackNavProps<"PlaylistPage">> = ({
                 uri: `${playlist.playlistPicture}`,
               }}
             />
-            <Title>{name}</Title>
+            <Title>{playlist.title}</Title>
           </Card.Content>
         </Card>
       </StyledColumnView>
