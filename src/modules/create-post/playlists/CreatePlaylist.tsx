@@ -12,7 +12,7 @@ import {
 } from "react-native-paper";
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
 import { TrackSearchPlaylist } from "./TrackSearchPlaylist";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
 
 interface CreatePlaylistProps {}
 export type PlaylistItemType = {
@@ -40,62 +40,64 @@ export const CreatePlaylist: React.FC<CreatePlaylistProps> = ({}) => {
     console.log(" playlist published", playlistData);
   };
   return (
-    <StyledColumnView style={{ marginLeft: 20, marginRight: 20 }}>
-      <Title>Username</Title>
-      <Button onPress={() => submitPlaylist()}>Publish</Button>
-      <TextInput
-        label="Playlist Title"
-        value={title}
-        onChangeText={(text) => setTitle(text)}
-      />
-      <TextInput
-        label="Playlist Description"
-        value={description}
-        onChangeText={(text) => setDescription(text)}
-      />
-      <Searchbar
-        placeholder="Search"
-        onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
-        value={searchQuery}
-      />
-      {searchQuery ? (
-        <TrackSearchPlaylist
-          searchQuery={searchQuery}
-          array={array}
-          setArray={setArray}
+    <ScrollView>
+      <StyledColumnView style={{ marginLeft: 20, marginRight: 20 }}>
+        <Title>Username</Title>
+        <Button onPress={() => submitPlaylist()}>Publish</Button>
+        <TextInput
+          label="Playlist Title"
+          value={title}
+          onChangeText={(text) => setTitle(text)}
         />
-      ) : (
-        <></>
-      )}
-      <Title>Seclected Songs: </Title>
-      <FlatList
-        data={array}
-        keyExtractor={(item, index) => item!?.id!?.toString() + index}
-        renderItem={(results) => (
-          <List.Item
-            title={results.item?.name}
-            description={results.item?.artists?.map((item, ix) => {
-              return item;
-            })}
-            left={(props) => (
-              <Avatar.Image
-                size={20}
-                source={{
-                  uri: `${results.item?.imageUrl}`,
-                }}
-              />
-            )}
-            right={() => (
-              <IconButton
-                icon="cancel"
-                onPress={() => {
-                  setArray(array.filter((i) => i.name !== results.item.name));
-                }}
-              />
-            )}
+        <TextInput
+          label="Playlist Description"
+          value={description}
+          onChangeText={(text) => setDescription(text)}
+        />
+        <Searchbar
+          placeholder="Search"
+          onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
+          value={searchQuery}
+        />
+        {searchQuery ? (
+          <TrackSearchPlaylist
+            searchQuery={searchQuery}
+            array={array}
+            setArray={setArray}
           />
+        ) : (
+          <></>
         )}
-      />
-    </StyledColumnView>
+        <Title>Seclected Songs: </Title>
+        <FlatList
+          data={array}
+          keyExtractor={(item, index) => item!?.id!?.toString() + index}
+          renderItem={(results) => (
+            <List.Item
+              title={results.item?.name}
+              description={results.item?.artists?.map((item, ix) => {
+                return item;
+              })}
+              left={(props) => (
+                <Avatar.Image
+                  size={20}
+                  source={{
+                    uri: `${results.item?.imageUrl}`,
+                  }}
+                />
+              )}
+              right={() => (
+                <IconButton
+                  icon="cancel"
+                  onPress={() => {
+                    setArray(array.filter((i) => i.name !== results.item.name));
+                  }}
+                />
+              )}
+            />
+          )}
+        />
+      </StyledColumnView>
+    </ScrollView>
   );
 };

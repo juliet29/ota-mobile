@@ -13,7 +13,7 @@ import {
 import { FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-community/picker";
-import RNPickerSelect from "react-native-picker-select";
+import { LengthPicker } from "./Picker";
 
 interface CreatePollProps {}
 type PollItemType = {
@@ -32,9 +32,9 @@ export const CreatePoll: React.FC<CreatePollProps> = ({}) => {
   //     console.log("poll array", array);
   //   }, [array]);
 
-  //   useEffect(() => {
-  //     console.log("days", days);
-  //   }, [days]);
+  useEffect(() => {
+    console.log("days", days);
+  }, [days]);
 
   const submitPoll = () => {
     const options = array.filter((el) => el.text).map((el) => el.text);
@@ -53,6 +53,7 @@ export const CreatePoll: React.FC<CreatePollProps> = ({}) => {
     <SafeAreaView>
       <StyledColumnView style={{ marginLeft: 20, marginRight: 20 }}>
         <Title>Username</Title>
+        <Button onPress={() => submitPoll()}>Submit</Button>
         <TextInput
           placeholder={"Ask a question..."}
           value={question}
@@ -126,19 +127,8 @@ export const CreatePoll: React.FC<CreatePollProps> = ({}) => {
           />
         </StyledColumnView>
         <Subheading>Poll Length</Subheading>
-        {/* <RNPickerSelect
-          onValueChange={(value) => console.log(value)}
-          // items={[
-          //     { label: 'Football', value: 'football' },
-          //     { label: 'Baseball', value: 'baseball' },
-          //     { label: 'Hockey', value: 'hockey' },
-          // ]}
-          items={[
-            { label: "1 day", value: 1 },
-            { label: "2 days", value: 2 },
-            { label: "3 days", value: 3 },
-          ]}
-        /> */}
+        <LengthPicker days={days} setDays={setDays} />
+        {/* 
         <Picker
           selectedValue={days}
           style={{ height: 50, width: 100 }}
@@ -146,9 +136,7 @@ export const CreatePoll: React.FC<CreatePollProps> = ({}) => {
           <Picker.Item label="1 day" value={1} />
           <Picker.Item label="2 days" value={2} />
           <Picker.Item label="3 days" value={3} />
-        </Picker>
-
-        <Button onPress={() => submitPoll()}>Submit</Button>
+        </Picker> */}
       </StyledColumnView>
     </SafeAreaView>
   );
