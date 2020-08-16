@@ -25,6 +25,7 @@ import {
 import { client } from "../../../index";
 import { useStoreState } from "../../../state-management/hooks";
 import { useSetUserHook } from "../../../modules/authentication/components/useSetUserHook";
+import { PlaylistPageView } from "../../../modules/content-pages/artist-page/PlaylistPageView";
 
 interface HomeStackProps {}
 
@@ -76,6 +77,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="ArtistPosts" component={ArtistPostsView} />
       <Stack.Screen name="AlbumPage" component={AlbumPageView} />
       <Stack.Screen name="TrackPage" component={TrackPageView} />
+
       <Stack.Screen name="UserPage" component={UserView} />
       <Stack.Screen name="SearchPage" component={SearchView} />
       <Stack.Screen name="SettingsPage" component={SettingsView} />
@@ -83,6 +85,7 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
       <Stack.Screen name="FollowersPage" component={Followers} />
       {/* TODO: hide tabs on this view later  */}
       <Stack.Screen name="UserOnBoarding" component={UserOnBoarding} />
+      <Stack.Screen name="PlaylistPage" component={PlaylistPageView} />
     </Stack.Navigator>
   );
 };

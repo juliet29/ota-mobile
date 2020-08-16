@@ -66,14 +66,11 @@ export const PlaylistView: React.FC<
         <Paragraph>{item?.description}</Paragraph>
         <Button
           mode="contained"
-          // onPress={() => {
-          //   navigation.navigate("ArtistPage", {
-          //     id: item?.artistId,
-          //     name: item?.artistName,
-          //     imageUrl: item.imageUrl,
-          //   });
-          // }}
-        >
+          onPress={() => {
+            navigation.navigate("PlaylistPage", {
+              playlist: item,
+            });
+          }}>
           SEE PLAYLIST
         </Button>
         <Button

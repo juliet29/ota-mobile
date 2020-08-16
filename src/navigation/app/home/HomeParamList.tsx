@@ -1,7 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { PostParamList } from "../shared/PostParamList";
-import { GetOtherUserQuery } from "../../../generated-components/apolloComponents";
+import {
+  GetOtherUserQuery,
+  Playlist,
+} from "../../../generated-components/apolloComponents";
 
 export type HomeParamList = {
   Feed: undefined;
@@ -28,6 +31,7 @@ export type HomeParamList = {
   };
   FollowersPage: { id: number; request: "following" | "followers" };
   UserOnBoarding: undefined;
+  PlaylistPage: { playlist: Playlist };
 } & PostParamList;
 
 export type HomeStackNavProps<T extends keyof HomeParamList> = {
