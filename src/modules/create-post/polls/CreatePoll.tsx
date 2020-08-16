@@ -14,6 +14,12 @@ import { FlatList, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-community/picker";
 import { LengthPicker } from "./Picker";
+import {
+  useCreatePollMutation,
+  GetPostsDocument,
+  PollInput,
+  PollOptionInput,
+} from "../../../generated-components/apolloComponents";
 
 interface CreatePollProps {}
 type PollItemType = {
@@ -28,6 +34,7 @@ export const CreatePoll: React.FC<CreatePollProps> = ({}) => {
   );
   const [days, setDays] = useState(1);
   const [question, setQuestion] = useState("");
+  const [createPoll] = useCreatePollMutation();
   //   useEffect(() => {
   //     console.log("poll array", array);
   //   }, [array]);
@@ -36,17 +43,37 @@ export const CreatePoll: React.FC<CreatePollProps> = ({}) => {
     console.log("days", days);
   }, [days]);
 
-  const submitPoll = () => {
-    const options = array.filter((el) => el.text).map((el) => el.text);
-    if (options.length <= 1) {
-      setErr(true);
-    }
-    const pollData = {
-      days,
+  const submitPoll = async () => {
+    const options: PollOptionInput[] = array
+      .filter((el) => el.text)
+      .map((el) => {
+        let votes: number = 0;
+        let option = el.text;
+        return { option, votes };
+      });
+    const pollData: PollInput = {
+      length: days,
       question,
       options,
     };
     console.log("pollData sample", pollData);
+    try {
+      const response = await createPoll({
+        variables: { data: pollData },
+        refetchQueries: [{ query: GetPostsDocument }],
+      });
+
+      console.log("response pollData", response);
+    } catch (err) {
+      return err;
+    } finally {
+      console.log("success poll sent ");
+      setQuestion("");
+      setArray(Array<PollItemType>(4).fill({ text: "", enabled: false }));
+      setDays(1);
+      // redirect to home page
+      // let know post was succesfule
+    }
   };
 
   return (
