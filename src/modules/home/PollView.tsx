@@ -15,14 +15,16 @@ import { Image, Text, View } from "react-native";
 import { PostLikeButton } from "./PostLikeButton";
 import { emptyImage } from "./FeedView";
 import { FlatList } from "react-native-gesture-handler";
+import {
+  Poll,
+  useUpdatePollMutation,
+  GetPostsDocument,
+  PollInput,
+  PollOptionInput,
+} from "../../generated-components/apolloComponents";
 type OptionData = { option: string; votes?: number };
 interface PollViewProps {
-  item: {
-    question: string;
-    timeSubmitted: string;
-    options: OptionData[];
-    length?: number;
-  };
+  item: Poll;
 }
 
 export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
@@ -31,40 +33,44 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
   route,
 }) => {
   const [showVotes, setShowVotes] = useState(false);
+  const [updatePoll] = useUpdatePollMutation();
+
+  const submitUpdatePoll = async (optionName: string) => {
+    // update votes on the options
+    const newOptions: PollOptionInput[] = item.options.map(
+      ({ __typename, ...i }) => {
+        if (i.option === optionName) {
+          i.votes++;
+        }
+        return i;
+      }
+    );
+    console.log("newOptions", newOptions);
+
+    const data: PollInput = {
+      id: +item.id,
+      options: newOptions,
+    };
+    try {
+      const response = await updatePoll({
+        variables: { data },
+        refetchQueries: [{ query: GetPostsDocument }],
+      });
+      console.log("response updatePollData", response);
+    } catch (err) {
+      return err;
+    } finally {
+      console.log(" success update poll");
+    }
+  };
+
   return (
     <Card>
       {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
-        {/* {item.user ? (
-                <StyledColumnView>
-                  <Caption>{item.user.username}</Caption>
-                  <List.Item
-                    title={item?.user.username}
-                    description={item?.user.username}
-                    onPress={() => {
-                      navigation.navigate("UserPage", { id: +item?.user.id });
-                    }}
-                    left={(props) => (
-                      <Avatar.Image
-                        size={20}
-                        source={{
-                          uri: `${
-                            item?.user.profilePicture
-                              ? item?.user.profilePicture
-                              : emptyImage
-                          }`,
-                        }}
-                      />
-                    )}
-                  />
-                </StyledColumnView>
-              ) : (
-                <></> 
-              )} */}
-
         <Text>{item?.timeSubmitted}</Text>
         <Caption>Poll</Caption>
-        <Subheading>{item.question}</Subheading>
+        <Title>{item.question}</Title>
         <FlatList
           data={item.options}
           keyExtractor={(item, ix) => ix.toString()}
@@ -74,6 +80,7 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
                 <Button
                   onPress={() => {
                     // TODO: update user's vote
+                    submitUpdatePoll(option.item.option);
                     setShowVotes(true);
                   }}>
                   {option.item.option}
@@ -82,29 +89,26 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
             ) : (
               <View>
                 <Subheading>
-                  {option.item.option} {option.item.votes}
+                  {option.item.votes} - {option.item.option}
                 </Subheading>
               </View>
             )
           }
         />
-
-        {/* 
-              <Button
-                mode="contained"
-                onPress={() => {
-                  navigation.navigate("CommentPage", {
-                    postId: +item.id,
-                    postType: "artist", // TODO: change to poll -> will have dif look
-                    contentId: item?.artistId,
-                    name: item?.artistName,
-                    imageUrl: item.imageUrl,
-                  });
-                }}>
-                SEE COMMENTS
-              </Button> */}
-        {/* <PostLikeButton postType={"artist"} postId={+item.id} />
-              <Paragraph>{`Likes: ${item.likes}`}</Paragraph> */}
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate("CommentPage", {
+              postId: +item.id,
+              postType: "poll",
+              contentId: item?.id,
+              question: item.question,
+            });
+          }}>
+          SEE COMMENTS
+        </Button>
+        <PostLikeButton postType={"poll"} postId={+item.id} />
+        <Paragraph>{`Likes: ${item.likes}`}</Paragraph>
       </Card.Content>
     </Card>
   );

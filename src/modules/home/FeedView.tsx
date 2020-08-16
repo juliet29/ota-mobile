@@ -48,9 +48,7 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
           <Caption>Hello {userState.username}</Caption>
         </Card>
         <LineBreak />
-        <StyledColumnView>
-          <PollView item={pollData} navigation={navigation} route={route} />
-        </StyledColumnView>
+        <StyledColumnView></StyledColumnView>
 
         <FlatList
           data={data.getPosts.sort((a, b) =>
@@ -70,12 +68,16 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
                   navigation={navigation}
                   route={route}
                 />
-              ) : (
+              ) : item?.__typename === "TrackPost" ? (
                 <TrackPostView
                   item={item}
                   navigation={navigation}
                   route={route}
                 />
+              ) : item?.__typename === "Poll" ? (
+                <PollView item={item} navigation={navigation} route={route} />
+              ) : (
+                <></>
               )}
             </StyledColumnView>
           )}

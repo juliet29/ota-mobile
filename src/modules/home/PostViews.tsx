@@ -67,7 +67,9 @@ interface TrackPostProps {
 }
 
 interface ArtistPostProps {
-  item: {
+  // TODO: fix these ratchet props lol
+  item: ArtistPost;
+  item2?: {
     __typename?: "ArtistPost";
   } & Pick<
     ArtistPost,

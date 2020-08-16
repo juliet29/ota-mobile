@@ -21,9 +21,10 @@ export type HomeParamList = {
   CommentPage: {
     postId: number;
     postType: string;
-    contentId: string;
-    name: string;
+    contentId?: string;
+    name?: string;
     imageUrl?: string;
+    question?: string;
   };
   FollowersPage: { id: number; request: "following" | "followers" };
   UserOnBoarding: undefined;

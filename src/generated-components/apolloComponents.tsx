@@ -688,6 +688,19 @@ export type CreateTrackPostMutation = (
   )> }
 );
 
+export type UpdatePollMutationVariables = Exact<{
+  data: PollInput;
+}>;
+
+
+export type UpdatePollMutation = (
+  { __typename?: 'Mutation' }
+  & { updatePoll?: Maybe<(
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id'>
+  )> }
+);
+
 export type UpdatePostLikesMutationVariables = Exact<{
   data?: Maybe<LikeInput>;
 }>;
@@ -707,7 +720,10 @@ export type UpdatePostLikesMutation = (
   ) | (
     { __typename?: 'Poll' }
     & Pick<Poll, 'likes'>
-  ) | { __typename?: 'Playlist' }>>> }
+  ) | (
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'likes'>
+  )>>> }
 );
 
 export type GetAlbumPostsQueryVariables = Exact<{
@@ -1518,6 +1534,38 @@ export function useCreateTrackPostMutation(baseOptions?: ApolloReactHooks.Mutati
 export type CreateTrackPostMutationHookResult = ReturnType<typeof useCreateTrackPostMutation>;
 export type CreateTrackPostMutationResult = ApolloReactCommon.MutationResult<CreateTrackPostMutation>;
 export type CreateTrackPostMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTrackPostMutation, CreateTrackPostMutationVariables>;
+export const UpdatePollDocument = gql`
+    mutation updatePoll($data: PollInput!) {
+  updatePoll(data: $data) {
+    id
+  }
+}
+    `;
+export type UpdatePollMutationFn = ApolloReactCommon.MutationFunction<UpdatePollMutation, UpdatePollMutationVariables>;
+
+/**
+ * __useUpdatePollMutation__
+ *
+ * To run a mutation, you first call `useUpdatePollMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePollMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePollMutation, { data, loading, error }] = useUpdatePollMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdatePollMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdatePollMutation, UpdatePollMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdatePollMutation, UpdatePollMutationVariables>(UpdatePollDocument, baseOptions);
+      }
+export type UpdatePollMutationHookResult = ReturnType<typeof useUpdatePollMutation>;
+export type UpdatePollMutationResult = ApolloReactCommon.MutationResult<UpdatePollMutation>;
+export type UpdatePollMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdatePollMutation, UpdatePollMutationVariables>;
 export const UpdatePostLikesDocument = gql`
     mutation updatePostLikes($data: LikeInput) {
   updatePostLikes(data: $data) {
@@ -1531,6 +1579,9 @@ export const UpdatePostLikesDocument = gql`
       likes
     }
     ... on Poll {
+      likes
+    }
+    ... on Playlist {
       likes
     }
   }

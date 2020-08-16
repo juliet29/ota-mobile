@@ -24,7 +24,14 @@ export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
   route,
   navigation,
 }) => {
-  const { postId, postType, contentId, name, imageUrl } = route.params;
+  const {
+    postId,
+    postType,
+    contentId,
+    name,
+    imageUrl,
+    question,
+  } = route.params;
   const { data, loading, error } = useGetCommentsQuery({
     variables: {
       data: {
@@ -45,12 +52,21 @@ export const CommentsView: React.FC<HomeStackNavProps<"CommentPage">> = ({
   return (
     <ScrollView>
       <StyledColumnView>
-        <Card>
-          <Card.Content style={{ alignItems: "center" }}>
-            <Avatar.Image size={80} source={{ uri: `${imageUrl}` }} />
-            <Title>{name}</Title>
-          </Card.Content>
-        </Card>
+        {postType === "poll" ? (
+          <Card>
+            <Card.Content style={{ alignItems: "center" }}>
+              <Title>{question}</Title>
+              <Title>{name}</Title>
+            </Card.Content>
+          </Card>
+        ) : (
+          <Card>
+            <Card.Content style={{ alignItems: "center" }}>
+              <Avatar.Image size={80} source={{ uri: `${imageUrl}` }} />
+              <Title>{name}</Title>
+            </Card.Content>
+          </Card>
+        )}
         {data.getComments.length > 0 ? (
           <FlatList
             data={data.getComments.sort((a, b) =>
