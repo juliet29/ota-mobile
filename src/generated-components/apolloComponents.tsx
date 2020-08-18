@@ -21,6 +21,7 @@ export type Query = {
   getArtistPosts?: Maybe<Array<Maybe<ArtistPost>>>;
   getAlbumPosts?: Maybe<Array<Maybe<AlbumPost>>>;
   getTrackPosts?: Maybe<Array<Maybe<TrackPost>>>;
+  getMyList?: Maybe<Array<Maybe<GetPostsResult>>>;
   getAlbumTracks?: Maybe<AlbumTracks>;
   getArtistAlbums?: Maybe<ArtistAlbums>;
   getArtistTopTracks?: Maybe<ArtistTopTracks>;
@@ -142,6 +143,7 @@ export type User = {
   topArtists?: Maybe<Array<Maybe<TopFive>>>;
   topAlbums?: Maybe<Array<Maybe<TopFive>>>;
   topTracks?: Maybe<Array<Maybe<TopFive>>>;
+  myList?: Maybe<Array<Maybe<MyListItem>>>;
 };
 
 export type TopFive = {
@@ -150,6 +152,12 @@ export type TopFive = {
   name?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type MyListItem = {
+  __typename?: 'MyListItem';
+  postId?: Maybe<Scalars['Float']>;
+  postType?: Maybe<Scalars['String']>;
 };
 
 export type ArtistPost = {
@@ -369,6 +377,8 @@ export type GenreList = {
 export type Mutation = {
   __typename?: 'Mutation';
   updateUserTopFive?: Maybe<User>;
+  addToMyList?: Maybe<User>;
+  removeFromMyList?: Maybe<User>;
   createAlbumPost?: Maybe<AlbumPost>;
   createArtistPost?: Maybe<ArtistPost>;
   createTrackPost?: Maybe<TrackPost>;
@@ -393,6 +403,16 @@ export type Mutation = {
 
 export type MutationUpdateUserTopFiveArgs = {
   data?: Maybe<TopFiveArrayInput>;
+};
+
+
+export type MutationAddToMyListArgs = {
+  data?: Maybe<MyListInput>;
+};
+
+
+export type MutationRemoveFromMyListArgs = {
+  data?: Maybe<MyListInput>;
 };
 
 
@@ -487,6 +507,11 @@ export type TopFiveInput = {
   name?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type MyListInput = {
+  postId?: Maybe<Scalars['Float']>;
+  postType?: Maybe<Scalars['String']>;
 };
 
 export type AlbumPostInput = {
@@ -623,6 +648,79 @@ export type GetCommentsQuery = (
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id'>
+    )> }
+  )>>> }
+);
+
+export type AddToMyListMutationVariables = Exact<{
+  data: MyListInput;
+}>;
+
+
+export type AddToMyListMutation = (
+  { __typename?: 'Mutation' }
+  & { addToMyList?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'id'>
+    & { myList?: Maybe<Array<Maybe<(
+      { __typename?: 'MyListItem' }
+      & Pick<MyListItem, 'postId' | 'postType'>
+    )>>> }
+  )> }
+);
+
+export type RemoveFromMyListMutationVariables = Exact<{
+  data: MyListInput;
+}>;
+
+
+export type RemoveFromMyListMutation = (
+  { __typename?: 'Mutation' }
+  & { removeFromMyList?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'id'>
+    & { myList?: Maybe<Array<Maybe<(
+      { __typename?: 'MyListItem' }
+      & Pick<MyListItem, 'postId' | 'postType'>
+    )>>> }
+  )> }
+);
+
+export type GetMyListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyListQuery = (
+  { __typename?: 'Query' }
+  & { getMyList?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | { __typename?: 'Poll' } | (
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'PlaylistTrack' }
+      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -1378,6 +1476,180 @@ export function useGetCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
 export type GetCommentsLazyQueryHookResult = ReturnType<typeof useGetCommentsLazyQuery>;
 export type GetCommentsQueryResult = ApolloReactCommon.QueryResult<GetCommentsQuery, GetCommentsQueryVariables>;
+export const AddToMyListDocument = gql`
+    mutation addToMyList($data: MyListInput!) {
+  addToMyList(data: $data) {
+    username
+    id
+    myList {
+      postId
+      postType
+    }
+  }
+}
+    `;
+export type AddToMyListMutationFn = ApolloReactCommon.MutationFunction<AddToMyListMutation, AddToMyListMutationVariables>;
+
+/**
+ * __useAddToMyListMutation__
+ *
+ * To run a mutation, you first call `useAddToMyListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddToMyListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addToMyListMutation, { data, loading, error }] = useAddToMyListMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useAddToMyListMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddToMyListMutation, AddToMyListMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddToMyListMutation, AddToMyListMutationVariables>(AddToMyListDocument, baseOptions);
+      }
+export type AddToMyListMutationHookResult = ReturnType<typeof useAddToMyListMutation>;
+export type AddToMyListMutationResult = ApolloReactCommon.MutationResult<AddToMyListMutation>;
+export type AddToMyListMutationOptions = ApolloReactCommon.BaseMutationOptions<AddToMyListMutation, AddToMyListMutationVariables>;
+export const RemoveFromMyListDocument = gql`
+    mutation removeFromMyList($data: MyListInput!) {
+  removeFromMyList(data: $data) {
+    username
+    id
+    myList {
+      postId
+      postType
+    }
+  }
+}
+    `;
+export type RemoveFromMyListMutationFn = ApolloReactCommon.MutationFunction<RemoveFromMyListMutation, RemoveFromMyListMutationVariables>;
+
+/**
+ * __useRemoveFromMyListMutation__
+ *
+ * To run a mutation, you first call `useRemoveFromMyListMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveFromMyListMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeFromMyListMutation, { data, loading, error }] = useRemoveFromMyListMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useRemoveFromMyListMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RemoveFromMyListMutation, RemoveFromMyListMutationVariables>) {
+        return ApolloReactHooks.useMutation<RemoveFromMyListMutation, RemoveFromMyListMutationVariables>(RemoveFromMyListDocument, baseOptions);
+      }
+export type RemoveFromMyListMutationHookResult = ReturnType<typeof useRemoveFromMyListMutation>;
+export type RemoveFromMyListMutationResult = ApolloReactCommon.MutationResult<RemoveFromMyListMutation>;
+export type RemoveFromMyListMutationOptions = ApolloReactCommon.BaseMutationOptions<RemoveFromMyListMutation, RemoveFromMyListMutationVariables>;
+export const GetMyListDocument = gql`
+    query getMyList {
+  getMyList {
+    ... on Playlist {
+      id
+      playlistPicture
+      title
+      description
+      likes
+      tracks {
+        id
+        artists
+        name
+        trackImageUrl
+        externalUrl
+      }
+      timeSubmitted
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on AlbumPost {
+      id
+      text
+      likes
+      externalUrl
+      artistNames
+      rating
+      imageUrl
+      timeSubmitted
+      albumId
+      albumName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on TrackPost {
+      id
+      text
+      likes
+      artistNames
+      externalUrl
+      vote
+      imageUrl
+      timeSubmitted
+      trackId
+      trackName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on ArtistPost {
+      id
+      text
+      likes
+      imageUrl
+      externalUrl
+      timeSubmitted
+      artistId
+      artistName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyListQuery__
+ *
+ * To run a query within a React component, call `useGetMyListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyListQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyListQuery, GetMyListQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyListQuery, GetMyListQueryVariables>(GetMyListDocument, baseOptions);
+      }
+export function useGetMyListLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyListQuery, GetMyListQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyListQuery, GetMyListQueryVariables>(GetMyListDocument, baseOptions);
+        }
+export type GetMyListQueryHookResult = ReturnType<typeof useGetMyListQuery>;
+export type GetMyListLazyQueryHookResult = ReturnType<typeof useGetMyListLazyQuery>;
+export type GetMyListQueryResult = ApolloReactCommon.QueryResult<GetMyListQuery, GetMyListQueryVariables>;
 export const CreateAlbumPostDocument = gql`
     mutation CreateAlbumPost($data: AlbumPostInput!) {
   createAlbumPost(data: $data) {

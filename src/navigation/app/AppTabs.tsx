@@ -12,6 +12,7 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AddContentToPost } from "../../modules/create-post/AddContentToPost";
+import { MyList } from "./my-list/MyList";
 
 interface AppTabsProps {}
 
@@ -43,7 +44,7 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
       <Tabs.Screen name="Home" component={HomeStack} />
       <Tabs.Screen name="Discover" component={DiscoverStack} />
       <Tabs.Screen name="CreatePost" component={CreatePostStack} />
-      <Tabs.Screen name="MyList" component={MyListStack} />
+      <Tabs.Screen name="MyList" component={MyList} />
       <Tabs.Screen name="DirectMessages" component={DirectMessagesStack} />
     </Tabs.Navigator>
   );

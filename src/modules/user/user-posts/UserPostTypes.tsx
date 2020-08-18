@@ -13,66 +13,25 @@ import {
   Paragraph,
   Button,
   Text,
+  List,
+  Avatar,
 } from "react-native-paper";
 import { Image, Linking, View } from "react-native";
 import StarRating from "react-native-star-rating";
+import { StyledColumnView } from "../../../styled-components/ReusedUI";
+import { emptyImage } from "../../home/FeedView";
+import { PostLikeButton } from "../../home/PostLikeButton";
 
 interface AlbumPostProps {
-  item: {
-    __typename?: "AlbumPost";
-  } & Pick<
-    AlbumPost,
-    | "text"
-    | "artistNames"
-    | "rating"
-    | "imageUrl"
-    | "timeSubmitted"
-    | "albumId"
-    | "externalUrl"
-    | "albumName"
-  > & {
-      user?: {
-        __typename?: "User";
-      } & Pick<User, "username">;
-    };
+  item: AlbumPost;
 }
 
 interface TrackPostProps {
-  item: {
-    __typename?: "TrackPost";
-  } & Pick<
-    TrackPost,
-    | "text"
-    | "imageUrl"
-    | "timeSubmitted"
-    | "artistNames"
-    | "vote"
-    | "trackId"
-    | "externalUrl"
-    | "trackName"
-  > & {
-      user?: {
-        __typename?: "User";
-      } & Pick<User, "username">;
-    };
+  item: TrackPost;
 }
 
 interface ArtistPostProps {
-  item: {
-    __typename?: "ArtistPost";
-  } & Pick<
-    ArtistPost,
-    | "text"
-    | "imageUrl"
-    | "timeSubmitted"
-    | "artistId"
-    | "artistName"
-    | "externalUrl"
-  > & {
-      user?: {
-        __typename?: "User";
-      } & Pick<User, "username">;
-    };
+  item: ArtistPost;
 }
 
 export const ArtistPostView: React.FC<

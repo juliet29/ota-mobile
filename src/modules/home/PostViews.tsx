@@ -21,71 +21,18 @@ import StarRating from "react-native-star-rating";
 import { PostLikeButton } from "./PostLikeButton";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { emptyImage, openURL } from "./FeedView";
+import { AddToMyListButton } from "../../navigation/app/my-list/AddToMyListButton";
 
 interface AlbumPostProps {
-  item: {
-    __typename?: "AlbumPost";
-  } & Pick<
-    AlbumPost,
-    | "text"
-    | "id"
-    | "likes"
-    | "artistNames"
-    | "rating"
-    | "imageUrl"
-    | "timeSubmitted"
-    | "albumId"
-    | "externalUrl"
-    | "albumName"
-  > & {
-      user?: {
-        __typename?: "User";
-      } & Pick<User, "username" | "profilePicture" | "id">;
-    };
+  item: AlbumPost;
 }
 
 interface TrackPostProps {
-  item: {
-    __typename?: "TrackPost";
-  } & Pick<
-    TrackPost,
-    | "text"
-    | "id"
-    | "likes"
-    | "imageUrl"
-    | "timeSubmitted"
-    | "artistNames"
-    | "vote"
-    | "trackId"
-    | "externalUrl"
-    | "trackName"
-  > & {
-      user?: {
-        __typename?: "User";
-      } & Pick<User, "username" | "profilePicture" | "id">;
-    };
+  item: TrackPost;
 }
 
 interface ArtistPostProps {
-  // TODO: fix these ratchet props lol
   item: ArtistPost;
-  item2?: {
-    __typename?: "ArtistPost";
-  } & Pick<
-    ArtistPost,
-    | "text"
-    | "likes"
-    | "id"
-    | "imageUrl"
-    | "timeSubmitted"
-    | "artistId"
-    | "artistName"
-    | "externalUrl"
-  > & {
-      user?: {
-        __typename?: "User";
-      } & Pick<User, "username" | "profilePicture" | "id">;
-    };
 }
 
 export const ArtistPostView: React.FC<
@@ -96,6 +43,7 @@ export const ArtistPostView: React.FC<
     <Card>
       {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
+        <AddToMyListButton postId={+item.id} postType={"artist"} />
         <Image
           style={{ width: 200, height: 200 }}
           resizeMode="contain"
@@ -172,6 +120,7 @@ export const AlbumPostView: React.FC<
     <Card>
       {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
+        <AddToMyListButton postId={+item.id} postType={"album"} />
         <Image
           style={{ width: 200, height: 200 }}
           resizeMode="contain"
@@ -251,6 +200,7 @@ export const TrackPostView: React.FC<
     <Card>
       {/* TODO: make a global style for centering */}
       <Card.Content style={{ alignItems: "center" }}>
+        <AddToMyListButton postId={+item.id} postType={"track"} />
         <Image
           style={{ width: 200, height: 200 }}
           resizeMode="contain"
