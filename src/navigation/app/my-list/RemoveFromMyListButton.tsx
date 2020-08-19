@@ -27,9 +27,10 @@ export const RemoveFromMyListButton: React.FC<MyListItem> = ({
         variables: { data },
         refetchQueries: [{ query: GetMyListDocument }],
       });
+      console.log("remove response", response);
       return response;
     } catch (err) {
-      return err;
+      console.log("err", err);
     }
   };
 

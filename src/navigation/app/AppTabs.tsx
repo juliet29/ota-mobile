@@ -31,6 +31,8 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
               : "ios-information-circle-outline";
           } else if (route.name === "CreatePost") {
             iconName = focused ? "ios-list-box" : "ios-list";
+          } else if (route.name === "MyList") {
+            iconName = focused ? "ios-bookmark" : "ios-bookmarks";
           }
 
           // You can return any component that you like here!

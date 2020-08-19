@@ -20,8 +20,9 @@ interface PlaylistViewProps {
   item: Playlist;
 }
 
+// FEED VIEW
 export const PlaylistView: React.FC<
-  PlaylistViewProps & HomeStackNavProps<"Feed"> & HomeStackNavProps<"UserPage">
+  PlaylistViewProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route, navigation: navigationU }) => {
   return (
     <Card>
@@ -95,7 +96,7 @@ export const PlaylistView: React.FC<
   );
 };
 
-//    FOR USER VIEW
+//   FOR USER VIEW
 export const PlaylistUserView: React.FC<
   PlaylistViewProps & HomeStackNavProps<"UserPage">
 > = ({ item, navigation, route, navigation: navigationU }) => {
@@ -110,7 +111,7 @@ export const PlaylistUserView: React.FC<
             uri: `${item.playlistPicture}`,
           }}
         />
-        {item.user ? (
+        {/* {item.user ? (
           <StyledColumnView>
             <Caption>{item.user.username}</Caption>
             <List.Item
@@ -135,7 +136,7 @@ export const PlaylistUserView: React.FC<
           </StyledColumnView>
         ) : (
           <></>
-        )}
+        )} */}
 
         <Text>{item?.timeSubmitted}</Text>
         <Caption>PLAYLIST</Caption>

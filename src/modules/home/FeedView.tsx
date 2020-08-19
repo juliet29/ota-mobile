@@ -27,25 +27,16 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   const { data, loading, error } = useGetPostsQuery();
   const userState = useStoreState((state) => state.user.user);
   const setCurrentUser = useSetUserHook();
-  const pollData = {
-    days: 3,
-    options: [
-      { option: "Yes", votes: 8 },
-      { option: "No", votes: 1 },
-    ],
-    question: "Is Burna Boy's new album worth a listen?",
-    length: 2,
-    timeSubmitted: "today",
-  };
 
   if (loading) {
-    console.log("current user is", userState);
     return <ActivityIndicator />;
   }
   if (error || !data) {
-    // console.log(error);
-    return <Text>Error..</Text>;
+    console.log(error);
+    return <Caption>Error...</Caption>;
   }
+
+  console.log("get post query data", data);
 
   return (
     <ScrollView>

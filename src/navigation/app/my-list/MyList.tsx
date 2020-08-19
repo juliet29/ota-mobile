@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
 import {
   Caption,
@@ -16,6 +16,8 @@ import {
 import {
   useGetUserPostsQuery,
   useGetMyListQuery,
+  GetMyListQuery,
+  GetMyListDocument,
 } from "../../../generated-components/apolloComponents";
 import { useStoreState } from "../../../state-management/hooks";
 import { AppNavProps } from "../AppParamList";
@@ -26,9 +28,9 @@ import {
   PlaylistView,
   PlaylistUserView,
 } from "../../../modules/home/PlaylistView";
+import { client } from "../../../index";
 
 interface MyListProps {}
-// AppNavProps<"MyList"> &
 
 type Status = "checked" | "unchecked";
 type setFx = (value?: string | GestureResponderEvent) => void;
@@ -41,6 +43,18 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
   const [albumStatus, setAlbumStatus] = React.useState("checked");
   const [trackStatus, setTrackStatus] = React.useState("checked");
   const [playlistStatus, setPlaylistStatus] = React.useState("checked");
+
+  // get user posts
+  const userState = useStoreState((state) => state.user.user);
+  const { data, loading, error } = useGetMyListQuery();
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+  if (error || !data) {
+    console.log(error);
+    return <Caption>Error...</Caption>;
+  }
 
   const onArtistButtonToggle = (value) => {
     console.log("toggle artist", artistStatus);
@@ -66,38 +80,27 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
     ["playlist-music", playlistStatus, onPlaylistButtonToggle],
   ];
 
-  // get user posts
-  const userState = useStoreState((state) => state.user.user);
-  const { data, loading, error } = useGetMyListQuery();
-
-  if (loading) {
-    return <ActivityIndicator />;
-  }
-  if (error || !data) {
-    console.log(error);
-    return <Caption>Error...</Caption>;
-  }
-
   return (
-    <StyledColumnView>
-      <Title>My List</Title>
-      <FlatList
-        contentContainerStyle={{
-          justifyContent: "space-around",
-          flexDirection: "row",
-        }}
-        data={buttonArray}
-        renderItem={({ item }) => (
-          <ToggleButton
-            icon={item[0] as string}
-            value={item[0] as string}
-            status={item[1] as Status}
-            onPress={item[2] as setFx}
-          />
-        )}
-        keyExtractor={(item, ix) => ix.toString()}
-      />
-      <ScrollView>
+    <ScrollView>
+      <StyledColumnView>
+        <Title>My List</Title>
+        <FlatList
+          contentContainerStyle={{
+            justifyContent: "space-around",
+            flexDirection: "row",
+          }}
+          data={buttonArray}
+          renderItem={({ item }) => (
+            <ToggleButton
+              icon={item[0] as string}
+              value={item[0] as string}
+              status={item[1] as Status}
+              onPress={item[2] as setFx}
+            />
+          )}
+          keyExtractor={(item, ix) => ix.toString()}
+        />
+
         <FlatList
           data={data.getMyList}
           renderItem={({ item }) => (
@@ -138,7 +141,7 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
                   />
                   <RemoveFromMyListButton
                     postId={+item.id}
-                    postType={"artist"}
+                    postType={"track"}
                   />
                 </View>
               ) : playlistStatus === "checked" &&
@@ -151,7 +154,7 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
                   />
                   <RemoveFromMyListButton
                     postId={+item.id}
-                    postType={"artist"}
+                    postType={"playlist"}
                   />
                 </View>
               ) : (
@@ -161,7 +164,7 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
           )}
           keyExtractor={(item, ix) => ix.toString()}
         />
-      </ScrollView>
-    </StyledColumnView>
+      </StyledColumnView>
+    </ScrollView>
   );
 };

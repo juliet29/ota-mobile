@@ -26,6 +26,7 @@ export const AddToMyListButton: React.FC<MyListItem> = ({
         variables: { data },
         refetchQueries: [{ query: GetMyListDocument }],
       });
+      console.log("add response", response);
       return response;
     } catch (err) {
       return err;
