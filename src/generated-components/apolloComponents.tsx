@@ -35,6 +35,10 @@ export type Query = {
   getFollowers?: Maybe<Array<Maybe<User>>>;
   getFollowingorFollowers?: Maybe<Array<Maybe<User>>>;
   getGenres?: Maybe<GenreList>;
+  getTopPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
+  getTopPlaylists?: Maybe<Array<Maybe<Playlist>>>;
+  getTopArtists?: Maybe<Array<Maybe<ArtistPost>>>;
+  getReccomendations?: Maybe<Reccomendation>;
 };
 
 
@@ -374,6 +378,11 @@ export type GenreList = {
   genres?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
+export type Reccomendation = {
+  __typename?: 'Reccomendation';
+  tracks?: Maybe<Array<Maybe<Track>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   updateUserTopFive?: Maybe<User>;
@@ -648,6 +657,113 @@ export type GetCommentsQuery = (
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id'>
+    )> }
+  )>>> }
+);
+
+export type GetReccomendationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetReccomendationsQuery = (
+  { __typename?: 'Query' }
+  & { getReccomendations?: Maybe<(
+    { __typename?: 'Reccomendation' }
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'Track' }
+      & Pick<Track, 'name'>
+      & { album?: Maybe<(
+        { __typename?: 'Album' }
+        & Pick<Album, 'name' | 'id'>
+        & { images?: Maybe<Array<Maybe<(
+          { __typename?: 'Image' }
+          & Pick<Image, 'url'>
+        )>>>, artists?: Maybe<Array<Maybe<(
+          { __typename?: 'Artist' }
+          & Pick<Artist, 'name'>
+        )>>> }
+      )> }
+    )>>> }
+  )> }
+);
+
+export type GetTopArtistsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTopArtistsQuery = (
+  { __typename?: 'Query' }
+  & { getTopArtists?: Maybe<Array<Maybe<(
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  )>>> }
+);
+
+export type GetTopPlaylistsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTopPlaylistsQuery = (
+  { __typename?: 'Query' }
+  & { getTopPlaylists?: Maybe<Array<Maybe<(
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'timeSubmitted'>
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'PlaylistTrack' }
+      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  )>>> }
+);
+
+export type GetTopPostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTopPostsQuery = (
+  { __typename?: 'Query' }
+  & { getTopPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'length' | 'likes'>
+    & { options?: Maybe<Array<Maybe<(
+      { __typename?: 'PollOption' }
+      & Pick<PollOption, 'option' | 'votes'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'PlaylistTrack' }
+      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -1476,6 +1592,256 @@ export function useGetCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
 export type GetCommentsLazyQueryHookResult = ReturnType<typeof useGetCommentsLazyQuery>;
 export type GetCommentsQueryResult = ApolloReactCommon.QueryResult<GetCommentsQuery, GetCommentsQueryVariables>;
+export const GetReccomendationsDocument = gql`
+    query getReccomendations {
+  getReccomendations {
+    tracks {
+      name
+      album {
+        name
+        id
+        images {
+          url
+        }
+        artists {
+          name
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetReccomendationsQuery__
+ *
+ * To run a query within a React component, call `useGetReccomendationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetReccomendationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetReccomendationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetReccomendationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetReccomendationsQuery, GetReccomendationsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetReccomendationsQuery, GetReccomendationsQueryVariables>(GetReccomendationsDocument, baseOptions);
+      }
+export function useGetReccomendationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetReccomendationsQuery, GetReccomendationsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetReccomendationsQuery, GetReccomendationsQueryVariables>(GetReccomendationsDocument, baseOptions);
+        }
+export type GetReccomendationsQueryHookResult = ReturnType<typeof useGetReccomendationsQuery>;
+export type GetReccomendationsLazyQueryHookResult = ReturnType<typeof useGetReccomendationsLazyQuery>;
+export type GetReccomendationsQueryResult = ApolloReactCommon.QueryResult<GetReccomendationsQuery, GetReccomendationsQueryVariables>;
+export const GetTopArtistsDocument = gql`
+    query getTopArtists {
+  getTopArtists {
+    id
+    text
+    likes
+    imageUrl
+    externalUrl
+    timeSubmitted
+    artistId
+    artistName
+    user {
+      username
+      id
+      profilePicture
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTopArtistsQuery__
+ *
+ * To run a query within a React component, call `useGetTopArtistsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopArtistsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopArtistsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTopArtistsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopArtistsQuery, GetTopArtistsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTopArtistsQuery, GetTopArtistsQueryVariables>(GetTopArtistsDocument, baseOptions);
+      }
+export function useGetTopArtistsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopArtistsQuery, GetTopArtistsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTopArtistsQuery, GetTopArtistsQueryVariables>(GetTopArtistsDocument, baseOptions);
+        }
+export type GetTopArtistsQueryHookResult = ReturnType<typeof useGetTopArtistsQuery>;
+export type GetTopArtistsLazyQueryHookResult = ReturnType<typeof useGetTopArtistsLazyQuery>;
+export type GetTopArtistsQueryResult = ApolloReactCommon.QueryResult<GetTopArtistsQuery, GetTopArtistsQueryVariables>;
+export const GetTopPlaylistsDocument = gql`
+    query getTopPlaylists {
+  getTopPlaylists {
+    id
+    playlistPicture
+    tracks {
+      id
+      artists
+      name
+      trackImageUrl
+      externalUrl
+    }
+    timeSubmitted
+    user {
+      username
+      id
+      profilePicture
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTopPlaylistsQuery__
+ *
+ * To run a query within a React component, call `useGetTopPlaylistsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopPlaylistsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopPlaylistsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTopPlaylistsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopPlaylistsQuery, GetTopPlaylistsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTopPlaylistsQuery, GetTopPlaylistsQueryVariables>(GetTopPlaylistsDocument, baseOptions);
+      }
+export function useGetTopPlaylistsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopPlaylistsQuery, GetTopPlaylistsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTopPlaylistsQuery, GetTopPlaylistsQueryVariables>(GetTopPlaylistsDocument, baseOptions);
+        }
+export type GetTopPlaylistsQueryHookResult = ReturnType<typeof useGetTopPlaylistsQuery>;
+export type GetTopPlaylistsLazyQueryHookResult = ReturnType<typeof useGetTopPlaylistsLazyQuery>;
+export type GetTopPlaylistsQueryResult = ApolloReactCommon.QueryResult<GetTopPlaylistsQuery, GetTopPlaylistsQueryVariables>;
+export const GetTopPostsDocument = gql`
+    query getTopPosts {
+  getTopPosts {
+    ... on Playlist {
+      id
+      playlistPicture
+      title
+      description
+      likes
+      tracks {
+        id
+        artists
+        name
+        trackImageUrl
+        externalUrl
+      }
+      timeSubmitted
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on Poll {
+      id
+      question
+      timeSubmitted
+      length
+      likes
+      options {
+        option
+        votes
+      }
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on AlbumPost {
+      id
+      text
+      likes
+      externalUrl
+      artistNames
+      rating
+      imageUrl
+      timeSubmitted
+      albumId
+      albumName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on TrackPost {
+      id
+      text
+      likes
+      artistNames
+      externalUrl
+      vote
+      imageUrl
+      timeSubmitted
+      trackId
+      trackName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on ArtistPost {
+      id
+      text
+      likes
+      imageUrl
+      externalUrl
+      timeSubmitted
+      artistId
+      artistName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTopPostsQuery__
+ *
+ * To run a query within a React component, call `useGetTopPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTopPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTopPostsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTopPostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetTopPostsQuery, GetTopPostsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetTopPostsQuery, GetTopPostsQueryVariables>(GetTopPostsDocument, baseOptions);
+      }
+export function useGetTopPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetTopPostsQuery, GetTopPostsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetTopPostsQuery, GetTopPostsQueryVariables>(GetTopPostsDocument, baseOptions);
+        }
+export type GetTopPostsQueryHookResult = ReturnType<typeof useGetTopPostsQuery>;
+export type GetTopPostsLazyQueryHookResult = ReturnType<typeof useGetTopPostsLazyQuery>;
+export type GetTopPostsQueryResult = ApolloReactCommon.QueryResult<GetTopPostsQuery, GetTopPostsQueryVariables>;
 export const AddToMyListDocument = gql`
     mutation addToMyList($data: MyListInput!) {
   addToMyList(data: $data) {
