@@ -710,7 +710,7 @@ export type GetTopPlaylistsQuery = (
   { __typename?: 'Query' }
   & { getTopPlaylists?: Maybe<Array<Maybe<(
     { __typename?: 'Playlist' }
-    & Pick<Playlist, 'id' | 'playlistPicture' | 'timeSubmitted'>
+    & Pick<Playlist, 'id' | 'title' | 'description' | 'playlistPicture' | 'timeSubmitted'>
     & { tracks?: Maybe<Array<Maybe<(
       { __typename?: 'PlaylistTrack' }
       & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
@@ -1666,6 +1666,8 @@ export const GetTopPlaylistsDocument = gql`
     query getTopPlaylists {
   getTopPlaylists {
     id
+    title
+    description
     playlistPicture
     tracks {
       id

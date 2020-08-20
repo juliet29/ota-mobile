@@ -34,6 +34,7 @@ export const PlaylistPageView: React.FC<HomeStackNavProps<"PlaylistPage">> = ({
               }}
             />
             <Title>{playlist.title}</Title>
+            <Caption>{playlist.description}</Caption>
           </Card.Content>
         </Card>
       </StyledColumnView>

@@ -4,6 +4,8 @@ export const GET_TOP_PLAYLISTS = gql`
   query getTopPlaylists {
     getTopPlaylists {
       id
+      title
+      description
       playlistPicture
       tracks {
         id

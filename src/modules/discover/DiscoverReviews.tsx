@@ -5,10 +5,13 @@ import { ScrollView, FlatList } from "react-native-gesture-handler";
 import { View, Image } from "react-native";
 import { emptyImage } from "../home/FeedView";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 
 interface DiscoverReviewsProps {}
 
-export const DiscoverReviews: React.FC<DiscoverReviewsProps> = ({}) => {
+export const DiscoverReviews: React.FC<
+  DiscoverReviewsProps & HomeStackNavProps<"Feed">
+> = ({ navigation }) => {
   const { data, loading, error } = useGetTopPostsQuery();
 
   if (loading) {
@@ -58,6 +61,31 @@ export const DiscoverReviews: React.FC<DiscoverReviewsProps> = ({}) => {
                     ? item.text
                     : null
                 }
+                onPress={() => {
+                  navigation.navigate("CommentPage", {
+                    postId: +item.id,
+                    imageUrl: item.imageUrl,
+                    postType:
+                      item.__typename === "AlbumPost"
+                        ? "album"
+                        : item.__typename === "TrackPost"
+                        ? "track"
+                        : "artist",
+
+                    contentId:
+                      item.__typename === "AlbumPost"
+                        ? item.albumId
+                        : item.__typename === "TrackPost"
+                        ? item.trackId
+                        : item.artistId,
+                    name:
+                      item.__typename === "AlbumPost"
+                        ? item.albumName
+                        : item.__typename === "TrackPost"
+                        ? item.trackName
+                        : item.artistName,
+                  });
+                }}
                 left={() => (
                   <Image
                     style={{ width: 70, height: 70, marginLeft: 20 }}
@@ -74,10 +102,9 @@ export const DiscoverReviews: React.FC<DiscoverReviewsProps> = ({}) => {
                   style={{ width: 200, marginLeft: 20 }}
                   title={item?.user.username}
                   titleNumberOfLines={2}
-                  // description={item?.user.username}
-                  //   onPress={() => {
-                  //     navigation.navigate("UserPage", { id: +item?.user.id });
-                  //   }}
+                  onPress={() => {
+                    navigation.navigate("UserPage", { id: +item?.user.id });
+                  }}
                   left={(props) => (
                     <Avatar.Image
                       size={20}
@@ -101,40 +128,3 @@ export const DiscoverReviews: React.FC<DiscoverReviewsProps> = ({}) => {
     </ScrollView>
   );
 };
-
-// const imageType = (type: string, item: any) => {
-//   if (type === "ArtistPost") {
-//     return (
-//       <Image
-//         style={{ width: 100, height: 100, marginLeft: 20 }}
-//         resizeMode="contain"
-//         source={{
-//           uri: `${item.imageUrl}`,
-//         }}
-//       />
-//     );
-//   }
-//   if (type === "AlbumPost") {
-//     return (
-//       <Image
-//         style={{ width: 100, height: 100, marginLeft: 20 }}
-//         resizeMode="contain"
-//         source={{
-//           uri: `${item.imageUrl}`,
-//         }}
-//       />
-//     );
-//   }
-
-//   if (type === "TrackPost") {
-//     return (
-//       <Image
-//         style={{ width: 100, height: 100, marginLeft: 20 }}
-//         resizeMode="contain"
-//         source={{
-//           uri: `${item.imageUrl}`,
-//         }}
-//       />
-//     );
-//   }
-// };

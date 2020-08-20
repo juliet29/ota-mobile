@@ -9,10 +9,13 @@ import {
 import { useGetReccomendationsQuery } from "../../generated-components/apolloComponents";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { View, Image } from "react-native";
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 
 interface DiscoverAlbumsProps {}
 
-export const DiscoverAlbums: React.FC<DiscoverAlbumsProps> = ({}) => {
+export const DiscoverAlbums: React.FC<
+  DiscoverAlbumsProps & HomeStackNavProps<"Feed">
+> = ({ navigation }) => {
   const { data, loading, error } = useGetReccomendationsQuery();
 
   if (loading) {
@@ -51,6 +54,14 @@ export const DiscoverAlbums: React.FC<DiscoverAlbumsProps> = ({}) => {
                 title={item.album.name}
                 titleNumberOfLines={2}
                 description={item.album.artists.map((i) => i.name)}
+                onPress={() => {
+                  // console.log("album button");
+                  navigation.navigate("AlbumPage", {
+                    id: item?.album.id,
+                    name: item.album.name,
+                    imageUrl: item?.album.images.map((i) => i.url)[0],
+                  });
+                }}
               />
             </View>
           )}
