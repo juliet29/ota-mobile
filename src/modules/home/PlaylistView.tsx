@@ -14,7 +14,7 @@ import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { emptyImage } from "./FeedView";
 import { PostLikeButton } from "./PostLikeButton";
 import { Image, Text } from "react-native";
-import { AddToMyListButton } from "../../navigation/app/my-list/AddToMyListButton";
+import { AddToMyListButton } from "../my-list/AddToMyListButton";
 
 interface PlaylistViewProps {
   item: Playlist;

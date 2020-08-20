@@ -12,6 +12,7 @@ export const Wrapper = styled.View`
 export const StyledColumnView = styled.View`
   flex-direction: column;
   justify-content: space-evenly;
+  margin: 10px;
   margin-top: 30px;
   margin-bottom: 30px;
 `;

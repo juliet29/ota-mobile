@@ -5,7 +5,7 @@ import {
   MyListItem,
   useAddToMyListMutation,
   GetMyListDocument,
-} from "../../../generated-components/apolloComponents";
+} from "../../generated-components/apolloComponents";
 
 // type AddToMyListButtonProps = MyListItem
 

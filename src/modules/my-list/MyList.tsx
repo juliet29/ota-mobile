@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyledColumnView } from "../../../styled-components/ReusedUI";
+import { StyledColumnView } from "../../styled-components/ReusedUI";
 import {
   Caption,
   ToggleButton,
@@ -11,24 +11,20 @@ import {
   ArtistPostView,
   AlbumPostView,
   TrackPostView,
-} from "../../../modules/user/user-posts/UserPostTypes";
+} from "../user/user-posts/UserPostTypes";
 
 import {
   useGetUserPostsQuery,
   useGetMyListQuery,
   GetMyListQuery,
   GetMyListDocument,
-} from "../../../generated-components/apolloComponents";
-import { useStoreState } from "../../../state-management/hooks";
-import { AppNavProps } from "../AppParamList";
-import { HomeStackNavProps } from "../home/HomeParamList";
+} from "../../generated-components/apolloComponents";
+import { useStoreState } from "../../state-management/hooks";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { RemoveFromMyListButton } from "./RemoveFromMyListButton";
-import {
-  PlaylistView,
-  PlaylistUserView,
-} from "../../../modules/home/PlaylistView";
-import { client } from "../../../index";
+import { PlaylistView, PlaylistUserView } from "../home/PlaylistView";
+import { client } from "../../index";
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 
 interface MyListProps {}
 

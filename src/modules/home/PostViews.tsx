@@ -21,7 +21,7 @@ import StarRating from "react-native-star-rating";
 import { PostLikeButton } from "./PostLikeButton";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
 import { emptyImage, openURL } from "./FeedView";
-import { AddToMyListButton } from "../../navigation/app/my-list/AddToMyListButton";
+import { AddToMyListButton } from "../my-list/AddToMyListButton";
 
 interface AlbumPostProps {
   item: AlbumPost;
