@@ -24,8 +24,8 @@ export const DiscoverReviews: React.FC<
   console.log("top posts", data);
 
   return (
-    <ScrollView horizontal={true}>
-      <View>
+    <View>
+      <ScrollView horizontal={true}>
         <FlatList
           contentContainerStyle={{
             justifyContent: "space-around",
@@ -124,7 +124,7 @@ export const DiscoverReviews: React.FC<
             </View>
           )}
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };

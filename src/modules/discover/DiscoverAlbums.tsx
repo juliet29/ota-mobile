@@ -27,8 +27,8 @@ export const DiscoverAlbums: React.FC<
   }
 
   return (
-    <ScrollView horizontal={true}>
-      <View>
+    <View>
+      <ScrollView horizontal={true}>
         <FlatList
           contentContainerStyle={{
             justifyContent: "space-around",
@@ -66,7 +66,7 @@ export const DiscoverAlbums: React.FC<
             </View>
           )}
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };

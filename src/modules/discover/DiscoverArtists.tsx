@@ -28,8 +28,8 @@ export const DiscoverArtists: React.FC<
   }
 
   return (
-    <ScrollView horizontal={true}>
-      <View>
+    <View>
+      <ScrollView horizontal={true}>
         <FlatList
           contentContainerStyle={{
             justifyContent: "space-around",
@@ -64,7 +64,7 @@ export const DiscoverArtists: React.FC<
             </View>
           )}
         />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
