@@ -35,7 +35,7 @@ export type Query = {
   getFollowers?: Maybe<Array<Maybe<User>>>;
   getFollowingorFollowers?: Maybe<Array<Maybe<User>>>;
   getGenres?: Maybe<GenreList>;
-  getTopPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
+  getTopPosts?: Maybe<Array<Maybe<GetContentPostsResult>>>;
   getTopPlaylists?: Maybe<Array<Maybe<Playlist>>>;
   getTopArtists?: Maybe<Array<Maybe<ArtistPost>>>;
   getReccomendations?: Maybe<Reccomendation>;
@@ -377,6 +377,8 @@ export type GenreList = {
   __typename?: 'GenreList';
   genres?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
+
+export type GetContentPostsResult = AlbumPost | ArtistPost | TrackPost;
 
 export type Reccomendation = {
   __typename?: 'Reccomendation';
@@ -742,26 +744,6 @@ export type GetTopPostsQuery = (
     { __typename?: 'TrackPost' }
     & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id' | 'profilePicture'>
-    )> }
-  ) | (
-    { __typename?: 'Poll' }
-    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'length' | 'likes'>
-    & { options?: Maybe<Array<Maybe<(
-      { __typename?: 'PollOption' }
-      & Pick<PollOption, 'option' | 'votes'>
-    )>>>, user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id' | 'profilePicture'>
-    )> }
-  ) | (
-    { __typename?: 'Playlist' }
-    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
-    & { tracks?: Maybe<Array<Maybe<(
-      { __typename?: 'PlaylistTrack' }
-      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
-    )>>>, user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
@@ -1729,42 +1711,6 @@ export type GetTopPlaylistsQueryResult = ApolloReactCommon.QueryResult<GetTopPla
 export const GetTopPostsDocument = gql`
     query getTopPosts {
   getTopPosts {
-    ... on Playlist {
-      id
-      playlistPicture
-      title
-      description
-      likes
-      tracks {
-        id
-        artists
-        name
-        trackImageUrl
-        externalUrl
-      }
-      timeSubmitted
-      user {
-        username
-        id
-        profilePicture
-      }
-    }
-    ... on Poll {
-      id
-      question
-      timeSubmitted
-      length
-      likes
-      options {
-        option
-        votes
-      }
-      user {
-        username
-        id
-        profilePicture
-      }
-    }
     ... on AlbumPost {
       id
       text

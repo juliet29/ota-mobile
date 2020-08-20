@@ -53,10 +53,10 @@ export const ArtistPostView: React.FC<
         />
         {item.user ? (
           <StyledColumnView>
-            <Caption>{item.user.username}</Caption>
+            {/* <Caption>{item.user.username}</Caption> */}
             <List.Item
               title={item?.user.username}
-              description={item?.user.username}
+              // description={item?.user.username}
               onPress={() => {
                 navigation.navigate("UserPage", { id: +item?.user.id });
               }}

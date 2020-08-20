@@ -10,8 +10,8 @@ import { Platform } from "react-native";
 
 const ENV = {
   dev: {
-    // apiUrl: "http://localhost:4000",
-    apiUrl: "http://192.168.0.27:4000",
+    apiUrl: "http://localhost:4000",
+    // apiUrl: "http://192.168.0.27:4000",
   },
   staging: {
     apiUrl: "https://peaceful-oasis-92942.herokuapp.com",

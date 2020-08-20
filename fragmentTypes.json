@@ -36,6 +36,21 @@
             "name": "AlbumSearchResult"
           }
         ]
+      },
+      {
+        "kind": "UNION",
+        "name": "GetContentPostsResult",
+        "possibleTypes": [
+          {
+            "name": "AlbumPost"
+          },
+          {
+            "name": "ArtistPost"
+          },
+          {
+            "name": "TrackPost"
+          }
+        ]
       }
     ]
   }
