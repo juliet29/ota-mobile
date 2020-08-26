@@ -14,6 +14,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { AddContentToPost } from "../../modules/create-post/AddContentToPost";
 import { MyList } from "../../modules/my-list/MyList";
 import { Discover } from "../../modules/discover/Discover";
+import { DMFeed } from "../../modules/direct-messages/DMFeed";
+import { DMStack } from "./direct-messages/DMStack";
 
 interface AppTabsProps {}
 
@@ -36,6 +38,8 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
             iconName = focused ? "ios-bookmark" : "ios-bookmarks";
           } else if (route.name === "Discover") {
             iconName = focused ? "ios-star-outline" : "ios-star";
+          } else if (route.name === "DirectMessages") {
+            iconName = focused ? "ios-chatboxes" : "ios-chatbubbles";
           }
 
           // You can return any component that you like here!
@@ -50,7 +54,7 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
       <Tabs.Screen name="Discover" component={Discover} />
       <Tabs.Screen name="CreatePost" component={CreatePostStack} />
       <Tabs.Screen name="MyList" component={MyList} />
-      <Tabs.Screen name="DirectMessages" component={DirectMessagesStack} />
+      <Tabs.Screen name="DirectMessages" component={DMStack} />
     </Tabs.Navigator>
   );
 };

@@ -39,6 +39,8 @@ export type Query = {
   getTopPlaylists?: Maybe<Array<Maybe<Playlist>>>;
   getTopArtists?: Maybe<Array<Maybe<ArtistPost>>>;
   getReccomendations?: Maybe<Reccomendation>;
+  getMyDMs?: Maybe<Array<Maybe<DirectMessage>>>;
+  getMyDMChat?: Maybe<Array<Maybe<DirectMessage>>>;
 };
 
 
@@ -111,6 +113,11 @@ export type QueryGetFollowersArgs = {
 export type QueryGetFollowingorFollowersArgs = {
   request?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+
+export type QueryGetMyDmChatArgs = {
+  data?: Maybe<DirectMessageInput>;
 };
 
 export type GetPostsResult = AlbumPost | ArtistPost | TrackPost | Poll | Playlist;
@@ -385,6 +392,21 @@ export type Reccomendation = {
   tracks?: Maybe<Array<Maybe<Track>>>;
 };
 
+export type DirectMessage = {
+  __typename?: 'DirectMessage';
+  id?: Maybe<Scalars['ID']>;
+  sender?: Maybe<User>;
+  recipient?: Maybe<User>;
+  timeSubmitted?: Maybe<Scalars['DateTime']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+export type DirectMessageInput = {
+  recipientID?: Maybe<Scalars['Float']>;
+  text?: Maybe<Scalars['String']>;
+  partnerID?: Maybe<Scalars['Float']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   updateUserTopFive?: Maybe<User>;
@@ -409,6 +431,7 @@ export type Mutation = {
   createPoll?: Maybe<Poll>;
   updatePoll?: Maybe<Poll>;
   createPlaylist?: Maybe<Playlist>;
+  handleDM?: Maybe<DirectMessage>;
 };
 
 
@@ -506,6 +529,11 @@ export type MutationUpdatePollArgs = {
 
 export type MutationCreatePlaylistArgs = {
   data?: Maybe<PlaylistInput>;
+};
+
+
+export type MutationHandleDmArgs = {
+  data?: Maybe<DirectMessageInput>;
 };
 
 export type TopFiveArrayInput = {
@@ -659,6 +687,38 @@ export type GetCommentsQuery = (
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id'>
+    )> }
+  )>>> }
+);
+
+export type GetMyDmChatQueryVariables = Exact<{
+  data?: Maybe<DirectMessageInput>;
+}>;
+
+
+export type GetMyDmChatQuery = (
+  { __typename?: 'Query' }
+  & { getMyDMChat?: Maybe<Array<Maybe<(
+    { __typename?: 'DirectMessage' }
+    & Pick<DirectMessage, 'id' | 'text' | 'timeSubmitted'>
+    & { sender?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  )>>> }
+);
+
+export type GetMyDMsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMyDMsQuery = (
+  { __typename?: 'Query' }
+  & { getMyDMs?: Maybe<Array<Maybe<(
+    { __typename?: 'DirectMessage' }
+    & Pick<DirectMessage, 'id' | 'text' | 'timeSubmitted'>
+    & { sender?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -1574,6 +1634,85 @@ export function useGetCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
 export type GetCommentsLazyQueryHookResult = ReturnType<typeof useGetCommentsLazyQuery>;
 export type GetCommentsQueryResult = ApolloReactCommon.QueryResult<GetCommentsQuery, GetCommentsQueryVariables>;
+export const GetMyDmChatDocument = gql`
+    query getMyDMChat($data: DirectMessageInput) {
+  getMyDMChat(data: $data) {
+    id
+    text
+    timeSubmitted
+    sender {
+      username
+      id
+      profilePicture
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyDmChatQuery__
+ *
+ * To run a query within a React component, call `useGetMyDmChatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyDmChatQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyDmChatQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useGetMyDmChatQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyDmChatQuery, GetMyDmChatQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyDmChatQuery, GetMyDmChatQueryVariables>(GetMyDmChatDocument, baseOptions);
+      }
+export function useGetMyDmChatLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyDmChatQuery, GetMyDmChatQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyDmChatQuery, GetMyDmChatQueryVariables>(GetMyDmChatDocument, baseOptions);
+        }
+export type GetMyDmChatQueryHookResult = ReturnType<typeof useGetMyDmChatQuery>;
+export type GetMyDmChatLazyQueryHookResult = ReturnType<typeof useGetMyDmChatLazyQuery>;
+export type GetMyDmChatQueryResult = ApolloReactCommon.QueryResult<GetMyDmChatQuery, GetMyDmChatQueryVariables>;
+export const GetMyDMsDocument = gql`
+    query getMyDMs {
+  getMyDMs {
+    id
+    text
+    timeSubmitted
+    sender {
+      username
+      id
+      profilePicture
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMyDMsQuery__
+ *
+ * To run a query within a React component, call `useGetMyDMsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMyDMsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMyDMsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMyDMsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMyDMsQuery, GetMyDMsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMyDMsQuery, GetMyDMsQueryVariables>(GetMyDMsDocument, baseOptions);
+      }
+export function useGetMyDMsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMyDMsQuery, GetMyDMsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMyDMsQuery, GetMyDMsQueryVariables>(GetMyDMsDocument, baseOptions);
+        }
+export type GetMyDMsQueryHookResult = ReturnType<typeof useGetMyDMsQuery>;
+export type GetMyDMsLazyQueryHookResult = ReturnType<typeof useGetMyDMsLazyQuery>;
+export type GetMyDMsQueryResult = ApolloReactCommon.QueryResult<GetMyDMsQuery, GetMyDMsQueryVariables>;
 export const GetReccomendationsDocument = gql`
     query getReccomendations {
   getReccomendations {
