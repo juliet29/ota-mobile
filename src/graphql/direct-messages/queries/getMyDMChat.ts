@@ -11,6 +11,11 @@ export const GET_MY_DM_CHAT = gql`
         id
         profilePicture
       }
+      recipient {
+        id
+        username
+        profilePicture
+      }
     }
   }
 `;

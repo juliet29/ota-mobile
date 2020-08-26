@@ -15,6 +15,7 @@ import {
 import { DMStackNavProps } from "../../navigation/app/direct-messages/DMParamList";
 import { useStoreState } from "../../state-management/hooks";
 import { blue100, grey100 } from "react-native-paper/src/styles/colors";
+import { NewDMInput } from "./NewDMInput";
 
 interface DMChatProps {}
 
@@ -74,6 +75,7 @@ export const DMChat: React.FC<DMChatProps & DMStackNavProps<"DMChat">> = ({
             />
           )}
         />
+        <NewDMInput partnerID={partnerID} />
       </StyledColumnView>
     </ScrollView>
   );

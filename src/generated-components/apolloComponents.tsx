@@ -431,7 +431,7 @@ export type Mutation = {
   createPoll?: Maybe<Poll>;
   updatePoll?: Maybe<Poll>;
   createPlaylist?: Maybe<Playlist>;
-  handleDM?: Maybe<DirectMessage>;
+  sendNewDM?: Maybe<DirectMessage>;
 };
 
 
@@ -532,7 +532,7 @@ export type MutationCreatePlaylistArgs = {
 };
 
 
-export type MutationHandleDmArgs = {
+export type MutationSendNewDmArgs = {
   data?: Maybe<DirectMessageInput>;
 };
 
@@ -691,6 +691,23 @@ export type GetCommentsQuery = (
   )>>> }
 );
 
+export type SendNewDmMutationVariables = Exact<{
+  data?: Maybe<DirectMessageInput>;
+}>;
+
+
+export type SendNewDmMutation = (
+  { __typename?: 'Mutation' }
+  & { sendNewDM?: Maybe<(
+    { __typename?: 'DirectMessage' }
+    & Pick<DirectMessage, 'id' | 'text' | 'timeSubmitted'>
+    & { sender?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  )> }
+);
+
 export type GetMyDmChatQueryVariables = Exact<{
   data?: Maybe<DirectMessageInput>;
 }>;
@@ -704,6 +721,9 @@ export type GetMyDmChatQuery = (
     & { sender?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )>, recipient?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -1634,6 +1654,45 @@ export function useGetCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
 export type GetCommentsLazyQueryHookResult = ReturnType<typeof useGetCommentsLazyQuery>;
 export type GetCommentsQueryResult = ApolloReactCommon.QueryResult<GetCommentsQuery, GetCommentsQueryVariables>;
+export const SendNewDmDocument = gql`
+    mutation sendNewDM($data: DirectMessageInput) {
+  sendNewDM(data: $data) {
+    id
+    text
+    timeSubmitted
+    sender {
+      username
+      id
+      profilePicture
+    }
+  }
+}
+    `;
+export type SendNewDmMutationFn = ApolloReactCommon.MutationFunction<SendNewDmMutation, SendNewDmMutationVariables>;
+
+/**
+ * __useSendNewDmMutation__
+ *
+ * To run a mutation, you first call `useSendNewDmMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendNewDmMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendNewDmMutation, { data, loading, error }] = useSendNewDmMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useSendNewDmMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<SendNewDmMutation, SendNewDmMutationVariables>) {
+        return ApolloReactHooks.useMutation<SendNewDmMutation, SendNewDmMutationVariables>(SendNewDmDocument, baseOptions);
+      }
+export type SendNewDmMutationHookResult = ReturnType<typeof useSendNewDmMutation>;
+export type SendNewDmMutationResult = ApolloReactCommon.MutationResult<SendNewDmMutation>;
+export type SendNewDmMutationOptions = ApolloReactCommon.BaseMutationOptions<SendNewDmMutation, SendNewDmMutationVariables>;
 export const GetMyDmChatDocument = gql`
     query getMyDMChat($data: DirectMessageInput) {
   getMyDMChat(data: $data) {
@@ -1643,6 +1702,11 @@ export const GetMyDmChatDocument = gql`
     sender {
       username
       id
+      profilePicture
+    }
+    recipient {
+      id
+      username
       profilePicture
     }
   }
