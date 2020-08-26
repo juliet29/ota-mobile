@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 export type DMParamList = {
   DMFeed: undefined;
-  DMChat: { partnerId: number };
+  DMChat: { partnerID: number; partnerName: string; partnerPictureURL: string };
 };
 
 export type DMStackNavProps<T extends keyof DMParamList> = {

@@ -5,6 +5,7 @@ import {
   useSendNewDmMutation,
   DirectMessageInput,
   GetMyDmChatDocument,
+  GetMyDMsDocument,
 } from "../../generated-components/apolloComponents";
 
 interface NewDMInputProps {
@@ -25,6 +26,7 @@ export const NewDMInput: React.FC<NewDMInputProps> = ({ partnerID }) => {
         variables: { data },
         refetchQueries: [
           { query: GetMyDmChatDocument, variables: { data: { partnerID } } },
+          { query: GetMyDMsDocument },
         ],
       });
       setText("");

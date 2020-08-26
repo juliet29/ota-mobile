@@ -23,7 +23,7 @@ export const DMChat: React.FC<DMChatProps & DMStackNavProps<"DMChat">> = ({
   navigation,
   route,
 }) => {
-  const { partnerID } = route.params;
+  const { partnerID, partnerPictureURL, partnerName } = route.params;
   const currentUser = useStoreState((state) => state.user.user);
 
   const { data, loading, error } = useGetMyDmChatQuery({
@@ -45,7 +45,13 @@ export const DMChat: React.FC<DMChatProps & DMStackNavProps<"DMChat">> = ({
   return (
     <ScrollView>
       <StyledColumnView>
-        <Title>{data.getMyDMChat.map((i) => i.sender.username)[0]}</Title>
+        <Avatar.Image
+          size={40}
+          source={{
+            uri: `${partnerPictureURL}`,
+          }}
+        />
+        <Title>{partnerName}</Title>
         <FlatList
           data={data.getMyDMChat.sort((a, b) =>
             a.timeSubmitted.localeCompare(b.timeSubmitted)

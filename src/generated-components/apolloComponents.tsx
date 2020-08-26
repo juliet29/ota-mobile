@@ -399,6 +399,7 @@ export type DirectMessage = {
   recipient?: Maybe<User>;
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   text?: Maybe<Scalars['String']>;
+  conversationID?: Maybe<Scalars['String']>;
 };
 
 export type DirectMessageInput = {
@@ -739,6 +740,9 @@ export type GetMyDMsQuery = (
     & { sender?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )>, recipient?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -1747,6 +1751,11 @@ export const GetMyDMsDocument = gql`
     sender {
       username
       id
+      profilePicture
+    }
+    recipient {
+      id
+      username
       profilePicture
     }
   }

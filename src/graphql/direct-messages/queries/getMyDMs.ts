@@ -11,6 +11,11 @@ export const GET_MY_DMS = gql`
         id
         profilePicture
       }
+      recipient {
+        id
+        username
+        profilePicture
+      }
     }
   }
 `;
