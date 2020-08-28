@@ -18,6 +18,7 @@ export type Query = {
   __typename?: 'Query';
   getPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
   getUserPosts?: Maybe<Array<Maybe<GetPostsResult>>>;
+  getPostsOfFollowing?: Maybe<Array<Maybe<GetPostsResult>>>;
   getArtistPosts?: Maybe<Array<Maybe<ArtistPost>>>;
   getAlbumPosts?: Maybe<Array<Maybe<AlbumPost>>>;
   getTrackPosts?: Maybe<Array<Maybe<TrackPost>>>;
@@ -1050,6 +1051,55 @@ export type GetPostsQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts?: Maybe<Array<Maybe<(
+    { __typename?: 'AlbumPost' }
+    & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'ArtistPost' }
+    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'TrackPost' }
+    & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'length' | 'likes'>
+    & { options?: Maybe<Array<Maybe<(
+      { __typename?: 'PollOption' }
+      & Pick<PollOption, 'option' | 'votes'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  ) | (
+    { __typename?: 'Playlist' }
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
+    & { tracks?: Maybe<Array<Maybe<(
+      { __typename?: 'PlaylistTrack' }
+      & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
+    )>>>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
+    )> }
+  )>>> }
+);
+
+export type GetPostsOfFollowingQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPostsOfFollowingQuery = (
+  { __typename?: 'Query' }
+  & { getPostsOfFollowing?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
     & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
@@ -2615,6 +2665,122 @@ export function useGetPostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsQueryResult = ApolloReactCommon.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
+export const GetPostsOfFollowingDocument = gql`
+    query getPostsOfFollowing {
+  getPostsOfFollowing {
+    ... on Playlist {
+      id
+      playlistPicture
+      title
+      description
+      likes
+      tracks {
+        id
+        artists
+        name
+        trackImageUrl
+        externalUrl
+      }
+      timeSubmitted
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on Poll {
+      id
+      question
+      timeSubmitted
+      length
+      likes
+      options {
+        option
+        votes
+      }
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on AlbumPost {
+      id
+      text
+      likes
+      externalUrl
+      artistNames
+      rating
+      imageUrl
+      timeSubmitted
+      albumId
+      albumName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on TrackPost {
+      id
+      text
+      likes
+      artistNames
+      externalUrl
+      vote
+      imageUrl
+      timeSubmitted
+      trackId
+      trackName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+    ... on ArtistPost {
+      id
+      text
+      likes
+      imageUrl
+      externalUrl
+      timeSubmitted
+      artistId
+      artistName
+      user {
+        username
+        id
+        profilePicture
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPostsOfFollowingQuery__
+ *
+ * To run a query within a React component, call `useGetPostsOfFollowingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostsOfFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostsOfFollowingQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPostsOfFollowingQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPostsOfFollowingQuery, GetPostsOfFollowingQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetPostsOfFollowingQuery, GetPostsOfFollowingQueryVariables>(GetPostsOfFollowingDocument, baseOptions);
+      }
+export function useGetPostsOfFollowingLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPostsOfFollowingQuery, GetPostsOfFollowingQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetPostsOfFollowingQuery, GetPostsOfFollowingQueryVariables>(GetPostsOfFollowingDocument, baseOptions);
+        }
+export type GetPostsOfFollowingQueryHookResult = ReturnType<typeof useGetPostsOfFollowingQuery>;
+export type GetPostsOfFollowingLazyQueryHookResult = ReturnType<typeof useGetPostsOfFollowingLazyQuery>;
+export type GetPostsOfFollowingQueryResult = ApolloReactCommon.QueryResult<GetPostsOfFollowingQuery, GetPostsOfFollowingQueryVariables>;
 export const GetTrackPostsDocument = gql`
     query getTrackPosts($id: String!) {
   getTrackPosts(id: $id) {

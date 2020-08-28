@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Caption, Button, Title } from "react-native-paper";
 import Swiper from "react-native-swiper/src";
 import { View, StyleSheet, Text } from "react-native";
@@ -17,6 +17,7 @@ export const UserOnBoarding: React.FC<
   UserOnBoardingProps & HomeStackNavProps<"UserOnBoarding">
 > = ({ navigation }) => {
   const [next, setNext] = useState(true);
+  const [ready, setReady] = useState(false);
 
   const [editFirstLogin] = useEditFirstLoginMutation();
 
@@ -25,12 +26,23 @@ export const UserOnBoarding: React.FC<
       const response = await editFirstLogin({
         refetchQueries: [{ query: GetCurrentUserDocument }],
       });
-      console.log("resp", response.data.editFirstLogin);
+      console.log("response of first log in ", response.data.editFirstLogin);
+      if (response.data.editFirstLogin) {
+        setReady(true);
+      }
+      // console.log("ready?", ready);
       return response.data.editFirstLogin;
     } catch (err) {
       return err;
     }
   };
+
+  useEffect(() => {
+    if (ready) {
+      console.log("hello i am ready!");
+      navigation.navigate("Feed");
+    }
+  }, [ready]);
 
   return (
     <Swiper loop={false} style={styles.wrapper} showsButtons={next}>
@@ -50,9 +62,9 @@ export const UserOnBoarding: React.FC<
           <Title>Thank you!</Title>
           <Button
             onPress={() => {
-              submitEditFirstLogin()
-                .then((x) => navigation.navigate("Feed"))
-                .catch((err) => console.log("err use onboard", err));
+              submitEditFirstLogin();
+              // .then((x) => navigation.navigate("Feed"))
+              // .catch((err) => console.log("err use onboard", err));
             }}>
             Enter the App
           </Button>

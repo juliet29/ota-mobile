@@ -5,6 +5,7 @@ import { ActivityIndicator, Caption, Card } from "react-native-paper";
 import {
   useGetPostsQuery,
   useGetCurrentUserQuery,
+  useGetPostsOfFollowingQuery,
 } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { StyledColumnView, LineBreak } from "../../styled-components/ReusedUI";
@@ -13,18 +14,21 @@ import { useStoreActions, useStoreState } from "../../state-management/hooks";
 import { useSetUserHook } from "../../modules/authentication/components/useSetUserHook";
 import { PollView } from "./PollView";
 import { PlaylistView } from "./PlaylistView";
+
 export const openURL = (url: string) => {
   Linking.openURL(url).catch((err) =>
     console.error("An error occurred while opening url", err)
   );
 };
+
 export const emptyImage =
   "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
+
 export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
   navigation,
   route,
 }) => {
-  const { data, loading, error } = useGetPostsQuery();
+  const { data, loading, error } = useGetPostsOfFollowingQuery();
   const userState = useStoreState((state) => state.user.user);
   const setCurrentUser = useSetUserHook();
 
@@ -48,7 +52,7 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
         <StyledColumnView></StyledColumnView>
 
         <FlatList
-          data={data.getPosts.sort((a, b) =>
+          data={data.getPostsOfFollowing.sort((a, b) =>
             b.timeSubmitted.localeCompare(a.timeSubmitted)
           )}
           renderItem={({ item }) => (

@@ -152,7 +152,7 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
 
                 <View>
                   <Title>{otherUser.username}</Title>
-
+                  {/* Followers and Following Count  */}
                   <View>
                     <Button
                       onPress={() => {

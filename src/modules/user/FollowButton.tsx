@@ -13,6 +13,7 @@ import {
   FollowOtherUserMutation,
   LikeInput,
   GetCommentsDocument,
+  GetPostsOfFollowingDocument,
 } from "../../generated-components/apolloComponents";
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
@@ -57,6 +58,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
         variables: { id, follow },
         refetchQueries: [
           { query: GetOtherUserDocument, variables: { data: { id } } },
+          { query: GetPostsOfFollowingDocument },
         ],
       });
       console.log("submit follow button response", res);
