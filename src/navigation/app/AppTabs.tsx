@@ -12,6 +12,10 @@ import {
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { AddContentToPost } from "../../modules/create-post/AddContentToPost";
+import { MyList } from "../../modules/my-list/MyList";
+import { Discover } from "../../modules/discover/Discover";
+import { DMFeed } from "../../modules/direct-messages/DMFeed";
+import { DMStack } from "./direct-messages/DMStack";
 
 interface AppTabsProps {}
 
@@ -30,6 +34,12 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
               : "ios-information-circle-outline";
           } else if (route.name === "CreatePost") {
             iconName = focused ? "ios-list-box" : "ios-list";
+          } else if (route.name === "MyList") {
+            iconName = focused ? "ios-bookmark" : "ios-bookmarks";
+          } else if (route.name === "Discover") {
+            iconName = focused ? "ios-star-outline" : "ios-star";
+          } else if (route.name === "DirectMessages") {
+            iconName = focused ? "ios-chatboxes" : "ios-chatbubbles";
           }
 
           // You can return any component that you like here!
@@ -41,26 +51,10 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
         inactiveTintColor: "gray",
       }}>
       <Tabs.Screen name="Home" component={HomeStack} />
-      <Tabs.Screen name="Discover" component={DiscoverStack} />
+      <Tabs.Screen name="Discover" component={Discover} />
       <Tabs.Screen name="CreatePost" component={CreatePostStack} />
-      <Tabs.Screen name="MyList" component={MyListStack} />
-      <Tabs.Screen name="DirectMessages" component={DirectMessagesStack} />
+      <Tabs.Screen name="MyList" component={MyList} />
+      <Tabs.Screen name="DirectMessages" component={DMStack} />
     </Tabs.Navigator>
-  );
-};
-
-interface RootStackProps {}
-
-const Root = createStackNavigator();
-export const RootStack: React.FC<RootStackProps> = ({}) => {
-  return (
-    <Root.Navigator mode="modal">
-      <Root.Screen
-        name="AppTabs"
-        component={AppTabs}
-        options={{ headerShown: false }}
-      />
-      <Root.Screen name="AddContentToPost" component={AddContentToPost} />
-    </Root.Navigator>
   );
 };

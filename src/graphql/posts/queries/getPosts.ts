@@ -3,8 +3,47 @@ import { gql } from "apollo-boost";
 export const GET_POSTS = gql`
   query GetPosts {
     getPosts {
+      ... on Playlist {
+        id
+        playlistPicture
+        title
+        description
+        likes
+        tracks {
+          id
+          artists
+          name
+          trackImageUrl
+          externalUrl
+        }
+        timeSubmitted
+        user {
+          username
+          id
+          profilePicture
+        }
+      }
+      ... on Poll {
+        id
+        question
+        timeSubmitted
+        length
+        likes
+        options {
+          option
+          votes
+        }
+
+        user {
+          username
+          id
+          profilePicture
+        }
+      }
       ... on AlbumPost {
+        id
         text
+        likes
         externalUrl
         artistNames
         rating
@@ -14,10 +53,14 @@ export const GET_POSTS = gql`
         albumName
         user {
           username
+          id
+          profilePicture
         }
       }
       ... on TrackPost {
+        id
         text
+        likes
         artistNames
         externalUrl
         vote
@@ -27,10 +70,14 @@ export const GET_POSTS = gql`
         trackName
         user {
           username
+          id
+          profilePicture
         }
       }
       ... on ArtistPost {
+        id
         text
+        likes
         imageUrl
         externalUrl
         timeSubmitted
@@ -38,6 +85,8 @@ export const GET_POSTS = gql`
         artistName
         user {
           username
+          id
+          profilePicture
         }
       }
     }

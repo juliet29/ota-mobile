@@ -2,6 +2,7 @@
   "expo": {
     "name": "ota-mobile",
     "slug": "ota-mobile",
+    "scheme": "myapp",
     "platforms": [
       "ios",
       "android",

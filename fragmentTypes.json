@@ -13,6 +13,12 @@
           },
           {
             "name": "TrackPost"
+          },
+          {
+            "name": "Poll"
+          },
+          {
+            "name": "Playlist"
           }
         ]
       },
@@ -28,6 +34,21 @@
           },
           {
             "name": "AlbumSearchResult"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "GetContentPostsResult",
+        "possibleTypes": [
+          {
+            "name": "AlbumPost"
+          },
+          {
+            "name": "ArtistPost"
+          },
+          {
+            "name": "TrackPost"
           }
         ]
       }

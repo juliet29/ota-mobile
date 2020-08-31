@@ -1,18 +1,21 @@
 import { ApolloProvider } from "@apollo/react-hooks";
+// import ApolloClient from "apollo-client";
 import ApolloClient from "apollo-boost";
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory";
+import { StoreProvider } from "easy-peasy";
 import React, { useMemo, useState } from "react";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import getEnvVars from "../environment";
+import introspectionQueryResultData from "../fragmentTypes.json";
+import store from "./state-management/store";
 import { getAccessToken } from "./utils/accessToken";
 import { AppWithHeaders } from "./utils/AppWithHeaders";
 import { AuthContext } from "./utils/AuthProvider";
-import { StoreProvider } from "easy-peasy";
-import store from "./state-management/store";
-import {
-  IntrospectionFragmentMatcher,
-  InMemoryCache,
-} from "apollo-cache-inmemory";
-import introspectionQueryResultData from "../fragmentTypes.json";
-import getEnvVars from "../environment";
+// import { setContext } from "apollo-link-context";
+console.log("index running");
 
 // @ts-ignore
 const { apiUrl } = getEnvVars();
@@ -36,13 +39,17 @@ export const client = new ApolloClient({
   request: (operation) => {
     // TODO move to easy-peasy
     const accessToken = getAccessToken();
-    console.log(accessToken);
+    // console.log(accessToken);
     if (accessToken) {
+      console.log("we have an access token in index", accessToken);
       operation.setContext({
         headers: {
           authorization: `bearer ${accessToken}`,
         },
       });
+    }
+    if (!accessToken) {
+      console.log("we dont have an access token in index");
     }
   },
 });
@@ -58,7 +65,10 @@ export const Providers: React.FC<ProvidersProps> = ({}) => {
       <AuthContext.Provider value={value as any}>
         <ApolloProvider client={client}>
           <PaperProvider theme={theme}>
+            {/* <SafeAreaProvider>
+              {" "} */}
             <AppWithHeaders />
+            {/* </SafeAreaProvider> */}
           </PaperProvider>
         </ApolloProvider>
       </AuthContext.Provider>

@@ -4,6 +4,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 export type CreatePostParamList = {
   CreatePost: undefined;
   AddContentToPost: undefined;
+  CreatePoll: undefined;
+  CreatePlaylist: undefined;
 };
 
 export type CreatePostNavProps<T extends keyof CreatePostParamList> = {

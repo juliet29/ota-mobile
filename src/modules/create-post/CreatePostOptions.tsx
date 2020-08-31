@@ -13,7 +13,7 @@ export const CreatePostOptions: React.FC<CreatePostOptionsProps> = () => {
     (actions) => actions.createPost.setPostType
   );
 
-  const postTypes = ["track", "artist", "album"];
+  const postTypes = ["track", "artist", "album", "poll", "playlist"];
 
   return (
     <StyledColumnView>
@@ -22,8 +22,14 @@ export const CreatePostOptions: React.FC<CreatePostOptionsProps> = () => {
         renderItem={(item) => (
           <Button
             onPress={() => {
-              navigation.navigate("AddContentToPost");
-              setPostType(item.item);
+              if (item.item == "poll") {
+                navigation.navigate("CreatePoll");
+              } else if (item.item == "playlist") {
+                navigation.navigate("CreatePlaylist");
+              } else {
+                setPostType(item.item);
+                navigation.navigate("AddContentToPost");
+              }
             }}>
             {item.item}
           </Button>

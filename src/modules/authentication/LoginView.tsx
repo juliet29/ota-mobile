@@ -1,20 +1,19 @@
 import { ErrorMessage, Formik } from "formik";
-import React, { useContext } from "react";
+import React from "react";
 import { Button, HelperText, TextInput } from "react-native-paper";
-import FacebookAuthButton from "../../functional-components/FacebookAuthButton";
-import { GoogleAuthButton } from "../../functional-components/GoogleAuthButton";
 import {
   LoginMutationVariables,
   useLoginMutation,
 } from "../../generated-components/apolloComponents";
+import { useLoginHook } from "../../modules/authentication/components//useLoginHook";
+import FacebookAuthButton from "../../modules/authentication/components/FacebookAuthButton";
+import { GoogleAuthButton } from "../../modules/authentication/components/GoogleAuthButton";
 import { AuthNavProps } from "../../navigation/auth/AuthParamList";
 import {
   LineBreak,
   StyledColumnView,
   Wrapper,
 } from "../../styled-components/ReusedUI";
-import { setAccessToken } from "../../utils/accessToken";
-import { AuthContext } from "../../utils/AuthProvider";
 import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
 
 // interface LoginViewProps {}
@@ -25,10 +24,15 @@ import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
-  const { setUser } = useContext(AuthContext);
   const [loginUser, { loading, error }] = useLoginMutation();
 
-  async function submitLoginUser({ email, password }: LoginMutationVariables) {
+  const [setLoginUser] = useLoginHook();
+  // const setCurrentUser = useSetUserHook();
+
+  const submitLoginUser = async ({
+    email,
+    password,
+  }: LoginMutationVariables) => {
     try {
       const response = await loginUser({ variables: { email, password } });
       console.log(response);
@@ -39,18 +43,24 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         response.data.login.accessToken
       ) {
         const accessToken = response.data.login.accessToken;
-        setAccessToken(accessToken);
-        setUser(accessToken);
+        setLoginUser(accessToken);
+
+        // get current user function
       }
     } catch (err) {
       console.log(err);
       return null;
     }
-  }
+  };
 
   if (error) {
     navigation.navigate("LoginFailed");
   }
+
+  const loginAndSetUser = async ({ email, password }) => {
+    await submitLoginUser({ email, password });
+    // setCurrentUser();
+  };
 
   return (
     <Wrapper>
@@ -59,7 +69,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         onSubmit={({ email, password }) => {
           console.log("signin button press");
           email = email.toLowerCase();
-          submitLoginUser({ email, password });
+          loginAndSetUser({ email, password });
         }}
         validationSchema={LoginValidationSchema}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -89,7 +99,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
             </HelperText>
 
             <LineBreak />
-            <Button mode="contained" onPress={handleSubmit}>
+            <Button disabled={loading} mode="contained" onPress={handleSubmit}>
               SIGN IN
             </Button>
           </StyledColumnView>
