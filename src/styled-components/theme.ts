@@ -1,7 +1,5 @@
-import {
-  DefaultTheme as PaperDefaultTheme,
-  Provider as PaperProvider,
-} from "react-native-paper";
+import { DefaultTheme as PaperDefaultTheme } from "react-native-paper";
+import { DefaultTheme } from "styled-components";
 import {
   indigo900,
   grey500,
@@ -29,20 +27,7 @@ export const theme = {
   },
 };
 
-import { DefaultTheme } from "styled-components";
-
 // STYLED COMPONENTS THEME
-// const colors: {
-// background: string;
-// accent: string;
-// text: string;
-// }
-// export interface ThemeInterface {
-//  colors: {
-//     background: string;
-//     accent: string;
-//     text: string;
-//     } }
 
 export interface ThemeInterface extends DefaultTheme {}
 // need to change the DefaultTheme interface in  ../types/styled.d.ts

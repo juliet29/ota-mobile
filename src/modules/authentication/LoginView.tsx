@@ -22,6 +22,7 @@ import { styles } from "../../styled-components/StyleSheet";
 import { color } from "react-native-reanimated";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
+import { GradientButton } from "../../styled-components/StylishComponents";
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
@@ -96,13 +97,6 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
                 <ErrorMessage name="email" />
               </HelperText>
 
-              {/* <AuthTextInput
-                placeholder="EMAIL"
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-                value={values.email.toLowerCase()}
-              /> */}
-
               <AuthTextInput
                 placeholder="PASSWORD"
                 placeholderTextColor={themeContext.colors.darkText}
@@ -116,6 +110,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
               </HelperText>
 
               <LineBreak />
+
               <Button
                 disabled={loading}
                 mode="contained"
@@ -127,15 +122,18 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         </Formik>
 
         <StyledColumnView>
+          <GradientButton />
           <FacebookAuthButton />
           {/* only works in Safari for whatever reason */}
           {/* <SpotifyAuthButton /> */}
+
           <LineBreak />
           <GoogleAuthButton />
         </StyledColumnView>
 
         <Button
           mode="text"
+          color={colors.text}
           onPress={() => {
             navigation.navigate("Register");
           }}>

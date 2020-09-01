@@ -4,8 +4,9 @@ import { ActivityIndicator } from "react-native-paper";
 import { RootStack } from "../navigation/app/RootStack";
 import { AuthStack } from "../navigation/auth/AuthStack";
 import { useStoreState } from "../state-management/hooks";
-import { Center } from "../styled-components/Center";
+
 import { getAccessToken } from "./accessToken";
+import { StyledColumnView } from "../styled-components/ReusedUI";
 
 interface RoutesProps {}
 
@@ -28,9 +29,9 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
 
   if (loading) {
     return (
-      <Center>
+      <StyledColumnView>
         <ActivityIndicator size="large" />
-      </Center>
+      </StyledColumnView>
     );
   }
   // const accessToken = getAccessToken();

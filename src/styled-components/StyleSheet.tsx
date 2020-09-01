@@ -16,13 +16,6 @@ export const styles = StyleSheet.create({
   wavyBackgroundImageStyle: {
     resizeMode: "cover",
     height: 600,
+    opacity: 0.3,
   },
-  //   // AUTH PAGE TEXT INPUT
-  //  authTextInput = colors => {
-  //     borderRadius: 40,
-  //     backgroundColor: "rgba(90,90,90,0.01)",
-  //     borderColor: colors.accent,
-  //     borderWidth: 0.5,
-  //     color: colors.text,
-  //   },
 });
