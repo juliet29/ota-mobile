@@ -11,8 +11,9 @@ import { Platform } from "react-native";
 const ENV = {
   dev: {
     //apiUrl: "http://localhost:4000",
-    // apiUrl: "http://192.168.0.27:4000",
-    apiUrl: "http://10.250.122.90:4000",
+    // apiUrl: "http://192.168.0.27:4000", // home
+    apiUrl: "http://10.250.122.90:4000", //harvard
+    // apiUrl: "http://10.250.2.242:4000", // caffe nero
   },
   staging: {
     apiUrl: "https://peaceful-oasis-92942.herokuapp.com",

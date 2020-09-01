@@ -1,6 +1,6 @@
 import { ErrorMessage, Formik } from "formik";
 import React from "react";
-import { Button, HelperText, TextInput } from "react-native-paper";
+import { Button, HelperText, TextInput, useTheme } from "react-native-paper";
 import {
   LoginMutationVariables,
   useLoginMutation,
@@ -13,21 +13,25 @@ import {
   LineBreak,
   StyledColumnView,
   Wrapper,
+  AuthTextInput,
 } from "../../styled-components/ReusedUI";
 import { LoginValidationSchema } from "../../utils/FormValidationSchemas";
-
-// interface LoginViewProps {}
-// interface submitLoginUserProps {
-//   email: string;
-//   password: string;
-// }
+import { Image, ImageBackground } from "react-native";
+import { blueA800 } from "../../styled-components/colors";
+import { styles } from "../../styled-components/StyleSheet";
+import { color } from "react-native-reanimated";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   // coming from global state management
+
   const [loginUser, { loading, error }] = useLoginMutation();
 
   const [setLoginUser] = useLoginHook();
   // const setCurrentUser = useSetUserHook();
+  const { colors } = useTheme();
+  const themeContext = useContext(ThemeContext);
 
   const submitLoginUser = async ({
     email,
@@ -63,64 +67,81 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
   };
 
   return (
-    <Wrapper>
-      <Formik
-        initialValues={{ password: "", email: "" }}
-        onSubmit={({ email, password }) => {
-          console.log("signin button press");
-          email = email.toLowerCase();
-          loginAndSetUser({ email, password });
-        }}
-        validationSchema={LoginValidationSchema}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <StyledColumnView>
-            {/* <Field name="email" label="" component={MyTextField} /> */}
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <Wrapper>
+        <Formik
+          initialValues={{ password: "", email: "" }}
+          onSubmit={({ email, password }) => {
+            console.log("signin button press");
+            email = email.toLowerCase();
+            loginAndSetUser({ email, password });
+          }}
+          validationSchema={LoginValidationSchema}>
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <StyledColumnView>
+              {/* <Field name="email" label="" component={MyTextField} /> */}
 
-            <TextInput
-              label="Email"
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              // TODO: CHANGE ON SERVER
-              value={values.email.toLowerCase()}
-            />
-            <HelperText>
-              <ErrorMessage name="email" />
-            </HelperText>
+              <AuthTextInput
+                // underlineColor={"rgba(90, 90, 90, 0.01)"}
+                placeholder="EMAIL"
+                placeholderTextColor={themeContext.colors.darkText}
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email.toLowerCase()}
+              />
+              <HelperText>
+                <ErrorMessage name="email" />
+              </HelperText>
 
-            <TextInput
-              label="Password"
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              secureTextEntry={true}
-            />
-            <HelperText>
-              <ErrorMessage name="password" />
-            </HelperText>
+              {/* <AuthTextInput
+                placeholder="EMAIL"
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email.toLowerCase()}
+              /> */}
 
-            <LineBreak />
-            <Button disabled={loading} mode="contained" onPress={handleSubmit}>
-              SIGN IN
-            </Button>
-          </StyledColumnView>
-        )}
-      </Formik>
+              <AuthTextInput
+                placeholder="PASSWORD"
+                placeholderTextColor={themeContext.colors.darkText}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+                secureTextEntry={true}
+              />
+              <HelperText>
+                <ErrorMessage name="password" />
+              </HelperText>
 
-      <StyledColumnView>
-        <FacebookAuthButton />
-        {/* only works in Safari for whatever reason */}
-        {/* <SpotifyAuthButton /> */}
-        <LineBreak />
-        <GoogleAuthButton />
-      </StyledColumnView>
+              <LineBreak />
+              <Button
+                disabled={loading}
+                mode="contained"
+                onPress={handleSubmit}>
+                SIGN IN
+              </Button>
+            </StyledColumnView>
+          )}
+        </Formik>
 
-      <Button
-        mode="text"
-        onPress={() => {
-          navigation.navigate("Register");
-        }}>
-        Don't have an account? Start now!
-      </Button>
-    </Wrapper>
+        <StyledColumnView>
+          <FacebookAuthButton />
+          {/* only works in Safari for whatever reason */}
+          {/* <SpotifyAuthButton /> */}
+          <LineBreak />
+          <GoogleAuthButton />
+        </StyledColumnView>
+
+        <Button
+          mode="text"
+          onPress={() => {
+            navigation.navigate("Register");
+          }}>
+          Don't have an account? Start now!
+        </Button>
+      </Wrapper>
+    </ImageBackground>
   );
 };
