@@ -83,10 +83,7 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
           validationSchema={LoginValidationSchema}>
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <StyledColumnView>
-              {/* <Field name="email" label="" component={MyTextField} /> */}
-
               <AuthTextInput
-                // underlineColor={"rgba(90, 90, 90, 0.01)"}
                 placeholder="EMAIL"
                 placeholderTextColor={themeContext.colors.darkText}
                 onChangeText={handleChange("email")}
@@ -124,8 +121,6 @@ export const LoginView: React.FC<AuthNavProps<"Login">> = ({ navigation }) => {
         <StyledColumnView>
           <GradientButton />
           <FacebookAuthButton />
-          {/* only works in Safari for whatever reason */}
-          {/* <SpotifyAuthButton /> */}
 
           <LineBreak />
           <GoogleAuthButton />

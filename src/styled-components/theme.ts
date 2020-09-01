@@ -9,6 +9,7 @@ import {
   indigoA700,
   grey300,
   grey200,
+  cyan400,
 } from "./colors";
 
 export const theme = {
@@ -19,7 +20,7 @@ export const theme = {
     primary: deepPurpleA700,
     accent: orange700,
     surface: blueA800,
-    text: grey200,
+    text: grey300,
   },
   fonts: {
     ...PaperDefaultTheme.fonts,
@@ -36,6 +37,7 @@ export const SCtheme: ThemeInterface = {
   colors: {
     background: blueA800,
     accent: orange700,
+    accentTwo: cyan400,
     text: grey200,
     darkText: grey500,
   },
