@@ -22,6 +22,7 @@ import { useStoreState } from "../../../state-management/hooks";
 import { HomeParamList } from "./HomeParamList";
 import { styles } from "../../../styled-components/StyleSheet";
 import { blueA800 } from "../../../styled-components/colors";
+import { Header } from "../header/Header";
 
 interface HomeStackProps {}
 
@@ -45,38 +46,28 @@ export const HomeStack: React.FC<HomeStackProps> = ({}) => {
 
   return (
     <Stack.Navigator
-      initialRouteName={userState.firstLogin ? "UserOnBoarding" : "Feed"}>
-      {/* initialRouteName="UserOnBoarding"> */}
+      initialRouteName={userState.firstLogin ? "UserOnBoarding" : "Feed"}
+      headerMode="screen"
+      screenOptions={{
+        header: ({ scene, previous, navigation }) => {
+          const { options } = scene.descriptor;
+          const title =
+            options.headerTitle !== undefined
+              ? options.headerTitle
+              : options.title !== undefined
+              ? options.title
+              : scene.route.name;
+
+          return <Header navigation={navigation} title={title} />;
+        },
+      }}>
       <Stack.Screen
         name="Feed"
-        options={{
-          header: ({ scene, previous, navigation }) => {
-            return (
-              <SafeAreaView
-                style={{
-                  backgroundColor: blueA800,
-                }}>
-                {/* <ImageBackground
-                  style={styles.wavyBackgroundStyle}
-                  imageStyle={styles.wavyBackgroundImageStyle}
-                  source={require("../../../local-assets/wavy.png")}> */}
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    //backgroundColor: colors.background,
-                  }}>
-                  <Title>On the Aux</Title>
-                  <UserButton navigation={navigation} />
-                  <SearchButton navigation={navigation} />
-                  {/* <LogoutButton /> */}
-                </View>
-                {/* </ImageBackground> */}
-              </SafeAreaView>
-            );
-          },
-        }}
+        // options={{
+        //   header: ({ scene, previous, navigation }) => {
+        //     return <Header navigation={navigation} />;
+        //   },
+        // }}
         component={FeedView}
       />
       <Stack.Screen name="ArtistPage" component={ArtistPageView} />

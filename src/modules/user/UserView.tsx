@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions, View, ImageBackground } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   ActivityIndicator,
@@ -29,6 +29,7 @@ import { UserTopFiveView } from "./user-top-five/UserTopFiveView";
 // import { client } from "../..";
 import BottomSheet from "reanimated-bottom-sheet";
 import { client } from "../../index";
+import { styles } from "../../styled-components/StyleSheet";
 
 export const emptyImage =
   "https://www.pikpng.com/pngl/m/39-398340_emergency-medicine-physician-robert-tomsho-empty-profile-picture.png";
@@ -114,111 +115,116 @@ export const UserView: React.FC<HomeStackNavProps<"UserPage">> = ({
   );
 
   return (
-    <StyledColumnView>
-      <ScrollView>
-        {otherUser && otherUser.followers ? (
-          <StyledColumnView>
-            <Card>
-              {id === userState.id ? (
-                <Button
-                  icon="settings-outline"
-                  onPress={() => {
-                    navigation.navigate("SettingsPage");
-                  }}>
-                  Settings
-                </Button>
-              ) : (
-                <></>
-              )}
-
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}>
-                <View>
-                  {otherUser.profilePicture ? (
-                    <Avatar.Image
-                      size={80}
-                      source={{
-                        uri: `${otherUser.profilePicture}`,
-                      }}
-                    />
-                  ) : (
-                    <Avatar.Icon size={80} icon="account" />
-                  )}
-                </View>
-
-                <View>
-                  <Title>{otherUser.username}</Title>
-                  {/* Followers and Following Count  */}
-                  <View>
-                    <Button
-                      onPress={() => {
-                        navigation.navigate("FollowersPage", {
-                          id: id,
-                          request: "followers",
-                        });
-                      }}>
-                      FOLLOWERS:{" "}
-                      {otherUser.followers.length > 1
-                        ? otherUser.followers.length - 1
-                        : 0}
-                    </Button>
-                    <Button
-                      onPress={() => {
-                        navigation.navigate("FollowersPage", {
-                          id: id,
-                          request: "following",
-                        });
-                      }}>
-                      FOLLOWING:{" "}
-                      {otherUser.following.length > 1
-                        ? otherUser.following.length - 1
-                        : 0}
-                    </Button>
-                  </View>
-
-                  <Caption>1 POSTS</Caption>
-
-                  {id === userState.id ? (
-                    <></>
-                  ) : (
-                    <FollowButton
-                      id={id}
-                      setOtherUser={setOtherUser}
-                      follow={
-                        otherUser.followers.includes(userState.id)
-                          ? false
-                          : true
-                      }
-                    />
-                  )}
-
-                  {id === userState.id ? <LogoutButton /> : <></>}
-                </View>
-              </View>
-            </Card>
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <StyledColumnView>
+        <ScrollView>
+          {otherUser && otherUser.followers ? (
             <StyledColumnView>
               <Card>
-                <Caption>Now playing on Spotify/ Apple Music</Caption>
+                {id === userState.id ? (
+                  <Button
+                    icon="settings-outline"
+                    onPress={() => {
+                      navigation.navigate("SettingsPage");
+                    }}>
+                    Settings
+                  </Button>
+                ) : (
+                  <></>
+                )}
+
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}>
+                  <View>
+                    {otherUser.profilePicture ? (
+                      <Avatar.Image
+                        size={80}
+                        source={{
+                          uri: `${otherUser.profilePicture}`,
+                        }}
+                      />
+                    ) : (
+                      <Avatar.Icon size={80} icon="account" />
+                    )}
+                  </View>
+
+                  <View>
+                    <Title>{otherUser.username}</Title>
+                    {/* Followers and Following Count  */}
+                    <View>
+                      <Button
+                        onPress={() => {
+                          navigation.navigate("FollowersPage", {
+                            id: id,
+                            request: "followers",
+                          });
+                        }}>
+                        FOLLOWERS:{" "}
+                        {otherUser.followers.length > 1
+                          ? otherUser.followers.length - 1
+                          : 0}
+                      </Button>
+                      <Button
+                        onPress={() => {
+                          navigation.navigate("FollowersPage", {
+                            id: id,
+                            request: "following",
+                          });
+                        }}>
+                        FOLLOWING:{" "}
+                        {otherUser.following.length > 1
+                          ? otherUser.following.length - 1
+                          : 0}
+                      </Button>
+                    </View>
+
+                    <Caption>1 POSTS</Caption>
+
+                    {id === userState.id ? (
+                      <></>
+                    ) : (
+                      <FollowButton
+                        id={id}
+                        setOtherUser={setOtherUser}
+                        follow={
+                          otherUser.followers.includes(userState.id)
+                            ? false
+                            : true
+                        }
+                      />
+                    )}
+
+                    {id === userState.id ? <LogoutButton /> : <></>}
+                  </View>
+                </View>
               </Card>
+              <StyledColumnView>
+                <Card>
+                  <Caption>Now playing on Spotify/ Apple Music</Caption>
+                </Card>
+              </StyledColumnView>
+              <ScrollView>
+                <TabView
+                  navigationState={{ index, routes }}
+                  renderScene={renderScene}
+                  onIndexChange={setIndex}
+                  initialLayout={initialLayout}
+                />
+              </ScrollView>
             </StyledColumnView>
-            <ScrollView>
-              <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={initialLayout}
-              />
-            </ScrollView>
-          </StyledColumnView>
-        ) : (
-          <ActivityIndicator />
-        )}
-      </ScrollView>
-    </StyledColumnView>
+          ) : (
+            <ActivityIndicator />
+          )}
+        </ScrollView>
+      </StyledColumnView>
+    </ImageBackground>
   );
 };
 
