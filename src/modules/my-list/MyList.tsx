@@ -6,7 +6,7 @@ import {
   Title,
   ActivityIndicator,
 } from "react-native-paper";
-import { GestureResponderEvent, View } from "react-native";
+import { GestureResponderEvent, View, ImageBackground } from "react-native";
 import {
   ArtistPostView,
   AlbumPostView,
@@ -25,6 +25,7 @@ import { RemoveFromMyListButton } from "./RemoveFromMyListButton";
 import { PlaylistView, PlaylistUserView } from "../home/PlaylistView";
 import { client } from "../../index";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { styles } from "../../styled-components/StyleSheet";
 
 interface MyListProps {}
 
@@ -77,90 +78,95 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
   ];
 
   return (
-    <ScrollView>
-      <StyledColumnView>
-        <Title>My List</Title>
-        <FlatList
-          contentContainerStyle={{
-            justifyContent: "space-around",
-            flexDirection: "row",
-          }}
-          data={buttonArray}
-          renderItem={({ item }) => (
-            <ToggleButton
-              icon={item[0] as string}
-              value={item[0] as string}
-              status={item[1] as Status}
-              onPress={item[2] as setFx}
-            />
-          )}
-          keyExtractor={(item, ix) => ix.toString()}
-        />
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <ScrollView>
+        <StyledColumnView>
+          <Title>My List</Title>
+          <FlatList
+            contentContainerStyle={{
+              justifyContent: "space-around",
+              flexDirection: "row",
+            }}
+            data={buttonArray}
+            renderItem={({ item }) => (
+              <ToggleButton
+                icon={item[0] as string}
+                value={item[0] as string}
+                status={item[1] as Status}
+                onPress={item[2] as setFx}
+              />
+            )}
+            keyExtractor={(item, ix) => ix.toString()}
+          />
 
-        <FlatList
-          data={data.getMyList}
-          renderItem={({ item }) => (
-            <StyledColumnView>
-              {artistStatus === "checked" &&
-              item?.__typename === "ArtistPost" ? (
-                <View>
-                  <ArtistPostView
-                    item={item}
-                    navigation={navigation}
-                    route={route}
-                  />
-                  <RemoveFromMyListButton
-                    postId={+item.id}
-                    postType={"artist"}
-                  />
-                </View>
-              ) : albumStatus === "checked" &&
-                item?.__typename === "AlbumPost" ? (
-                <View>
-                  <AlbumPostView
-                    item={item}
-                    navigation={navigation}
-                    route={route}
-                  />
-                  <RemoveFromMyListButton
-                    postId={+item.id}
-                    postType={"album"}
-                  />
-                </View>
-              ) : trackStatus === "checked" &&
-                item?.__typename === "TrackPost" ? (
-                <View>
-                  <TrackPostView
-                    item={item}
-                    navigation={navigation}
-                    route={route}
-                  />
-                  <RemoveFromMyListButton
-                    postId={+item.id}
-                    postType={"track"}
-                  />
-                </View>
-              ) : playlistStatus === "checked" &&
-                item?.__typename === "Playlist" ? (
-                <View>
-                  <PlaylistUserView
-                    item={item}
-                    navigation={navigation}
-                    route={route}
-                  />
-                  <RemoveFromMyListButton
-                    postId={+item.id}
-                    postType={"playlist"}
-                  />
-                </View>
-              ) : (
-                <></>
-              )}
-            </StyledColumnView>
-          )}
-          keyExtractor={(item, ix) => ix.toString()}
-        />
-      </StyledColumnView>
-    </ScrollView>
+          <FlatList
+            data={data.getMyList}
+            renderItem={({ item }) => (
+              <StyledColumnView>
+                {artistStatus === "checked" &&
+                item?.__typename === "ArtistPost" ? (
+                  <View>
+                    <ArtistPostView
+                      item={item}
+                      navigation={navigation}
+                      route={route}
+                    />
+                    <RemoveFromMyListButton
+                      postId={+item.id}
+                      postType={"artist"}
+                    />
+                  </View>
+                ) : albumStatus === "checked" &&
+                  item?.__typename === "AlbumPost" ? (
+                  <View>
+                    <AlbumPostView
+                      item={item}
+                      navigation={navigation}
+                      route={route}
+                    />
+                    <RemoveFromMyListButton
+                      postId={+item.id}
+                      postType={"album"}
+                    />
+                  </View>
+                ) : trackStatus === "checked" &&
+                  item?.__typename === "TrackPost" ? (
+                  <View>
+                    <TrackPostView
+                      item={item}
+                      navigation={navigation}
+                      route={route}
+                    />
+                    <RemoveFromMyListButton
+                      postId={+item.id}
+                      postType={"track"}
+                    />
+                  </View>
+                ) : playlistStatus === "checked" &&
+                  item?.__typename === "Playlist" ? (
+                  <View>
+                    <PlaylistUserView
+                      item={item}
+                      navigation={navigation}
+                      route={route}
+                    />
+                    <RemoveFromMyListButton
+                      postId={+item.id}
+                      postType={"playlist"}
+                    />
+                  </View>
+                ) : (
+                  <></>
+                )}
+              </StyledColumnView>
+            )}
+            keyExtractor={(item, ix) => ix.toString()}
+          />
+        </StyledColumnView>
+      </ScrollView>
+    </ImageBackground>
   );
 };

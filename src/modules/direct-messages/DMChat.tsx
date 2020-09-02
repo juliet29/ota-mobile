@@ -16,6 +16,8 @@ import { DMStackNavProps } from "../../navigation/app/direct-messages/DMParamLis
 import { useStoreState } from "../../state-management/hooks";
 import { blue100, grey100 } from "react-native-paper/src/styles/colors";
 import { NewDMInput } from "./NewDMInput";
+import { ImageBackground } from "react-native";
+import { styles } from "../../styled-components/StyleSheet";
 
 interface DMChatProps {}
 
@@ -43,46 +45,51 @@ export const DMChat: React.FC<DMChatProps & DMStackNavProps<"DMChat">> = ({
     return <Caption>Error..</Caption>;
   }
   return (
-    <ScrollView>
-      <StyledColumnView>
-        <Avatar.Image
-          size={40}
-          source={{
-            uri: `${partnerPictureURL}`,
-          }}
-        />
-        <Title>{partnerName}</Title>
-        <FlatList
-          data={data.getMyDMChat.sort((a, b) =>
-            a.timeSubmitted.localeCompare(b.timeSubmitted)
-          )}
-          keyExtractor={(item, index) => item.sender.id.toString() + index}
-          renderItem={(item) => (
-            <List.Item
-              title={item.item.text}
-              description={item.item.timeSubmitted}
-              style={
-                +item.item.sender.id === currentUser.id
-                  ? { backgroundColor: blue100 }
-                  : { backgroundColor: grey100 }
-              }
-              left={() =>
-                +item.item.sender.id !== currentUser.id ? (
-                  <Avatar.Image
-                    size={20}
-                    source={{
-                      uri: `${item.item.sender.profilePicture}`,
-                    }}
-                  />
-                ) : (
-                  <></>
-                )
-              }
-            />
-          )}
-        />
-        <NewDMInput partnerID={partnerID} />
-      </StyledColumnView>
-    </ScrollView>
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <ScrollView>
+        <StyledColumnView>
+          <Avatar.Image
+            size={40}
+            source={{
+              uri: `${partnerPictureURL}`,
+            }}
+          />
+          <Title>{partnerName}</Title>
+          <FlatList
+            data={data.getMyDMChat.sort((a, b) =>
+              a.timeSubmitted.localeCompare(b.timeSubmitted)
+            )}
+            keyExtractor={(item, index) => item.sender.id.toString() + index}
+            renderItem={(item) => (
+              <List.Item
+                title={item.item.text}
+                description={item.item.timeSubmitted}
+                style={
+                  +item.item.sender.id === currentUser.id
+                    ? { backgroundColor: blue100 }
+                    : { backgroundColor: grey100 }
+                }
+                left={() =>
+                  +item.item.sender.id !== currentUser.id ? (
+                    <Avatar.Image
+                      size={20}
+                      source={{
+                        uri: `${item.item.sender.profilePicture}`,
+                      }}
+                    />
+                  ) : (
+                    <></>
+                  )
+                }
+              />
+            )}
+          />
+          <NewDMInput partnerID={partnerID} />
+        </StyledColumnView>
+      </ScrollView>
+    </ImageBackground>
   );
 };

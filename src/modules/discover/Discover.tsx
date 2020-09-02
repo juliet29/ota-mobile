@@ -10,8 +10,9 @@ import { DiscoverPlaylists } from "./DiscoverPlaylists";
 import { DiscoverArtists } from "./DiscoverArtists";
 import { DiscoverReviews } from "./DiscoverReviews";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
-import { View, SafeAreaView } from "react-native";
+import { View, SafeAreaView, ImageBackground } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { styles } from "../../styled-components/StyleSheet";
 
 interface DiscoverProps {}
 
@@ -20,21 +21,26 @@ export const Discover: React.FC<DiscoverProps & HomeStackNavProps<"Feed">> = ({
   route,
 }) => {
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <Title>Discover</Title>
-        <Heading>New Albums</Heading>
-        <DiscoverAlbums navigation={navigation} route={route} />
-        <LineBreak />
-        <Heading>Most Popular Reviews</Heading>
-        <DiscoverReviews navigation={navigation} route={route} />
-        <LineBreak />
-        <Heading>Hot Artists</Heading>
-        <DiscoverArtists navigation={navigation} route={route} />
-        <LineBreak />
-        <Heading>Popular Playlists</Heading>
-        <DiscoverPlaylists navigation={navigation} route={route} />
-      </ScrollView>
-    </SafeAreaView>
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <SafeAreaView>
+        <ScrollView>
+          <Title>Discover</Title>
+          <Heading>New Albums</Heading>
+          <DiscoverAlbums navigation={navigation} route={route} />
+          <LineBreak />
+          <Heading>Most Popular Reviews</Heading>
+          <DiscoverReviews navigation={navigation} route={route} />
+          <LineBreak />
+          <Heading>Hot Artists</Heading>
+          <DiscoverArtists navigation={navigation} route={route} />
+          <LineBreak />
+          <Heading>Popular Playlists</Heading>
+          <DiscoverPlaylists navigation={navigation} route={route} />
+        </ScrollView>
+      </SafeAreaView>
+    </ImageBackground>
   );
 };

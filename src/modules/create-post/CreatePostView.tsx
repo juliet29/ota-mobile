@@ -11,6 +11,8 @@ import { CreatePostOptions } from "./CreatePostOptions";
 import { AlbumStars } from "./ratings/AlbumStars";
 import { TrackVotes } from "./ratings/TrackVotes";
 import { useSubmitContentPost } from "./useSubmitContentPost";
+import { ImageBackground } from "react-native";
+import { styles } from "../../styled-components/StyleSheet";
 
 interface CreatePostViewProps {}
 
@@ -54,51 +56,56 @@ export const CreatePostView: React.FC<CreatePostNavProps<
   };
 
   return (
-    <Wrapper>
-      <Formik
-        initialValues={{ text: "" }}
-        onSubmit={({ text }) => {
-          submitCreatePost({ text });
-        }}
-        validationSchema={CreatePostValidationSchema}>
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <StyledColumnView>
-            <TextInput
-              label="Text"
-              onChangeText={handleChange("text")}
-              onBlur={handleBlur("text")}
-              value={values.text}
-            />
-            <HelperText>
-              <ErrorMessage name="text" />
-            </HelperText>
-
-            {/* show selected content or options for creating Post */}
-            {content.name ? (
-              <ContentPreview
-                onPress={(value) => {
-                  setToDisplay(value);
-                }}
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <Wrapper>
+        <Formik
+          initialValues={{ text: "" }}
+          onSubmit={({ text }) => {
+            submitCreatePost({ text });
+          }}
+          validationSchema={CreatePostValidationSchema}>
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <StyledColumnView>
+              <TextInput
+                label="Text"
+                onChangeText={handleChange("text")}
+                onBlur={handleBlur("text")}
+                value={values.text}
               />
-            ) : (
-              <CreatePostOptions />
-            )}
+              <HelperText>
+                <ErrorMessage name="text" />
+              </HelperText>
 
-            {/* give option to rate or vote on albums or tracks once content is selected*/}
-            {content.name && postType === "track" ? (
-              <TrackVotes />
-            ) : content.name && postType === "album" ? (
-              <AlbumStars />
-            ) : (
-              <></>
-            )}
+              {/* show selected content or options for creating Post */}
+              {content.name ? (
+                <ContentPreview
+                  onPress={(value) => {
+                    setToDisplay(value);
+                  }}
+                />
+              ) : (
+                <CreatePostOptions />
+              )}
 
-            <Button mode="contained" onPress={handleSubmit}>
-              CREATE POST
-            </Button>
-          </StyledColumnView>
-        )}
-      </Formik>
-    </Wrapper>
+              {/* give option to rate or vote on albums or tracks once content is selected*/}
+              {content.name && postType === "track" ? (
+                <TrackVotes />
+              ) : content.name && postType === "album" ? (
+                <AlbumStars />
+              ) : (
+                <></>
+              )}
+
+              <Button mode="contained" onPress={handleSubmit}>
+                CREATE POST
+              </Button>
+            </StyledColumnView>
+          )}
+        </Formik>
+      </Wrapper>
+    </ImageBackground>
   );
 };

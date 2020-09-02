@@ -19,6 +19,8 @@ import {
   PlaylistInput,
   GetPostsDocument,
 } from "../../../generated-components/apolloComponents";
+import { ImageBackground } from "react-native";
+import { styles } from "../../../styled-components/StyleSheet";
 
 interface CreatePlaylistProps {}
 export type PlaylistItemType = {
@@ -74,64 +76,71 @@ export const CreatePlaylist: React.FC<CreatePlaylistProps> = ({}) => {
   };
 
   return (
-    <ScrollView>
-      <StyledColumnView style={{ marginLeft: 20, marginRight: 20 }}>
-        <Title>Username</Title>
-        <Button onPress={() => submitPlaylist()}>Publish</Button>
-        <TextInput
-          label="Playlist Title"
-          value={title}
-          onChangeText={(text) => setTitle(text)}
-        />
-        <TextInput
-          label="Playlist Description"
-          value={description}
-          onChangeText={(text) => setDescription(text)}
-        />
-        <Searchbar
-          placeholder="Search"
-          onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
-          value={searchQuery}
-        />
-        {searchQuery ? (
-          <TrackSearchPlaylist
-            searchQuery={searchQuery}
-            array={array}
-            setArray={setArray}
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../../local-assets/wavy.png")}>
+      <ScrollView>
+        <StyledColumnView style={{ marginLeft: 20, marginRight: 20 }}>
+          <Title>Username</Title>
+          <Button onPress={() => submitPlaylist()}>Publish</Button>
+          <TextInput
+            label="Playlist Title"
+            value={title}
+            onChangeText={(text) => setTitle(text)}
           />
-        ) : (
-          <></>
-        )}
-        <Title>Seclected Songs: </Title>
-        <FlatList
-          data={array}
-          keyExtractor={(item, index) => item!?.id!?.toString() + index}
-          renderItem={(results) => (
-            <List.Item
-              title={results.item?.name}
-              description={results.item?.artists?.map((item, ix) => {
-                return item;
-              })}
-              left={(props) => (
-                <Avatar.Image
-                  size={20}
-                  source={{
-                    uri: `${results.item?.imageUrl}`,
-                  }}
-                />
-              )}
-              right={() => (
-                <IconButton
-                  icon="cancel"
-                  onPress={() => {
-                    setArray(array.filter((i) => i.name !== results.item.name));
-                  }}
-                />
-              )}
+          <TextInput
+            label="Playlist Description"
+            value={description}
+            onChangeText={(text) => setDescription(text)}
+          />
+          <Searchbar
+            placeholder="Search"
+            onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
+            value={searchQuery}
+          />
+          {searchQuery ? (
+            <TrackSearchPlaylist
+              searchQuery={searchQuery}
+              array={array}
+              setArray={setArray}
             />
+          ) : (
+            <></>
           )}
-        />
-      </StyledColumnView>
-    </ScrollView>
+          <Title>Seclected Songs: </Title>
+          <FlatList
+            data={array}
+            keyExtractor={(item, index) => item!?.id!?.toString() + index}
+            renderItem={(results) => (
+              <List.Item
+                title={results.item?.name}
+                description={results.item?.artists?.map((item, ix) => {
+                  return item;
+                })}
+                left={(props) => (
+                  <Avatar.Image
+                    size={20}
+                    source={{
+                      uri: `${results.item?.imageUrl}`,
+                    }}
+                  />
+                )}
+                right={() => (
+                  <IconButton
+                    icon="cancel"
+                    onPress={() => {
+                      setArray(
+                        array.filter((i) => i.name !== results.item.name)
+                      );
+                    }}
+                  />
+                )}
+              />
+            )}
+          />
+        </StyledColumnView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
