@@ -9,6 +9,8 @@ import {
   useUpdatePostLikesMutation,
   GetPostsDocument,
 } from "../../generated-components/apolloComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface PostLikeButtonProps {
   postType: string;
@@ -19,6 +21,7 @@ export const PostLikeButton: React.FC<PostLikeButtonProps> = ({
   postId,
   postType,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const [setLikeUnlike] = useUpdatePostLikesMutation();
   const [status, setStatus] = React.useState("unchecked");
 
@@ -61,8 +64,8 @@ export const PostLikeButton: React.FC<PostLikeButtonProps> = ({
 
   return (
     <ToggleButton
-      icon="heart"
-      color={status === "unchecked" ? Colors.red300 : Colors.red500}
+      icon={status === "unchecked" ? "heart-outline" : "heart"}
+      color={themeContext.colors.accent}
       value="heart"
       status={status as Status}
       onPress={onButtonToggle}

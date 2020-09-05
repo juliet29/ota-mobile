@@ -32,6 +32,11 @@ export const theme = {
 
 export interface ThemeInterface extends DefaultTheme {}
 // need to change the DefaultTheme interface in  ../types/styled.d.ts
+/*
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
+const themeContext = useContext(ThemeContext); 
+*/
 
 export const SCtheme: ThemeInterface = {
   colors: {
