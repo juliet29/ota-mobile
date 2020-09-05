@@ -10,6 +10,7 @@ declare module "styled-components" {
       accentTwo: string;
       text: string;
       darkText: string;
+      primary: string;
     };
   }
 }

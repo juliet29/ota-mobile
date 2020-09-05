@@ -28,12 +28,14 @@ import {
   LineBreak,
   ThinLine,
   OrangeCaption,
+  SimpleColumn,
 } from "../../styled-components/ReusedUI";
 import { emptyImage, openURL } from "./FeedView";
 import { AddToMyListButton } from "../my-list/AddToMyListButton";
 import { Colors } from "react-native-paper";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface AlbumPostProps {
   item: AlbumPost;
@@ -56,25 +58,41 @@ export const ContentPostView: React.FC<
 > = ({ item, navigation, route }) => {
   const themeContext = useContext(ThemeContext);
   return (
-    <Card>
-      <Card.Content style={{ paddingHorizontal: 0, paddingVertical: 0 }}>
-        {/*************  Content Image  *************/}
+    <Card style={{ marginBottom: 20 }} theme={{ roundness: 15 }}>
+      <Card.Content
+        style={{
+          paddingHorizontal: 0,
+          paddingVertical: 0,
+          paddingLeft: 20,
+        }}>
+        {/*************  Content Image + Add to My List  *************/}
         {/* Content Image  TODO: music preview on press */}
-        <Image
-          style={{ width: 200, height: 200 }}
-          resizeMode="contain"
-          source={{
-            uri: `${item.imageUrl}`,
-          }}
-        />
-        <AddToMyListButton postId={+item.id} postType={"artist"} />
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            // TODO: evaluate this padding, or just left padding on card content
-            paddingLeft: 30,
-          }}>
+        <Row style={{ justifyContent: "space-around", paddingRight: 10 }}>
+          <View
+            style={{
+              // TODO: modify for android
+              shadowColor: themeContext.colors.primary,
+              shadowOffset: { width: 0.5, height: 5 },
+              shadowOpacity: 0.3,
+            }}>
+            <Image
+              style={{
+                width: 260,
+                height: 260,
+                left: -30,
+                top: -40,
+                borderRadius: 15,
+              }}
+              resizeMode="contain"
+              source={{
+                uri: `${item.imageUrl}`,
+              }}
+            />
+          </View>
+          <AddToMyListButton postId={+item.id} postType={"artist"} />
+        </Row>
+
+        <SimpleColumn>
           {/************* User Submission + Time  *************/}
           <LeftColumn>
             {item.user ? (
@@ -105,67 +123,86 @@ export const ContentPostView: React.FC<
             )}
           </LeftColumn>
           <ThinLine />
-          {/* <View
-            style={{
-              width: "80%",
-              backgroundColor: themeContext.colors.darkText,
-              height: 0.2,
-              marginTop: 20,
-              marginBottom: 30,
-            }}></View> */}
+
           {/************* Main Content + Navigate to Content Page *************/}
-          <LeftColumn>
-            {item.__typename === "AlbumPost" ? (
-              <Row>
-                <OrangeCaption style={{ bottom: 2 }}>ALBUM</OrangeCaption>
-                <StarRating
-                  disabled={true}
-                  maxStars={5}
-                  fullStar={"star"}
-                  halfStar={"star-half"}
-                  starSize={15}
-                  fullStarColor={themeContext.colors.accent}
-                  emptyStarColor={themeContext.colors.accent}
-                  // iconSet={"react-native-vector-icons"}
-                  rating={item.rating}
-                  selectedStar={() => {}}
-                />
-              </Row>
-            ) : item.__typename === "TrackPost" ? (
-              <Row>
-                <OrangeCaption style={{ top: 7, marginRight: 3 }}>
-                  TRACK
-                </OrangeCaption>
-                {item?.vote === 1 ? (
-                  <IconButton
-                    size={15}
-                    icon="thumb-up-outline"
-                    color={themeContext.colors.accent}
-                  />
-                ) : (
-                  <IconButton
-                    size={15}
-                    icon="thumb-down-outline"
-                    color={themeContext.colors.accent}
-                  />
-                )}
-              </Row>
-            ) : item.__typename === "ArtistPost" ? (
-              <OrangeCaption>ARTIST</OrangeCaption>
-            ) : null}
-            {/* TODO: ON PRESS -> NAV TO ARTIST PAGE -> CHANGE TO BUTTON?  */}
-            <Title>
-              {item.__typename === "AlbumPost"
-                ? item.albumName
+          <TouchableOpacity
+            onPress={() => {
+              item.__typename === "AlbumPost"
+                ? navigation.navigate("AlbumPage", {
+                    id: item?.albumId,
+                    name: item?.albumName,
+                    imageUrl: item.imageUrl,
+                  })
                 : item.__typename === "TrackPost"
-                ? item.trackName
+                ? navigation.navigate("TrackPage", {
+                    id: item?.trackId,
+                    name: item?.trackName,
+                    artistNames: item?.artistNames,
+                    imageUrl: item?.imageUrl,
+                  })
                 : item.__typename === "ArtistPost"
-                ? item.artistName
-                : null}
-            </Title>
-            <Paragraph>{item?.text}</Paragraph>
-          </LeftColumn>
-        </View>
+                ? navigation.navigate("ArtistPage", {
+                    id: item?.artistId,
+                    name: item?.artistName,
+                    imageUrl: item.imageUrl,
+                  })
+                : null;
+            }}>
+            <LeftColumn>
+              {item.__typename === "AlbumPost" ? (
+                <Row>
+                  <OrangeCaption style={{ bottom: 2 }}>ALBUM</OrangeCaption>
+                  <StarRating
+                    disabled={true}
+                    maxStars={5}
+                    fullStar={"star"}
+                    halfStar={"star-half"}
+                    starSize={15}
+                    fullStarColor={themeContext.colors.accent}
+                    emptyStarColor={themeContext.colors.accent}
+                    // iconSet={"react-native-vector-icons"}
+                    rating={item.rating}
+                    selectedStar={() => {}}
+                  />
+                </Row>
+              ) : item.__typename === "TrackPost" ? (
+                <Row>
+                  <OrangeCaption style={{ top: 7, marginRight: 3 }}>
+                    TRACK
+                  </OrangeCaption>
+                  {item?.vote === 1 ? (
+                    <IconButton
+                      size={15}
+                      icon="thumb-up-outline"
+                      color={themeContext.colors.accent}
+                    />
+                  ) : (
+                    <IconButton
+                      size={15}
+                      icon="thumb-down-outline"
+                      color={themeContext.colors.accent}
+                    />
+                  )}
+                </Row>
+              ) : item.__typename === "ArtistPost" ? (
+                <OrangeCaption>ARTIST</OrangeCaption>
+              ) : null}
+              {/* TODO: ON PRESS -> NAV TO ARTIST PAGE -> CHANGE TO BUTTON?  */}
+              <Title>
+                {item.__typename === "AlbumPost"
+                  ? item.albumName
+                  : item.__typename === "TrackPost"
+                  ? item.trackName
+                  : item.__typename === "ArtistPost"
+                  ? item.artistName
+                  : null}
+              </Title>
+              <Paragraph style={{ color: themeContext.colors.darkText }}>
+                {item?.text}
+              </Paragraph>
+            </LeftColumn>
+          </TouchableOpacity>
+        </SimpleColumn>
         <LineBreak />
 
         {/************* Links *************/}
@@ -220,15 +257,11 @@ export const ContentPostView: React.FC<
           {/* Go To Spotify  */}
           <Button
             theme={{ roundness: 0 }}
-            style={{ borderBottomRightRadius: 20, paddingTop: 5 }}
+            style={{ borderBottomRightRadius: 12, paddingTop: 5 }}
             mode="contained"
             icon="play-circle-outline"
             onPress={() => {
-              // navigation.navigate("ArtistPage", {
-              //   id: item?.artistId,
-              //   name: item?.artistName,
-              //   imageUrl: item.imageUrl,
-              // });
+              openURL(`${item.externalUrl}`);
             }}>
             PLAY ON SPOTIFY
           </Button>

@@ -41,6 +41,7 @@ const themeContext = useContext(ThemeContext);
 export const SCtheme: ThemeInterface = {
   colors: {
     background: blueA800,
+    primary: deepPurpleA700,
     accent: orange700,
     accentTwo: cyan400,
     text: grey200,

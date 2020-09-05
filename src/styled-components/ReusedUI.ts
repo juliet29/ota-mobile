@@ -61,9 +61,14 @@ export const LeftColumn = styled(View)`
   justify-content: flex-start;
 `;
 
+export const SimpleColumn = styled(View)`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const ThinLine = styled(View)`
-  width: 80%;
-  height: 0.2;
+  width: 90%;
+  height: 0.4;
   margin-top: 20;
   margin-bottom: 30;
   background-color: ${(props) => props.theme.colors.darkText};

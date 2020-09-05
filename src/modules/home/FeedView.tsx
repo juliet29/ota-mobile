@@ -59,14 +59,13 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
             <Caption>Hello {userState.username}</Caption>
           </Card>
           <LineBreak />
-          <StyledColumnView></StyledColumnView>
 
           <FlatList
             data={data.getPostsOfFollowing.sort((a, b) =>
               b.timeSubmitted.localeCompare(a.timeSubmitted)
             )}
             renderItem={({ item }) => (
-              <StyledColumnView>
+              <StyledColumnView style={{ paddingHorizontal: 10 }}>
                 {item?.__typename === "ArtistPost" ||
                 item?.__typename === "AlbumPost" ||
                 item?.__typename === "TrackPost" ? (
