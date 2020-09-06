@@ -1,4 +1,4 @@
-import { TextInput, View } from "react-native";
+import { TextInput, View, Image } from "react-native";
 import { Button, Subheading, Caption } from "react-native-paper";
 import styled from "styled-components/native";
 
@@ -77,4 +77,8 @@ export const ThinLine = styled(View)`
 export const OrangeCaption = styled(Caption)`
   color: ${(props) => props.theme.colors.accent};
   margin-right: 10px;
+`;
+
+export const RoundImage = styled(Image)`
+  border-radius: 15px;
 `;

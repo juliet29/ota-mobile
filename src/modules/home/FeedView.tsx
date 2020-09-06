@@ -1,25 +1,15 @@
-import React, { useEffect } from "react";
-import { Text, Linking, ImageBackground } from "react-native";
+import React from "react";
+import { ImageBackground, Linking } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { ActivityIndicator, Caption, Card } from "react-native-paper";
-import {
-  useGetPostsQuery,
-  useGetCurrentUserQuery,
-  useGetPostsOfFollowingQuery,
-} from "../../generated-components/apolloComponents";
-import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
-import { StyledColumnView, LineBreak } from "../../styled-components/ReusedUI";
-import {
-  AlbumPostView,
-  ArtistPostView,
-  TrackPostView,
-  ContentPostView,
-} from "./PostViews";
-import { useStoreActions, useStoreState } from "../../state-management/hooks";
+import { useGetPostsOfFollowingQuery } from "../../generated-components/apolloComponents";
 import { useSetUserHook } from "../../modules/authentication/components/useSetUserHook";
-import { PollView } from "./PollView";
-import { PlaylistView } from "./PlaylistView";
+import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { useStoreState } from "../../state-management/hooks";
+import { LineBreak, StyledColumnView } from "../../styled-components/ReusedUI";
 import { styles } from "../../styled-components/StyleSheet";
+import { PollView } from "./PollView";
+import { ContentPostView } from "./PostViews";
 
 export const openURL = (url: string) => {
   Linking.openURL(url).catch((err) =>
@@ -68,39 +58,15 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
               <StyledColumnView style={{ paddingHorizontal: 10 }}>
                 {item?.__typename === "ArtistPost" ||
                 item?.__typename === "AlbumPost" ||
-                item?.__typename === "TrackPost" ? (
+                item?.__typename === "TrackPost" ||
+                item?.__typename === "Playlist" ? (
                   <ContentPostView
                     item={item}
                     navigation={navigation}
                     route={route}
                   />
-                ) : // ) : item?.__typename === "ArtistPost" ? (
-                //   <ArtistPostView
-                //     item={item}
-                //     navigation={navigation}
-                //     route={route}
-                //   />
-                // ) : item?.__typename === "AlbumPost" ? (
-                //   <AlbumPostView
-                //     item={item}
-                //     navigation={navigation}
-                //     route={route}
-                //   />
-                // ) : item?.__typename === "TrackPost" ? (
-                //   <TrackPostView
-                //     item={item}
-                //     navigation={navigation}
-                //     route={route}
-                //   />
-                //
-                item?.__typename === "Poll" ? (
+                ) : item?.__typename === "Poll" ? (
                   <PollView item={item} navigation={navigation} route={route} />
-                ) : item?.__typename === "Playlist" ? (
-                  <PlaylistView
-                    item={item}
-                    navigation={navigation}
-                    route={route}
-                  />
                 ) : (
                   <></>
                 )}

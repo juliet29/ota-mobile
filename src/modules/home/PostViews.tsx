@@ -1,41 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Image, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  Avatar,
+  Button,
+  Caption,
+  Card,
+  IconButton,
+  List,
+  Paragraph,
+  Title,
+} from "react-native-paper";
+import StarRating from "react-native-star-rating";
+import { ThemeContext } from "styled-components";
 import {
   AlbumPost,
-  User,
-  TrackPost,
   ArtistPost,
+  Playlist,
+  TrackPost,
 } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import {
-  Card,
-  Caption,
-  Title,
-  Paragraph,
-  Button,
-  List,
-  Avatar,
-  IconButton,
-  Subheading,
-} from "react-native-paper";
-import { Image, Linking, View, Text } from "react-native";
-import StarRating from "react-native-star-rating";
-import { PostLikeButton } from "./PostLikeButton";
-import {
-  StyledColumnView,
-  IconDescription,
-  Row,
   LeftColumn,
   LineBreak,
-  ThinLine,
   OrangeCaption,
+  Row,
   SimpleColumn,
+  StyledColumnView,
+  ThinLine,
 } from "../../styled-components/ReusedUI";
-import { emptyImage, openURL } from "./FeedView";
 import { AddToMyListButton } from "../my-list/AddToMyListButton";
-import { Colors } from "react-native-paper";
-import { useContext } from "react";
-import { ThemeContext } from "styled-components";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { CommentsAndLikes } from "./CommentsAndLikes";
+import { emptyImage, openURL } from "./FeedView";
+import { PostLikeButton } from "./PostLikeButton";
 
 interface AlbumPostProps {
   item: AlbumPost;
@@ -50,7 +47,7 @@ interface ArtistPostProps {
 }
 
 interface ContentPostProps {
-  item: ArtistPost | TrackPost | AlbumPost;
+  item: ArtistPost | TrackPost | AlbumPost | Playlist;
 }
 
 export const ContentPostView: React.FC<
@@ -85,11 +82,26 @@ export const ContentPostView: React.FC<
               }}
               resizeMode="contain"
               source={{
-                uri: `${item.imageUrl}`,
+                uri: `${
+                  item.__typename === "Playlist"
+                    ? item.playlistPicture
+                    : item.imageUrl
+                }`,
               }}
             />
           </View>
-          <AddToMyListButton postId={+item.id} postType={"artist"} />
+          <AddToMyListButton
+            postId={+item.id}
+            postType={
+              item.__typename === "AlbumPost"
+                ? "album"
+                : item.__typename === "TrackPost"
+                ? "track"
+                : item.__typename === "ArtistPost"
+                ? "artist"
+                : "playlist"
+            }
+          />
         </Row>
 
         <SimpleColumn>
@@ -146,6 +158,10 @@ export const ContentPostView: React.FC<
                     name: item?.artistName,
                     imageUrl: item.imageUrl,
                   })
+                : item.__typename === "Playlist"
+                ? navigation.navigate("PlaylistPage", {
+                    playlist: item,
+                  })
                 : null;
             }}>
             <LeftColumn>
@@ -186,8 +202,10 @@ export const ContentPostView: React.FC<
                 </Row>
               ) : item.__typename === "ArtistPost" ? (
                 <OrangeCaption>ARTIST</OrangeCaption>
+              ) : item.__typename === "Playlist" ? (
+                <OrangeCaption>PLAYLIST</OrangeCaption>
               ) : null}
-              {/* TODO: ON PRESS -> NAV TO ARTIST PAGE -> CHANGE TO BUTTON?  */}
+
               <Title>
                 {item.__typename === "AlbumPost"
                   ? item.albumName
@@ -195,10 +213,12 @@ export const ContentPostView: React.FC<
                   ? item.trackName
                   : item.__typename === "ArtistPost"
                   ? item.artistName
+                  : item.__typename === "Playlist"
+                  ? item.title
                   : null}
               </Title>
               <Paragraph style={{ color: themeContext.colors.darkText }}>
-                {item?.text}
+                {item.__typename === "Playlist" ? item.description : item.text}
               </Paragraph>
             </LeftColumn>
           </TouchableOpacity>
@@ -213,63 +233,38 @@ export const ContentPostView: React.FC<
             justifyContent: "space-between",
           }}>
           {/* Likes*/}
-          <Row>
-            <PostLikeButton postType={"artist"} postId={+item.id} />
-            <IconDescription>{`${item.likes}`}</IconDescription>
-          </Row>
-
-          {/* Comments */}
-          <Row>
-            <IconButton
-              icon="comment-processing-outline"
-              color={themeContext.colors.accentTwo}
-              size={20}
-              onPress={() => {
-                navigation.navigate("CommentPage", {
-                  postId: +item.id,
-                  imageUrl: item.imageUrl,
-                  postType:
-                    item.__typename === "AlbumPost"
-                      ? "album"
-                      : item.__typename === "TrackPost"
-                      ? "track"
-                      : "artist",
-
-                  contentId:
-                    item.__typename === "AlbumPost"
-                      ? item.albumId
-                      : item.__typename === "TrackPost"
-                      ? item.trackId
-                      : item.artistId,
-                  name:
-                    item.__typename === "AlbumPost"
-                      ? item.albumName
-                      : item.__typename === "TrackPost"
-                      ? item.trackName
-                      : item.artistName,
-                });
-              }}
-            />
-
-            <IconDescription>2</IconDescription>
-          </Row>
+          <CommentsAndLikes navigation={navigation} item={item} route={route} />
 
           {/* Go To Spotify  */}
-          <Button
-            theme={{ roundness: 0 }}
-            style={{ borderBottomRightRadius: 12, paddingTop: 5 }}
-            mode="contained"
-            icon="play-circle-outline"
-            onPress={() => {
-              openURL(`${item.externalUrl}`);
-            }}>
-            PLAY ON SPOTIFY
-          </Button>
+          {item.__typename === "Playlist" ? (
+            <></>
+          ) : (
+            <Button
+              theme={{ roundness: 0 }}
+              style={{ borderBottomRightRadius: 12, paddingTop: 5 }}
+              mode="contained"
+              icon="play-circle-outline"
+              onPress={() => {
+                openURL(`${item.externalUrl}`);
+              }}>
+              PLAY ON SPOTIFY
+            </Button>
+          )}
         </View>
       </Card.Content>
     </Card>
   );
 };
+
+/*
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
