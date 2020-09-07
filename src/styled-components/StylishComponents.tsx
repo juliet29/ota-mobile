@@ -9,6 +9,9 @@ import {
   deepPurple300,
   deepPurpleA400,
 } from "./colors";
+import { Card, Caption } from "react-native-paper";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface StylishComponentsProps {
   //   onPress?: any;
@@ -58,3 +61,17 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 });
+
+export function UnroundCard(props) {
+  return <Card theme={{ roundness: 15 }} {...props} />;
+}
+
+export function BoldWhiteCaption(props) {
+  const themeContext = useContext(ThemeContext);
+  return (
+    <Caption
+      style={{ color: themeContext.colors.text, fontWeight: "bold" }}
+      {...props}
+    />
+  );
+}

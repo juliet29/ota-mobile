@@ -688,7 +688,7 @@ export type GetCommentsQuery = (
     & Pick<Comment, 'id' | 'text' | 'timeSubmitted' | 'likes'>
     & { user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'id'>
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   )>>> }
 );
@@ -1678,6 +1678,7 @@ export const GetCommentsDocument = gql`
     user {
       username
       id
+      profilePicture
     }
   }
 }

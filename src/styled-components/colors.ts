@@ -88,6 +88,7 @@ export const blueA200 = "#448aff";
 export const blueA400 = "#2979ff";
 export const blueA700 = "#2962ff";
 export const blueA800 = "#1F203C";
+export const blueA900 = "#26274B";
 
 export const lightBlue50 = "#e1f5fe";
 export const lightBlue100 = "#b3e5fc";

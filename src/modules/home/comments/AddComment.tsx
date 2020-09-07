@@ -1,6 +1,10 @@
 import React from "react";
-import { StyledColumnView } from "../../../styled-components/ReusedUI";
-import { TextInput, IconButton } from "react-native-paper";
+import {
+  StyledColumnView,
+  CommentTextInput,
+  Row,
+} from "../../../styled-components/ReusedUI";
+import { TextInput, IconButton, Avatar } from "react-native-paper";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import {
   useCreateCommentMutation,
@@ -9,13 +13,17 @@ import {
   GetCommentsDocument,
   useGetCommentsQuery,
 } from "../../../generated-components/apolloComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
-interface AddCommentProps {}
+interface AddCommentProps {
+  imageUrl: string;
+}
 
-export const AddComment: React.FC<HomeStackNavProps<"CommentPage">> = ({
-  navigation,
-  route,
-}) => {
+export const AddComment: React.FC<
+  AddCommentProps & HomeStackNavProps<"CommentPage">
+> = ({ navigation, route, imageUrl }) => {
+  const themeContext = useContext(ThemeContext);
   const [text, setText] = React.useState("");
   const [createComment] = useCreateCommentMutation();
   const { postId: id, postType } = route.params;
@@ -42,13 +50,29 @@ export const AddComment: React.FC<HomeStackNavProps<"CommentPage">> = ({
   };
 
   return (
-    <StyledColumnView>
-      <TextInput
-        label="Add a Comment"
+    <Row
+      style={{
+        justifyContent: "space-around",
+        alignContent: "center",
+        marginTop: 20,
+      }}>
+      <Avatar.Image
+        size={24}
+        source={{
+          uri: `${imageUrl}`,
+        }}
+      />
+      <CommentTextInput
+        placeholder="Leave your comment..."
+        placeholderTextColor={themeContext.colors.darkText}
         value={text}
         onChangeText={(text) => setText(text)}
       />
-      <IconButton icon="send" onPress={submitCreateComment} />
-    </StyledColumnView>
+      <IconButton
+        style={{ marginTop: -4 }}
+        icon="send"
+        onPress={submitCreateComment}
+      />
+    </Row>
   );
 };

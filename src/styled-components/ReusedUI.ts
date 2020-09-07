@@ -29,7 +29,8 @@ export const LineBreak = styled.View`
 export const AuthTextInput = styled(TextInput)`
   border-radius: 40px;
   background-color: rgba(90, 90, 90, 0.01);
-
+  border-color: ${(props) => props.theme.colors.accent};
+  color: ${(props) => props.theme.colors.text};
   border-width: 0.5px;
   padding: 15px;
 `;
@@ -82,3 +83,16 @@ export const OrangeCaption = styled(Caption)`
 export const RoundImage = styled(Image)`
   border-radius: 15px;
 `;
+
+export const CommentTextInput = styled(TextInput)`
+  border-radius: 40px;
+  background-color: ${(props) => props.theme.colors.backgroundContrast};
+  color: ${(props) => props.theme.colors.text};
+  padding: 15px;
+  width: 250px;
+  height: 30px;
+`;
+
+// export const TextColorCaption = styled(Caption)`
+//   color: ${(props) => props.theme.colors.text};
+// `;

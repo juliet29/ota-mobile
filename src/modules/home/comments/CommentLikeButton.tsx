@@ -5,6 +5,8 @@ import {
   LikeInput,
   GetCommentsDocument,
 } from "../../../generated-components/apolloComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface CommentLikeButtonProps {
   commentId: number;
@@ -17,6 +19,7 @@ export const CommentLikeButton: React.FC<CommentLikeButtonProps> = ({
   postType,
   postId,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const [setLikeUnlike] = useUpdateCommentLikesMutation();
   const [status, setStatus] = React.useState("unchecked");
 
@@ -59,8 +62,8 @@ export const CommentLikeButton: React.FC<CommentLikeButtonProps> = ({
 
   return (
     <ToggleButton
-      icon="heart"
-      color={status === "unchecked" ? Colors.red300 : Colors.red500}
+      icon={status === "unchecked" ? "heart-outline" : "heart"}
+      color={themeContext.colors.accent}
       value="heart"
       status={status as Status}
       onPress={onButtonToggle}

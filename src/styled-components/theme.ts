@@ -3,13 +3,15 @@ import { DefaultTheme } from "styled-components";
 import {
   indigo900,
   grey500,
-  blueA800,
   deepPurpleA700,
   orange700,
   indigoA700,
   grey300,
   grey200,
   cyan400,
+  blueA700,
+  blueA900,
+  blueA800,
 } from "./colors";
 
 export const theme = {
@@ -41,6 +43,7 @@ const themeContext = useContext(ThemeContext);
 export const SCtheme: ThemeInterface = {
   colors: {
     background: blueA800,
+    backgroundContrast: blueA900,
     primary: deepPurpleA700,
     accent: orange700,
     accentTwo: cyan400,

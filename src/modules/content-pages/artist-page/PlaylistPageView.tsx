@@ -36,7 +36,7 @@ export const PlaylistPageView: React.FC<HomeStackNavProps<"PlaylistPage">> = ({
       <ScrollView>
         <View style={{ alignItems: "center" }}>
           <RoundImage
-            style={{ width: 200, height: 200 }}
+            style={{ width: 200, height: 200, marginTop: 20 }}
             resizeMode="contain"
             source={{
               uri: `${playlist.playlistPicture}`,

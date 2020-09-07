@@ -29,7 +29,18 @@ export const CommentsAndLikes: React.FC<
         paddingHorizontal: 0,
       }}>
       <Row>
-        <PostLikeButton postType={"artist"} postId={+item.id} />
+        <PostLikeButton
+          postType={
+            item.__typename === "AlbumPost"
+              ? "album"
+              : item.__typename === "TrackPost"
+              ? "track"
+              : item.__typename === "Playlist"
+              ? "playlist"
+              : "artist"
+          }
+          postId={+item.id}
+        />
         <IconDescription>{`${item.likes}`}</IconDescription>
       </Row>
 

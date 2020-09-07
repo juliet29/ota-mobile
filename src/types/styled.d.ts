@@ -11,6 +11,7 @@ declare module "styled-components" {
       text: string;
       darkText: string;
       primary: string;
+      backgroundContrast: string;
     };
   }
 }

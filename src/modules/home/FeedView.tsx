@@ -45,17 +45,18 @@ export const FeedView: React.FC<HomeStackNavProps<"Feed">> = ({
       source={require("../../local-assets/wavy.png")}>
       <ScrollView>
         <StyledColumnView>
-          <Card>
+          {/* <Card>
             <Caption>Hello {userState.username}</Caption>
-          </Card>
-          <LineBreak />
+          </Card> */}
+          {/* <LineBreak /> */}
 
           <FlatList
             data={data.getPostsOfFollowing.sort((a, b) =>
               b.timeSubmitted.localeCompare(a.timeSubmitted)
             )}
             renderItem={({ item }) => (
-              <StyledColumnView style={{ paddingHorizontal: 10 }}>
+              <StyledColumnView
+                style={{ paddingHorizontal: 10, paddingTop: 10 }}>
                 {item?.__typename === "ArtistPost" ||
                 item?.__typename === "AlbumPost" ||
                 item?.__typename === "TrackPost" ||
