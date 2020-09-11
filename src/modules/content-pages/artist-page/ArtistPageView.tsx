@@ -7,17 +7,21 @@ import {
   Headline,
   Subheading,
   Title,
+  List,
 } from "react-native-paper";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
 import { ArtistPageAlbums } from "./ArtistPageAlbums";
 import { ArtistPageTracks } from "./ArtistPageTracks";
 import { styles } from "../../../styled-components/StyleSheet";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
   route,
   navigation,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const { id, name, imageUrl } = route.params;
 
   return (
@@ -26,14 +30,33 @@ export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
       imageStyle={styles.wavyBackgroundImageStyle}
       source={require("../../../local-assets/wavy.png")}>
       <ScrollView>
-        <StyledColumnView>
-          <View style={{ alignItems: "center" }}>
-            <Avatar.Image size={80} source={{ uri: `${imageUrl}` }} />
-            <Title>{name}</Title>
-            <Subheading>10 Followers</Subheading>
-            <Button>Follow</Button>
-          </View>
-        </StyledColumnView>
+        <View>
+          <List.Item
+            title={name}
+            description={"+1.1 MILLION FOLLOWERS"}
+            descriptionStyle={{ color: themeContext.colors.accent }}
+            titleStyle={{ fontSize: 30, fontWeight: "bold" }}
+            left={() => (
+              <View style={{ marginTop: 50 }}>
+                <Avatar.Image size={140} source={{ uri: `${imageUrl}` }} />
+              </View>
+            )}
+          />
+
+          <Button
+            icon="account-plus"
+            style={{
+              width: "30%",
+              height: "17%",
+              position: "absolute",
+              bottom: 20,
+              left: 155,
+              padding: 0,
+            }}
+            mode="contained">
+            Follow
+          </Button>
+        </View>
 
         <StyledColumnView>
           <Headline>Top Songs</Headline>
@@ -46,6 +69,7 @@ export const ArtistPageView: React.FC<HomeStackNavProps<"ArtistPage">> = ({
         </StyledColumnView>
 
         <Button
+          style={{ marginHorizontal: 30, marginBottom: 30 }}
           mode="contained"
           onPress={() => {
             navigation.navigate("ArtistPosts", {

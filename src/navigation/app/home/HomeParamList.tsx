@@ -8,7 +8,12 @@ import {
 
 export type HomeParamList = {
   Feed: undefined;
-  ArtistPage: { id: string; name: string; imageUrl?: string };
+  ArtistPage: {
+    id: string;
+    name: string;
+    imageUrl?: string;
+    backgroundImage?: string;
+  };
   ArtistPosts: { id: string; name: string };
   AlbumPage: { id: string; name: string; imageUrl?: string };
   TrackPage: {

@@ -62,7 +62,7 @@ export const ArtistPageTracks: React.FC<
           <List.Item
             style={{ width: 250, marginRight: 30, display: "flex" }}
             title={item.item.name}
-            titleStyle={{ width: 200 }}
+            titleStyle={{ width: 200, fontWeight: "bold" }}
             titleNumberOfLines={2}
             description={item.item.artists.map((i) => i.name).join(", ")}
             descriptionNumberOfLines={1}
