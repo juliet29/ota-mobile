@@ -49,5 +49,6 @@ export const SCtheme: ThemeInterface = {
     accentTwo: cyan400,
     text: grey200,
     darkText: grey500,
+    transparent: "rgba(10, 17, 96, 0.01)",
   },
 };

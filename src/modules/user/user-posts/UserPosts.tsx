@@ -10,9 +10,16 @@ import { useGetUserPostsQuery } from "../../../generated-components/apolloCompon
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { useStoreState } from "../../../state-management/hooks";
 import { StyledColumnView } from "../../../styled-components/ReusedUI";
-import { AlbumPostView, ArtistPostView, TrackPostView } from "./UserPostTypes";
+import {
+  AlbumPostView,
+  ArtistPostView,
+  TrackPostView,
+  UserContentPostView,
+} from "./UserPostTypes";
 // import { UserPostsFilter } from "./UserPostsFilter";
-import { GestureResponderEvent } from "react-native";
+import { GestureResponderEvent, View } from "react-native";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface UserPostsProps {
   id: number;
@@ -24,10 +31,12 @@ type setFx = (value?: string | GestureResponderEvent) => void;
 export const UserPosts: React.FC<
   UserPostsProps & HomeStackNavProps<"UserPage">
 > = ({ navigation, route, id }) => {
+  const themeContext = useContext(ThemeContext);
   // toggle button data
   const [artistStatus, setArtistStatus] = React.useState("checked");
   const [albumStatus, setAlbumStatus] = React.useState("checked");
   const [trackStatus, setTrackStatus] = React.useState("checked");
+  const [playlistStatus, setPlaylistStatus] = React.useState("checked");
 
   const onArtistButtonToggle = (value) => {
     setArtistStatus(artistStatus === "checked" ? "unchecked" : "checked");
@@ -41,10 +50,15 @@ export const UserPosts: React.FC<
     setTrackStatus(trackStatus === "checked" ? "unchecked" : "checked");
   };
 
+  const onPlaylistButtonToggle = (value) => {
+    setPlaylistStatus(playlistStatus === "checked" ? "unchecked" : "checked");
+  };
+
   const buttonArray = [
     ["artist", artistStatus, onArtistButtonToggle],
     ["album", albumStatus, onAlbumButtonToggle],
     ["music", trackStatus, onTrackButtonToggle],
+    ["playlist-music", playlistStatus, onPlaylistButtonToggle],
   ];
 
   // get user posts
@@ -64,7 +78,11 @@ export const UserPosts: React.FC<
   }
 
   return (
-    <StyledColumnView>
+    <View
+      style={{
+        backgroundColor: themeContext.colors.backgroundContrast,
+        paddingTop: 30,
+      }}>
       <FlatList
         contentContainerStyle={{
           justifyContent: "space-around",
@@ -76,6 +94,12 @@ export const UserPosts: React.FC<
             icon={item[0] as string}
             value={item[0] as string}
             status={item[1] as Status}
+            style={{
+              backgroundColor:
+                item[1] === "checked"
+                  ? themeContext.colors.accentTwo
+                  : themeContext.colors.text,
+            }}
             onPress={item[2] as setFx}
           />
         )}
@@ -83,26 +107,39 @@ export const UserPosts: React.FC<
       />
       <ScrollView>
         <FlatList
+          contentContainerStyle={{
+            marginVertical: 30,
+            marginHorizontal: 20,
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
           data={data.getUserPosts}
           renderItem={({ item }) => (
-            <StyledColumnView>
+            <View>
               {artistStatus === "checked" &&
               item?.__typename === "ArtistPost" ? (
-                <ArtistPostView
+                <UserContentPostView
                   item={item}
                   navigation={navigation}
                   route={route}
                 />
               ) : albumStatus === "checked" &&
                 item?.__typename === "AlbumPost" ? (
-                <AlbumPostView
+                <UserContentPostView
                   item={item}
                   navigation={navigation}
                   route={route}
                 />
               ) : trackStatus === "checked" &&
                 item?.__typename === "TrackPost" ? (
-                <TrackPostView
+                <UserContentPostView
+                  item={item}
+                  navigation={navigation}
+                  route={route}
+                />
+              ) : playlistStatus === "checked" &&
+                item?.__typename === "Playlist" ? (
+                <UserContentPostView
                   item={item}
                   navigation={navigation}
                   route={route}
@@ -110,11 +147,11 @@ export const UserPosts: React.FC<
               ) : (
                 <></>
               )}
-            </StyledColumnView>
+            </View>
           )}
           keyExtractor={(item, ix) => ix.toString()}
         />
       </ScrollView>
-    </StyledColumnView>
+    </View>
   );
 };

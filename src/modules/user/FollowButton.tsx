@@ -73,7 +73,12 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
   console.log("i am going to try to follow this user", follow);
 
   return (
-    <Button disabled={loading} onPress={() => submitFollowUser(id, follow)}>
+    <Button
+      mode="contained"
+      style={{ width: "40%", padding: 0 }}
+      labelStyle={{ padding: 0, margin: 0, fontSize: 13 }}
+      disabled={loading}
+      onPress={() => submitFollowUser(id, follow)}>
       {follow ? "FOLLOW" : "UNFOLLOW"}
     </Button>
   );

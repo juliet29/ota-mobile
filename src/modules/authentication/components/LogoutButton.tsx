@@ -13,7 +13,9 @@ export const LogoutButton: React.FC<LogoutButtonProps> = ({}) => {
 
   return (
     <Button
-      mode="text"
+      mode="contained"
+      style={{ width: "30%", padding: 0 }}
+      labelStyle={{ padding: 0, margin: 0 }}
       onPress={async () => {
         await logoutUser();
         setLogoutUser();
