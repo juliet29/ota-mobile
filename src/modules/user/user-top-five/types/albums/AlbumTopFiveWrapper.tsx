@@ -18,22 +18,30 @@ import {
   useGetOtherUserQuery,
   TopFive,
 } from "../../../../../generated-components/apolloComponents";
-import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
+import {
+  RoundImage,
+  StyledColumnView,
+} from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
 import { TopFiveArrayType, TopFiveWrapperProps } from "../../UserTopFiveView";
 import { AlbumTopFiveEdit } from "./AlbumTopFiveEdit";
 import { useStoreState } from "../../../../../state-management/hooks";
 import { Caption } from "react-native-paper";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { array } from "yup";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { AlbumTopFiveQuery } from "./AlbumTopFiveQuery";
+import { BoldWhiteCaption } from "../../../../../styled-components/StylishComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
+import { emptyImage } from "../../../../home/FeedView";
 
 export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
   id,
   type,
   navigation,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const userState = useStoreState((state) => state.user.user);
   const [array, setArray] = useState(Array<TopFiveArrayType>());
   const [showSearch, setShowSearch] = useState(false);
@@ -122,31 +130,35 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
   }, [array, setArray]);
 
   return (
-    <StyledColumnView>
-      {!editMode ? (
-        // SIMPLE FLATLIST
+    <ScrollView horizontal={true}>
+      <View>
+        {!editMode ? (
+          // SIMPLE FLATLIST
 
-        <View>
-          {userState.id === id ? (
-            <IconButton
-              icon="circle-edit-outline"
-              size={20}
-              disabled={mloading}
-              onPress={() => {
-                console.log("edit button pressed");
-                setEditMode(true);
-              }}
-            />
-          ) : (
-            <></>
-          )}
+          <View>
+            {userState.id === id ? (
+              <IconButton
+                icon="circle-edit-outline"
+                size={20}
+                disabled={mloading}
+                onPress={() => {
+                  console.log("edit button pressed");
+                  setEditMode(true);
+                }}
+              />
+            ) : (
+              <></>
+            )}
 
-          <FlatList
-            data={array}
-            keyExtractor={(item, index) => index.toString() + item}
-            renderItem={({ item, index }) => (
-              <View>
-                <Chip
+            <FlatList
+              numColumns={type === "artist" ? 1 : 2}
+              horizontal={type === "artist" ? true : false}
+              data={array}
+              key={type === "artist" ? 1 : 2}
+              keyExtractor={(item, index) => index.toString() + item}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  style={{ padding: 3 }}
                   onPress={() => {
                     const pageType =
                       type === "track"
@@ -161,84 +173,188 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                       name: item?.name,
                       imageUrl: item.imageUrl,
                     });
-                  }}
-                  avatar={
-                    <Avatar.Image
-                      size={30}
-                      source={{
-                        uri: `${item.imageUrl}`,
-                      }}
-                    />
-                  }>
-                  {item.name}
-                </Chip>
-              </View>
-            )}
-          />
-        </View>
-      ) : (
-        // EDIT MODE FLATLIST
-
-        <View>
-          <IconButton
-            icon="content-save-all"
-            size={20}
-            onPress={() => {
-              console.log("save button pressed");
-              submitUpdateTopFive();
-              setEditMode(false);
-            }}
-          />
-          <FlatList
-            data={array}
-            keyExtractor={(item, index) => index.toString() + item}
-            renderItem={({ item, index }) => (
-              <View>
-                {item.name ? (
-                  <Chip
-                    avatar={
-                      <Avatar.Image
-                        size={30}
-                        source={{
-                          uri: `${item.imageUrl}`,
+                  }}>
+                  {type === "track" ? (
+                    <View
+                      style={{
+                        width: 250,
+                      }}>
+                      <List.Item
+                        style={{ width: 250, marginRight: 30, display: "flex" }}
+                        title={item.name}
+                        titleStyle={{ width: 200, fontWeight: "bold" }}
+                        titleNumberOfLines={2}
+                        description={item.artistNames}
+                        descriptionNumberOfLines={1}
+                        descriptionStyle={{
+                          color: themeContext.colors.accentTwo,
+                          width: 200,
                         }}
+                        left={() => (
+                          <RoundImage
+                            style={{ width: 50, height: 50 }}
+                            resizeMode="contain"
+                            source={
+                              item.imageUrl
+                                ? {
+                                    uri: `${item.imageUrl}`,
+                                  }
+                                : require("../../../../../local-assets/logo.png")
+                            }
+                          />
+                        )}
                       />
-                    }
-                    onClose={() => {
-                      console.log("chip closed", index);
-                      setArray(Object.assign([...array], { [index]: {} }));
-                    }}>
-                    {item.name}
-                  </Chip>
-                ) : (
-                  <Chip
-                    icon="plus"
-                    onPress={() => {
-                      console.log("add");
-                      setShowSearch(true);
-                      setIndex(index);
-                    }}>
-                    New Item
-                  </Chip>
-                )}
-              </View>
+                    </View>
+                  ) : type === "artist" ? (
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        width: 100,
+                      }}>
+                      <Avatar.Image
+                        size={80}
+                        source={
+                          item.imageUrl
+                            ? {
+                                uri: `${item.imageUrl}`,
+                              }
+                            : require("../../../../../local-assets/logo.png")
+                        }
+                      />
+                      <Caption
+                        style={{
+                          textAlign: "center",
+                          color: themeContext.colors.accentTwo,
+                          marginTop: 10,
+                        }}>
+                        {item.name}
+                      </Caption>
+                    </View>
+                  ) : type === "album" ? (
+                    <View>
+                      <RoundImage
+                        style={{ width: 140, height: 140, opacity: 0.5 }}
+                        resizeMode="contain"
+                        source={
+                          item.imageUrl
+                            ? {
+                                uri: `${item.imageUrl}`,
+                              }
+                            : require("../../../../../local-assets/logo.png")
+                        }
+                      />
+                      <View
+                        style={{
+                          position: "absolute",
+                          bottom: 0,
+                          marginLeft: 10,
+                          marginBottom: 3,
+                          width: 100,
+                        }}>
+                        <BoldWhiteCaption>{item.name}</BoldWhiteCaption>
+                        {/* <Caption>
+                          {item.artistNames.map((i) => i).join(", ")}
+                        </Caption> */}
+                      </View>
+                    </View>
+                  ) : (
+                    <></>
+                  )}
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        ) : (
+          // EDIT MODE FLATLIST
+
+          <View>
+            <IconButton
+              icon="content-save-all"
+              size={20}
+              onPress={() => {
+                console.log("save button pressed");
+                submitUpdateTopFive();
+                setEditMode(false);
+              }}
+            />
+            {showSearch ? (
+              <AlbumTopFiveEdit
+                type={type}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                array={array}
+                setArray={setArray}
+                arrayIndex={index}
+                setShowSearch={setShowSearch}
+              />
+            ) : (
+              <></>
             )}
-          />
-        </View>
-      )}
-      {showSearch ? (
-        <AlbumTopFiveEdit
-          type={type}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          array={array}
-          setArray={setArray}
-          arrayIndex={index}
-          setShowSearch={setShowSearch}
-        />
-      ) : (
-        <></>
-      )}
-    </StyledColumnView>
+            <FlatList
+              data={array}
+              keyExtractor={(item, index) => index.toString() + item}
+              renderItem={({ item, index }) => (
+                <View>
+                  {item.name ? (
+                    <Chip
+                      style={{
+                        backgroundColor: themeContext.colors.primary,
+                        margin: 10,
+                        // width: 300,
+                        // height: 70,
+                        padding: 10,
+                        // display: "flex",
+                        // flexDirection: "column",
+
+                        // color: themeContext.colors.darkText,
+                      }}
+                      avatar={
+                        <View
+                          style={{
+                            marginRight: 25,
+                          }}>
+                          <Avatar.Image
+                            size={35}
+                            source={{
+                              uri: `${item.imageUrl}`,
+                            }}
+                          />
+                        </View>
+                      }
+                      onClose={() => {
+                        console.log("chip closed", index);
+                        setArray(Object.assign([...array], { [index]: {} }));
+                      }}>
+                      {item.name}
+                    </Chip>
+                  ) : (
+                    <Chip
+                      style={{
+                        backgroundColor: themeContext.colors.primary,
+
+                        margin: 10,
+                        // width: 300,
+                        // height: 70,
+                        padding: 10,
+                        // color: themeContext.colors.darkText,
+                      }}
+                      icon="plus"
+                      onPress={() => {
+                        console.log("add");
+                        setShowSearch(true);
+                        setIndex(index);
+                      }}>
+                      New Item
+                    </Chip>
+                  )}
+                </View>
+              )}
+            />
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };

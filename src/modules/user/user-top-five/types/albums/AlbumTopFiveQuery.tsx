@@ -1,6 +1,6 @@
 // Displaying search results for the different content types
 import React from "react";
-import { FlatList, Dimensions } from "react-native";
+import { FlatList, Dimensions, View } from "react-native";
 import {
   ActivityIndicator,
   Avatar,
@@ -50,7 +50,7 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
   console.log(searchResult);
   if (searchResult?.__typename) {
     return (
-      <StyledColumnView style={{ height: screenHeight / 2 }}>
+      <View style={{ height: screenHeight / 2 }}>
         {searchResult?.__typename === "AlbumSearchResult" ? (
           <FlatList
             data={searchResult.albums?.items}
@@ -176,7 +176,7 @@ export const AlbumTopFiveQuery: React.FC<TopFiveQueryProps> = ({
         ) : (
           <></>
         )}
-      </StyledColumnView>
+      </View>
     );
   }
 };

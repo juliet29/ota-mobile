@@ -5,12 +5,12 @@ import {
   TopFiveArrayInput,
   TopFiveInput,
   useUpdateUserTopFiveMutation,
-} from "../../../../../generated-components/apolloComponents";
-import { StyledColumnView } from "../../../../../styled-components/ReusedUI";
-import { TypeDisplay } from "../../TypeDisplay";
-import { TopFiveArrayType, TopFiveWrapperProps } from "../../UserTopFiveView";
-import { AlbumTopFiveEdit } from "./AlbumTopFiveEdit";
-import { useStoreState } from "../../../../../state-management/hooks";
+} from "../../../generated-components/apolloComponents";
+import { StyledColumnView } from "../../../styled-components/ReusedUI";
+import { TypeDisplay } from "./TypeDisplay";
+import { TopFiveArrayType, TopFiveWrapperProps } from "./UserTopFiveView";
+import { AlbumTopFiveEdit } from "./types/albums/AlbumTopFiveEdit";
+import { useStoreState } from "../../../state-management/hooks";
 
 export const AlbumTopFiveWrapper2: React.FC<TopFiveWrapperProps> = ({ id }) => {
   const userState = useStoreState((state) => state.user.user);
