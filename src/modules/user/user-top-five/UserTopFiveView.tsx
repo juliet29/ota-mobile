@@ -7,7 +7,7 @@ import { ArtistTopFiveWrapper } from "./types/artists/ArtistTopFiveWrapper";
 import { TrackTopFiveWrapper } from "./types/tracks/TrackTopFiveWrapper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeParamList } from "../../../navigation/app/home/HomeParamList";
-import { BoldWhiteCaption } from "../../../styled-components/StylishComponents";
+import { BoldWhiteHeading } from "../../../styled-components/StylishComponents";
 import { View } from "react-native";
 
 export interface TopFiveEditProps {
@@ -46,16 +46,16 @@ export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({
   return (
     <View
       style={{
-        margin: 10,
+        margin: 20,
       }}>
-      <BoldWhiteCaption>Top 5 Albums</BoldWhiteCaption>
+      <BoldWhiteHeading>Top 5 Albums</BoldWhiteHeading>
 
       <AlbumTopFiveWrapper id={id} type={"album"} navigation={navigation} />
 
-      <BoldWhiteCaption>Top 5 Artists</BoldWhiteCaption>
+      <BoldWhiteHeading>Top 5 Artists</BoldWhiteHeading>
       <AlbumTopFiveWrapper id={id} type={"artist"} navigation={navigation} />
 
-      <BoldWhiteCaption>Top 5 Tracks</BoldWhiteCaption>
+      <BoldWhiteHeading>Top 5 Tracks</BoldWhiteHeading>
       <AlbumTopFiveWrapper id={id} type={"track"} navigation={navigation} />
     </View>
   );

@@ -41,14 +41,15 @@ export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
             onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
             value={searchQuery}
           />
-          {error ? (
-            <Text></Text>
-          ) : !data ? (
-            <StyledColumnView>
+
+          {searchQuery ? (
+            !data ? (
               <ActivityIndicator size="large" />
-            </StyledColumnView>
+            ) : (
+              <SearchFlatLists data={data} />
+            )
           ) : (
-            <SearchFlatLists data={data} />
+            <></>
           )}
 
           <Button onPress={() => navigation.goBack()}>Dismiss</Button>

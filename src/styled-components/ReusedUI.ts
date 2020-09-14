@@ -56,6 +56,13 @@ export const Row = styled(View)`
   align-content: flex-end;
 `;
 
+export const RowSpaceBetween = styled(View)`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
 export const LeftColumn = styled(View)`
   display: flex;
   flex-direction: column;
@@ -81,7 +88,7 @@ export const OrangeCaption = styled(Caption)`
 `;
 
 export const RoundImage = styled(Image)`
-  border-radius: 15px;
+  border-radius: 7px;
 `;
 
 export const CommentTextInput = styled(TextInput)`

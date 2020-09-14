@@ -1,31 +1,19 @@
-import React, { useEffect } from "react";
-import { StyledColumnView } from "../../styled-components/ReusedUI";
-import {
-  Caption,
-  ToggleButton,
-  Title,
-  ActivityIndicator,
-} from "react-native-paper";
-import { GestureResponderEvent, View, ImageBackground } from "react-native";
-import {
-  ArtistPostView,
-  AlbumPostView,
-  TrackPostView,
-} from "../user/user-posts/UserPostTypes";
-
-import {
-  useGetUserPostsQuery,
-  useGetMyListQuery,
-  GetMyListQuery,
-  GetMyListDocument,
-} from "../../generated-components/apolloComponents";
-import { useStoreState } from "../../state-management/hooks";
+import React from "react";
+import { GestureResponderEvent, ImageBackground, View } from "react-native";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
-import { RemoveFromMyListButton } from "./RemoveFromMyListButton";
-import { PlaylistView, PlaylistUserView } from "../home/PlaylistView";
-import { client } from "../../index";
+import {
+  ActivityIndicator,
+  Caption,
+  Title,
+  ToggleButton,
+} from "react-native-paper";
+import { useGetMyListQuery } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { useStoreState } from "../../state-management/hooks";
+import { RowSpaceBetween } from "../../styled-components/ReusedUI";
 import { styles } from "../../styled-components/StyleSheet";
+import { MyListPostView } from "./MyListPostView";
+import { RemoveFromMyListButton } from "./RemoveFromMyListButton";
 
 interface MyListProps {}
 
@@ -83,7 +71,11 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
       imageStyle={styles.wavyBackgroundImageStyle}
       source={require("../../local-assets/wavy.png")}>
       <ScrollView>
-        <StyledColumnView>
+        <View
+          style={{
+            margin: 30,
+            marginTop: 50,
+          }}>
           <Title>My List</Title>
           <FlatList
             contentContainerStyle={{
@@ -105,11 +97,11 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
           <FlatList
             data={data.getMyList}
             renderItem={({ item }) => (
-              <StyledColumnView>
+              <View>
                 {artistStatus === "checked" &&
                 item?.__typename === "ArtistPost" ? (
-                  <View>
-                    <ArtistPostView
+                  <RowSpaceBetween>
+                    <MyListPostView
                       item={item}
                       navigation={navigation}
                       route={route}
@@ -118,11 +110,11 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
                       postId={+item.id}
                       postType={"artist"}
                     />
-                  </View>
+                  </RowSpaceBetween>
                 ) : albumStatus === "checked" &&
                   item?.__typename === "AlbumPost" ? (
-                  <View>
-                    <AlbumPostView
+                  <RowSpaceBetween>
+                    <MyListPostView
                       item={item}
                       navigation={navigation}
                       route={route}
@@ -131,11 +123,11 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
                       postId={+item.id}
                       postType={"album"}
                     />
-                  </View>
+                  </RowSpaceBetween>
                 ) : trackStatus === "checked" &&
                   item?.__typename === "TrackPost" ? (
-                  <View>
-                    <TrackPostView
+                  <RowSpaceBetween>
+                    <MyListPostView
                       item={item}
                       navigation={navigation}
                       route={route}
@@ -144,11 +136,11 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
                       postId={+item.id}
                       postType={"track"}
                     />
-                  </View>
+                  </RowSpaceBetween>
                 ) : playlistStatus === "checked" &&
                   item?.__typename === "Playlist" ? (
-                  <View>
-                    <PlaylistUserView
+                  <RowSpaceBetween>
+                    <MyListPostView
                       item={item}
                       navigation={navigation}
                       route={route}
@@ -157,15 +149,15 @@ export const MyList: React.FC<MyListProps & HomeStackNavProps<"UserPage">> = ({
                       postId={+item.id}
                       postType={"playlist"}
                     />
-                  </View>
+                  </RowSpaceBetween>
                 ) : (
                   <></>
                 )}
-              </StyledColumnView>
+              </View>
             )}
             keyExtractor={(item, ix) => ix.toString()}
           />
-        </StyledColumnView>
+        </View>
       </ScrollView>
     </ImageBackground>
   );

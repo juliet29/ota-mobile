@@ -17,6 +17,7 @@ import { PostSearchType } from "./search-types/PostSearchType";
 import { UserSearchType } from "./search-types/UserSearchType";
 import { ImageBackground } from "react-native";
 import { styles } from "../../styled-components/StyleSheet";
+import NiceSearchbar from "../../styled-components/StylishComponents";
 
 interface SearchViewProps {}
 
@@ -33,7 +34,7 @@ export const SearchView: React.FC<HomeStackNavProps<"SearchPage">> = ({
       source={require("../../local-assets/wavy.png")}>
       <ScrollView>
         <StyledColumnView>
-          <Searchbar
+          <NiceSearchbar
             placeholder="Search"
             onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
             value={searchQuery}

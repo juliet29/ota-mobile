@@ -78,7 +78,7 @@ export const ContentPostView: React.FC<
                 height: 260,
                 left: -30,
                 top: -40,
-                borderRadius: 15,
+                borderRadius: 7,
               }}
               resizeMode="contain"
               source={{

@@ -22,6 +22,8 @@ import {
   PollInput,
   PollOptionInput,
 } from "../../generated-components/apolloComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 type OptionData = { option: string; votes?: number };
 interface PollViewProps {
   item: Poll;
@@ -32,8 +34,13 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
   navigation,
   route,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const [showVotes, setShowVotes] = useState(false);
   const [updatePoll] = useUpdatePollMutation();
+
+  const totalVotes = item.options
+    .map((i) => i.votes)
+    .reduce((a, b) => a + b, 0);
 
   const submitUpdatePoll = async (optionName: string) => {
     // update votes on the options
@@ -72,6 +79,9 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
         <Caption>Poll</Caption>
         <Title>{item.question}</Title>
         <FlatList
+          style={{
+            marginTop: 20,
+          }}
           data={item.options}
           keyExtractor={(item, ix) => ix.toString()}
           renderItem={(option) =>
@@ -87,10 +97,46 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
                 </Button>
               </StyledColumnView>
             ) : (
-              <View>
-                <Subheading>
-                  {option.item.votes} - {option.item.option}
-                </Subheading>
+              <View
+                style={{
+                  height: 100,
+                  width: 200,
+                  display: "flex",
+                  flexDirection: "column",
+                }}>
+                <View
+                  style={{
+                    borderRadius: 30,
+                    borderColor: themeContext.colors.text,
+                    borderWidth: 2,
+                    height: 30,
+                    width: 200,
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}>
+                  <View
+                    style={{
+                      borderRadius: 30,
+                      borderColor: themeContext.colors.text,
+                      height: "100%",
+                      width: `${(option.item.votes / totalVotes) * 100}%`,
+                      backgroundColor: themeContext.colors.primary,
+                      position: "absolute",
+                    }}></View>
+                  <Subheading
+                    style={{
+                      marginLeft: 10,
+                    }}>
+                    {option.item.option.toUpperCase()}
+                  </Subheading>
+                  <Subheading
+                    style={{
+                      marginRight: 10,
+                    }}>
+                    {option.item.votes}
+                  </Subheading>
+                </View>
               </View>
             )
           }

@@ -49,7 +49,10 @@ export const DMFeed: React.FC<DMFeedProps & DMStackNavProps<"DMFeed">> = ({
       imageStyle={styles.wavyBackgroundImageStyle}
       source={require("../../local-assets/wavy.png")}>
       <ScrollView>
-        <StyledColumnView>
+        <StyledColumnView
+          style={{
+            marginTop: 50,
+          }}>
           <Title>My Messages</Title>
           <StartDM navigation={navigation} route={route} />
           <FlatList

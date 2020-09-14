@@ -4,6 +4,8 @@ import { FlatList } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
 import { useStoreActions } from "../../state-management/hooks";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface CreatePostOptionsProps {}
 
@@ -13,6 +15,7 @@ export const CreatePostOptions: React.FC<CreatePostOptionsProps> = () => {
     (actions) => actions.createPost.setPostType
   );
 
+  const themeContext = useContext(ThemeContext);
   const postTypes = ["track", "artist", "album", "poll", "playlist"];
 
   return (
@@ -21,6 +24,7 @@ export const CreatePostOptions: React.FC<CreatePostOptionsProps> = () => {
         data={postTypes}
         renderItem={(item) => (
           <Button
+            labelStyle={{ color: themeContext.colors.accentTwo }}
             onPress={() => {
               if (item.item == "poll") {
                 navigation.navigate("CreatePoll");

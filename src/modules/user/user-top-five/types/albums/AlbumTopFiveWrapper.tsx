@@ -21,6 +21,7 @@ import {
 import {
   RoundImage,
   StyledColumnView,
+  ThinLine,
 } from "../../../../../styled-components/ReusedUI";
 import { TypeDisplay } from "../../TypeDisplay";
 import { TopFiveArrayType, TopFiveWrapperProps } from "../../UserTopFiveView";
@@ -131,7 +132,10 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
 
   return (
     <ScrollView horizontal={true}>
-      <View>
+      <View
+        style={{
+          marginBottom: 20,
+        }}>
         {!editMode ? (
           // SIMPLE FLATLIST
 
@@ -190,19 +194,26 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                           color: themeContext.colors.accentTwo,
                           width: 200,
                         }}
-                        left={() => (
-                          <RoundImage
-                            style={{ width: 50, height: 50 }}
-                            resizeMode="contain"
-                            source={
-                              item.imageUrl
-                                ? {
-                                    uri: `${item.imageUrl}`,
-                                  }
-                                : require("../../../../../local-assets/logo.png")
-                            }
-                          />
-                        )}
+                        left={() =>
+                          item.imageUrl ? (
+                            <RoundImage
+                              style={{ width: 50, height: 50 }}
+                              resizeMode="contain"
+                              source={{
+                                uri: `${item.imageUrl}`,
+                              }}
+                            />
+                          ) : (
+                            <Avatar.Icon
+                              style={{
+                                borderRadius: 15,
+                                backgroundColor:
+                                  themeContext.colors.backgroundContrast,
+                              }}
+                              icon="plus-box"
+                            />
+                          )
+                        }
                       />
                     </View>
                   ) : type === "artist" ? (
@@ -213,16 +224,16 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                         alignItems: "center",
                         width: 100,
                       }}>
-                      <Avatar.Image
-                        size={80}
-                        source={
-                          item.imageUrl
-                            ? {
-                                uri: `${item.imageUrl}`,
-                              }
-                            : require("../../../../../local-assets/logo.png")
-                        }
-                      />
+                      {item.imageUrl ? (
+                        <Avatar.Image
+                          size={80}
+                          source={{
+                            uri: `${item.imageUrl}`,
+                          }}
+                        />
+                      ) : (
+                        <Avatar.Icon icon="plus-box" />
+                      )}
                       <Caption
                         style={{
                           textAlign: "center",
@@ -234,17 +245,35 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                     </View>
                   ) : type === "album" ? (
                     <View>
-                      <RoundImage
-                        style={{ width: 140, height: 140, opacity: 0.5 }}
-                        resizeMode="contain"
-                        source={
-                          item.imageUrl
-                            ? {
-                                uri: `${item.imageUrl}`,
-                              }
-                            : require("../../../../../local-assets/logo.png")
-                        }
-                      />
+                      {item.imageUrl ? (
+                        <RoundImage
+                          style={{
+                            width: 120,
+                            height: 120,
+                            marginRight: 10,
+                            marginBottom: 10,
+                            opacity: 0.5,
+                          }}
+                          resizeMode="contain"
+                          source={{
+                            uri: `${item.imageUrl}`,
+                          }}
+                        />
+                      ) : (
+                        <Avatar.Icon
+                          style={{
+                            borderRadius: 15,
+                            width: 120,
+                            height: 120,
+                            marginRight: 10,
+                            marginBottom: 10,
+                            backgroundColor:
+                              themeContext.colors.backgroundContrast,
+                          }}
+                          icon="plus-box"
+                        />
+                      )}
+
                       <View
                         style={{
                           position: "absolute",

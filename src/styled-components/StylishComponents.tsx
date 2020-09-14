@@ -9,7 +9,7 @@ import {
   deepPurple300,
   deepPurpleA400,
 } from "./colors";
-import { Card, Caption } from "react-native-paper";
+import { Card, Caption, Subheading, Searchbar } from "react-native-paper";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 
@@ -71,6 +71,34 @@ export function BoldWhiteCaption(props) {
   return (
     <Caption
       style={{ color: themeContext.colors.text, fontWeight: "bold" }}
+      {...props}
+    />
+  );
+}
+
+export function BoldWhiteHeading(props) {
+  const themeContext = useContext(ThemeContext);
+  return (
+    <Subheading
+      style={{
+        color: themeContext.colors.text,
+        fontWeight: "bold",
+        fontSize: 20,
+        marginBottom: 10,
+      }}
+      {...props}
+    />
+  );
+}
+
+export default function NiceSearchbar(props) {
+  const themeContext = useContext(ThemeContext);
+  return (
+    <Searchbar
+      style={{
+        backgroundColor: themeContext.colors.backgroundContrast,
+      }}
+      iconColor={themeContext.colors.accentTwo}
       {...props}
     />
   );

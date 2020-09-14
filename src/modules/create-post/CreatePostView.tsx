@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import { Button, HelperText, TextInput } from "react-native-paper";
 import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
 import { useStoreActions, useStoreState } from "../../state-management/hooks";
-import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
+import {
+  AuthTextInput,
+  StyledColumnView,
+  Wrapper,
+} from "../../styled-components/ReusedUI";
 import { CreatePostValidationSchema } from "../../utils/FormValidationSchemas";
 import { ContentPreview } from "./ContentPreview";
 import { CreatePostOptions } from "./CreatePostOptions";
@@ -13,12 +17,15 @@ import { TrackVotes } from "./ratings/TrackVotes";
 import { useSubmitContentPost } from "./useSubmitContentPost";
 import { ImageBackground } from "react-native";
 import { styles } from "../../styled-components/StyleSheet";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface CreatePostViewProps {}
 
 export const CreatePostView: React.FC<CreatePostNavProps<
   "CreatePost"
 >> = ({}) => {
+  const themeContext = useContext(ThemeContext);
   const navigation = useNavigation();
   const submitContent = useSubmitContentPost();
   let content = useStoreState((state) => state.createPost.content);
@@ -35,7 +42,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<
   // make sure text is set before submitting content
   useEffect(() => {
     if (content.text) {
-      console.log("hello");
+      console.log("content", content);
       const actuallySubmit = async () => {
         console.log("just set text", content);
         const response = await submitContent();
@@ -69,8 +76,9 @@ export const CreatePostView: React.FC<CreatePostNavProps<
           validationSchema={CreatePostValidationSchema}>
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <StyledColumnView>
-              <TextInput
-                label="Text"
+              <AuthTextInput
+                placeholder="Add your review..."
+                placeholderTextColor={themeContext.colors.text}
                 onChangeText={handleChange("text")}
                 onBlur={handleBlur("text")}
                 value={values.text}

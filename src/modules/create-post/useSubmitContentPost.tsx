@@ -19,6 +19,8 @@ export const useSubmitContentPost: useSubmitContentType = () => {
   const [createAlbumPost] = useCreateAlbumPostMutation();
   const [createTrackPost] = useCreateTrackPostMutation();
 
+  console.log("content", content);
+
   const submitArtistPost = async () => {
     const {
       name: artistName,

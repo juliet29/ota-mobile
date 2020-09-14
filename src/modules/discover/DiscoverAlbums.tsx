@@ -10,12 +10,16 @@ import { useGetReccomendationsQuery } from "../../generated-components/apolloCom
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { View, Image } from "react-native";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
+import { RoundImage } from "../../styled-components/ReusedUI";
 
 interface DiscoverAlbumsProps {}
 
 export const DiscoverAlbums: React.FC<
   DiscoverAlbumsProps & HomeStackNavProps<"Feed">
 > = ({ navigation }) => {
+  const themeContext = useContext(ThemeContext);
   const { data, loading, error } = useGetReccomendationsQuery();
 
   if (loading) {
@@ -42,7 +46,7 @@ export const DiscoverAlbums: React.FC<
                 display: "flex",
                 justifyContent: "flex-start",
               }}>
-              <Image
+              <RoundImage
                 style={{ width: 100, height: 100, marginLeft: 20 }}
                 resizeMode="contain"
                 source={{
@@ -53,7 +57,9 @@ export const DiscoverAlbums: React.FC<
                 style={{ width: 150 }}
                 title={item.album.name}
                 titleNumberOfLines={2}
+                titleStyle={{ fontWeight: "bold" }}
                 description={item.album.artists.map((i) => i.name)}
+                descriptionStyle={{ color: themeContext.colors.accentTwo }}
                 onPress={() => {
                   // console.log("album button");
                   navigation.navigate("AlbumPage", {
