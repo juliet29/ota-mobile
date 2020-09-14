@@ -31,7 +31,7 @@ export type HomeParamList = {
     postType: string;
     contentId?: string;
     name?: string;
-    imageUrl?: string;
+    imageUrl?: string | null;
     question?: string;
   };
   FollowersPage: { id: number; request: "following" | "followers" };

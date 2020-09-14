@@ -232,7 +232,7 @@ export const ContentPostView: React.FC<
             flexDirection: "row",
             justifyContent: "space-between",
           }}>
-          {/* Likes*/}
+          {/* Comments & Likes*/}
           <CommentsAndLikes navigation={navigation} item={item} route={route} />
 
           {/* Go To Spotify  */}

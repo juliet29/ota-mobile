@@ -4,6 +4,7 @@ import {
   TrackPost,
   AlbumPost,
   Playlist,
+  Poll,
 } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { Row, IconDescription } from "../../styled-components/ReusedUI";
@@ -14,7 +15,7 @@ import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 
 interface CommentsAndLikesProps {
-  item: ArtistPost | TrackPost | AlbumPost | Playlist;
+  item: ArtistPost | TrackPost | AlbumPost | Playlist | Poll;
 }
 
 export const CommentsAndLikes: React.FC<
@@ -37,6 +38,8 @@ export const CommentsAndLikes: React.FC<
               ? "track"
               : item.__typename === "Playlist"
               ? "playlist"
+              : item.__typename === "Poll"
+              ? "poll"
               : "artist"
           }
           postId={+item.id}
@@ -56,6 +59,8 @@ export const CommentsAndLikes: React.FC<
               imageUrl:
                 item.__typename === "Playlist"
                   ? item.playlistPicture
+                  : item.__typename === "Poll"
+                  ? null
                   : item.imageUrl,
               postType:
                 item.__typename === "AlbumPost"
@@ -64,6 +69,8 @@ export const CommentsAndLikes: React.FC<
                   ? "track"
                   : item.__typename === "Playlist"
                   ? "playlist"
+                  : item.__typename === "Poll"
+                  ? "poll"
                   : "artist",
 
               contentId:
@@ -73,6 +80,8 @@ export const CommentsAndLikes: React.FC<
                   ? item.trackId
                   : item.__typename === "Playlist"
                   ? item.id
+                  : item.__typename === "Poll"
+                  ? item.id
                   : item.artistId,
               name:
                 item.__typename === "AlbumPost"
@@ -81,6 +90,8 @@ export const CommentsAndLikes: React.FC<
                   ? item.trackName
                   : item.__typename === "Playlist"
                   ? item.title
+                  : item.__typename === "Poll"
+                  ? item.question
                   : item.artistName,
             });
           }}

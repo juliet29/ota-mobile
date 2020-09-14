@@ -10,7 +10,7 @@ import {
   Button,
   Subheading,
 } from "react-native-paper";
-import { StyledColumnView } from "../../styled-components/ReusedUI";
+import { StyledColumnView, ThinLine } from "../../styled-components/ReusedUI";
 import { Image, Text, View } from "react-native";
 import { PostLikeButton } from "./PostLikeButton";
 import { emptyImage } from "./FeedView";
@@ -24,6 +24,8 @@ import {
 } from "../../generated-components/apolloComponents";
 import { useContext } from "react";
 import { ThemeContext } from "styled-components";
+import { UserTitle } from "./UserTitle";
+import { CommentsAndLikes } from "./CommentsAndLikes";
 type OptionData = { option: string; votes?: number };
 interface PollViewProps {
   item: Poll;
@@ -74,9 +76,21 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
   return (
     <Card>
       {/* TODO: make a global style for centering */}
-      <Card.Content style={{ alignItems: "center" }}>
-        <Text>{item?.timeSubmitted}</Text>
-        <Caption>Poll</Caption>
+      <Card.Content style={{ alignItems: "left", paddingLeft: 20 }}>
+        <View
+          style={{
+            width: 300,
+          }}>
+          <UserTitle
+            username={item.user.username}
+            timeSubmitted={item.timeSubmitted}
+            userId={+item.user.id}
+            userImage={item.user.profilePicture}
+            avatarSize={24}
+          />
+        </View>
+        <ThinLine />
+
         <Title>{item.question}</Title>
         <FlatList
           style={{
@@ -141,7 +155,8 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
             )
           }
         />
-        <Button
+        <CommentsAndLikes navigation={navigation} item={item} route={route} />
+        {/* <Button
           mode="contained"
           onPress={() => {
             navigation.navigate("CommentPage", {
@@ -154,7 +169,7 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
           SEE COMMENTS
         </Button>
         <PostLikeButton postType={"poll"} postId={+item.id} />
-        <Paragraph>{`Likes: ${item.likes}`}</Paragraph>
+        <Paragraph>{`Likes: ${item.likes}`}</Paragraph> */}
       </Card.Content>
     </Card>
   );
