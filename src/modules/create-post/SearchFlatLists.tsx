@@ -27,7 +27,7 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
     artistNames?: string[]
   ) => {
     // clear all previous values + set new global state
-    await clearContent();
+    clearContent();
 
     setContent({
       id,
@@ -41,6 +41,8 @@ export const SearchFlatLists: React.FC<SearchFlatListsProps> = (data) => {
     return;
   };
   const searchResult = data.data?.search;
+
+  console.log("content in search flat lists", content);
 
   if (searchResult?.__typename === "ArtistSearchResult") {
     return (

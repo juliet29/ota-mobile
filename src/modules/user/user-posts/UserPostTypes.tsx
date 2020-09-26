@@ -1,35 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Image, Linking, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  Caption,
+  Card,
+  IconButton,
+  Paragraph,
+  Text,
+  Title,
+} from "react-native-paper";
+import StarRating from "react-native-star-rating";
+import { ThemeContext } from "styled-components";
 import {
   AlbumPost,
-  User,
-  TrackPost,
   ArtistPost,
   Playlist,
+  TrackPost,
 } from "../../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import {
-  Card,
-  Caption,
-  Title,
-  Paragraph,
-  Button,
-  Text,
-  List,
-  Avatar,
-  IconButton,
-} from "react-native-paper";
-import { Image, Linking, TouchableOpacity, View } from "react-native";
-import StarRating from "react-native-star-rating";
-import {
-  StyledColumnView,
+  OrangeCaption,
   RoundImage,
   Row,
-  OrangeCaption,
 } from "../../../styled-components/ReusedUI";
-import { emptyImage } from "../../home/FeedView";
-import { PostLikeButton } from "../../home/PostLikeButton";
-import { useContext } from "react";
-import { ThemeContext } from "styled-components";
 
 interface AlbumPostProps {
   item: AlbumPost;

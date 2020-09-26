@@ -2,6 +2,7 @@ import {
   AlbumPostInput,
   ArtistPostInput,
   GetPostsDocument,
+  GetUserPostsDocument,
   TrackPostInput,
   useCreateAlbumPostMutation,
   useCreateArtistPostMutation,
@@ -15,11 +16,15 @@ type useSubmitContentType = () => () => any;
 export const useSubmitContentPost: useSubmitContentType = () => {
   const content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
+  const userState = useStoreState((state) => state.user.user);
+
   const [createArtistPost] = useCreateArtistPostMutation();
   const [createAlbumPost] = useCreateAlbumPostMutation();
   const [createTrackPost] = useCreateTrackPostMutation();
 
-  console.log("content", content);
+  // console.log("content", content);
+  console.log("userState", userState.id);
+  const id = userState!.id;
 
   const submitArtistPost = async () => {
     const {
@@ -39,7 +44,10 @@ export const useSubmitContentPost: useSubmitContentType = () => {
     try {
       const response = await createArtistPost({
         variables: { data },
-        refetchQueries: [{ query: GetPostsDocument }],
+        refetchQueries: [
+          { query: GetPostsDocument },
+          { query: GetUserPostsDocument, variables: { id } },
+        ],
       });
       return response;
     } catch (err) {
@@ -70,7 +78,10 @@ export const useSubmitContentPost: useSubmitContentType = () => {
     try {
       const response = await createTrackPost({
         variables: { data },
-        refetchQueries: [{ query: GetPostsDocument }],
+        refetchQueries: [
+          { query: GetPostsDocument },
+          { query: GetUserPostsDocument, variables: { id } },
+        ],
       });
       return response;
     } catch (err) {
@@ -79,6 +90,7 @@ export const useSubmitContentPost: useSubmitContentType = () => {
   };
 
   const submitAlbumPost = async () => {
+    // const id = userState.id;
     const {
       name: albumName,
       id: albumId,
@@ -100,7 +112,10 @@ export const useSubmitContentPost: useSubmitContentType = () => {
     try {
       const response = await createAlbumPost({
         variables: { data },
-        refetchQueries: [{ query: GetPostsDocument }],
+        refetchQueries: [
+          { query: GetPostsDocument },
+          { query: GetUserPostsDocument, variables: { id } },
+        ],
       });
       return response;
     } catch (err) {

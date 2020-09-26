@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { ErrorMessage, Formik } from "formik";
+// import { ErrorMessage, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { Button, HelperText, TextInput } from "react-native-paper";
 import { CreatePostNavProps } from "../../navigation/app/create-post/CreatePostParamList";
@@ -34,6 +34,11 @@ export const CreatePostView: React.FC<CreatePostNavProps<
   const setContent = useStoreActions(
     (actions) => actions.createPost.setContent
   );
+  const clearContent = useStoreActions(
+    (actions) => actions.createPost.clearContent
+  );
+
+  const [text, setText] = React.useState("");
   // determine what options to show
   useEffect(() => {
     setContent({ ...content, name: "" });
@@ -41,15 +46,24 @@ export const CreatePostView: React.FC<CreatePostNavProps<
 
   // make sure text is set before submitting content
   useEffect(() => {
+    console.log("hi");
     if (content.text) {
-      console.log("content", content);
       const actuallySubmit = async () => {
-        console.log("just set text", content);
+        // console.log("just set text", content);
         const response = await submitContent();
         console.log(response);
+
         if (response.data) {
+          // let user know
           alert("Success");
+          // clear everything out
+          clearContent();
+          setText("");
+
+          // navigate away
           navigation.navigate("UserPage");
+        } else {
+          alert("Post Unsuccesful ");
         }
         // TODO: handle loading + failure
       };
@@ -57,7 +71,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<
     }
   }, [content]);
 
-  const submitCreatePost = async ({ text }) => {
+  const submitCreatePost = async (text: string) => {
     setContent({ ...content, text });
     console.log("finished setting text");
   };
@@ -68,51 +82,46 @@ export const CreatePostView: React.FC<CreatePostNavProps<
       imageStyle={styles.wavyBackgroundImageStyle}
       source={require("../../local-assets/wavy.png")}>
       <Wrapper>
-        <Formik
-          initialValues={{ text: "" }}
-          onSubmit={({ text }) => {
-            submitCreatePost({ text });
-          }}
-          validationSchema={CreatePostValidationSchema}>
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <StyledColumnView>
-              <AuthTextInput
-                placeholder="Add your review..."
-                placeholderTextColor={themeContext.colors.text}
-                onChangeText={handleChange("text")}
-                onBlur={handleBlur("text")}
-                value={values.text}
-              />
-              <HelperText>
-                <ErrorMessage name="text" />
-              </HelperText>
+        <StyledColumnView>
+          <AuthTextInput
+            placeholder="Add your review..."
+            placeholderTextColor={themeContext.colors.text}
+            onChangeText={(text) => setText(text)}
+            value={text}
+          />
+          {/* <HelperText>
+            <ErrorMessage name="text" />
+          </HelperText> */}
 
-              {/* show selected content or options for creating Post */}
-              {content.name ? (
-                <ContentPreview
-                  onPress={(value) => {
-                    setToDisplay(value);
-                  }}
-                />
-              ) : (
-                <CreatePostOptions />
-              )}
-
-              {/* give option to rate or vote on albums or tracks once content is selected*/}
-              {content.name && postType === "track" ? (
-                <TrackVotes />
-              ) : content.name && postType === "album" ? (
-                <AlbumStars />
-              ) : (
-                <></>
-              )}
-
-              <Button mode="contained" onPress={handleSubmit}>
-                CREATE POST
-              </Button>
-            </StyledColumnView>
+          {/* show selected content or options for creating Post */}
+          {content.name ? (
+            <ContentPreview
+              onPress={(value) => {
+                setToDisplay(value);
+              }}
+            />
+          ) : (
+            <CreatePostOptions />
           )}
-        </Formik>
+
+          {/* give option to rate or vote on albums or tracks once content is selected*/}
+          {content.name && postType === "track" ? (
+            <TrackVotes />
+          ) : content.name && postType === "album" ? (
+            <AlbumStars />
+          ) : (
+            <></>
+          )}
+
+          <Button
+            mode="contained"
+            disabled={text && content.name ? false : true}
+            onPress={() => {
+              submitCreatePost(text);
+            }}>
+            CREATE POST
+          </Button>
+        </StyledColumnView>
       </Wrapper>
     </ImageBackground>
   );
