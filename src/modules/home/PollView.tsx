@@ -76,7 +76,7 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
   return (
     <Card>
       {/* TODO: make a global style for centering */}
-      <Card.Content style={{ alignItems: "left", paddingLeft: 20 }}>
+      <Card.Content style={{ paddingLeft: 20 }}>
         <View
           style={{
             width: 300,
@@ -100,7 +100,12 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
           keyExtractor={(item, ix) => ix.toString()}
           renderItem={(option) =>
             !showVotes ? (
-              <StyledColumnView>
+              <StyledColumnView
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                }}>
                 <Button
                   onPress={() => {
                     // TODO: update user's vote

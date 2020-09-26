@@ -10,9 +10,10 @@ import { Platform } from "react-native";
 
 const ENV = {
   dev: {
-    //apiUrl: "http://localhost:4000",
+    //apiUrl: "http://localhost:4000", // web dev
     // apiUrl: "http://192.168.0.27:4000", // home
-    apiUrl: "http://10.250.122.90:4000", //harvard
+    // apiUrl: "http://10.250.122.90:4000", //harvard mobile dev
+    apiUrl: "http://10.250.243.127:4000", //harvard 2 movile dev
     // apiUrl: "http://10.250.2.242:4000", // caffe nero
   },
   staging: {

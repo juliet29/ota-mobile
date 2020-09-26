@@ -49,7 +49,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<
         console.log(response);
         if (response.data) {
           alert("Success");
-          navigation.navigate("Home");
+          navigation.navigate("UserPage");
         }
         // TODO: handle loading + failure
       };
