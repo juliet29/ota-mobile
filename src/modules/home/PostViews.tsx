@@ -55,7 +55,7 @@ export const ContentPostView: React.FC<
 > = ({ item, navigation, route }) => {
   const themeContext = useContext(ThemeContext);
   return (
-    <Card style={{ marginBottom: 20 }} theme={{ roundness: 15 }}>
+    <Card style={{ marginBottom: 15 }} theme={{ roundness: 15 }}>
       <Card.Content
         style={{
           paddingHorizontal: 0,

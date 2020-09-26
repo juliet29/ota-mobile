@@ -27,6 +27,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<
 >> = ({}) => {
   const themeContext = useContext(ThemeContext);
   const navigation = useNavigation();
+  const userState = useStoreState((state) => state.user.user);
   const submitContent = useSubmitContentPost();
   let content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
@@ -61,7 +62,7 @@ export const CreatePostView: React.FC<CreatePostNavProps<
           setText("");
 
           // navigate away
-          navigation.navigate("UserPage");
+          navigation.navigate("Feed");
         } else {
           alert("Post Unsuccesful ");
         }

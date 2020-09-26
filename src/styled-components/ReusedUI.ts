@@ -77,8 +77,8 @@ export const SimpleColumn = styled(View)`
 export const ThinLine = styled(View)`
   width: 90%;
   height: 0.4;
-  margin-top: 20;
-  margin-bottom: 30;
+  margin-top: 7;
+  margin-bottom: 15;
   background-color: ${(props) => props.theme.colors.darkText};
 `;
 

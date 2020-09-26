@@ -12,6 +12,8 @@ import {
   blueA700,
   blueA900,
   blueA800,
+  deepPurple900,
+  deepPurple800,
 } from "./colors";
 
 export const theme = {
@@ -19,7 +21,7 @@ export const theme = {
   roundness: 40,
   colors: {
     ...PaperDefaultTheme.colors,
-    primary: deepPurpleA700,
+    primary: deepPurple800,
     accent: orange700,
     surface: blueA800,
     text: grey300,
@@ -44,7 +46,7 @@ export const SCtheme: ThemeInterface = {
   colors: {
     background: blueA800,
     backgroundContrast: blueA900,
-    primary: deepPurpleA700,
+    primary: deepPurple800,
     accent: orange700,
     accentTwo: cyan400,
     text: grey200,
