@@ -84,12 +84,15 @@ export const CreatePostView: React.FC<CreatePostNavProps<
       source={require("../../local-assets/wavy.png")}>
       <Wrapper>
         <StyledColumnView>
-          <AuthTextInput
-            placeholder="Add your review..."
-            placeholderTextColor={themeContext.colors.text}
-            onChangeText={(text) => setText(text)}
-            value={text}
-          />
+          <Button
+            mode="contained"
+            disabled={text && content.name ? false : true}
+            onPress={() => {
+              submitCreatePost(text);
+            }}>
+            CREATE POST
+          </Button>
+
           {/* <HelperText>
             <ErrorMessage name="text" />
           </HelperText> */}
@@ -114,14 +117,12 @@ export const CreatePostView: React.FC<CreatePostNavProps<
             <></>
           )}
 
-          <Button
-            mode="contained"
-            disabled={text && content.name ? false : true}
-            onPress={() => {
-              submitCreatePost(text);
-            }}>
-            CREATE POST
-          </Button>
+          <AuthTextInput
+            placeholder="Add your review..."
+            placeholderTextColor={themeContext.colors.text}
+            onChangeText={(text) => setText(text)}
+            value={text}
+          />
         </StyledColumnView>
       </Wrapper>
     </ImageBackground>
