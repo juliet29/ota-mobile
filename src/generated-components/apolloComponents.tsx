@@ -131,6 +131,7 @@ export type AlbumPost = {
   externalUrl?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   likes?: Maybe<Scalars['Float']>;
+  numComments?: Maybe<Scalars['Float']>;
   albumId?: Maybe<Scalars['String']>;
   rating?: Maybe<Scalars['Float']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -180,6 +181,7 @@ export type ArtistPost = {
   externalUrl?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   likes?: Maybe<Scalars['Float']>;
+  numComments?: Maybe<Scalars['Float']>;
   artistId?: Maybe<Scalars['String']>;
   artistName?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
@@ -193,6 +195,7 @@ export type TrackPost = {
   externalUrl?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   likes?: Maybe<Scalars['Float']>;
+  numComments?: Maybe<Scalars['Float']>;
   trackId?: Maybe<Scalars['String']>;
   vote?: Maybe<Scalars['Float']>;
   artistNames?: Maybe<Array<Maybe<Scalars['String']>>>;
@@ -209,6 +212,7 @@ export type Poll = {
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   likes?: Maybe<Scalars['Float']>;
   user?: Maybe<User>;
+  numComments?: Maybe<Scalars['Float']>;
 };
 
 export type PollOption = {
@@ -227,6 +231,7 @@ export type Playlist = {
   timeSubmitted?: Maybe<Scalars['DateTime']>;
   likes?: Maybe<Scalars['Float']>;
   user?: Maybe<User>;
+  numComments?: Maybe<Scalars['Float']>;
 };
 
 export type PlaylistTrack = {
@@ -1101,28 +1106,28 @@ export type GetPostsOfFollowingQuery = (
   { __typename?: 'Query' }
   & { getPostsOfFollowing?: Maybe<Array<Maybe<(
     { __typename?: 'AlbumPost' }
-    & Pick<AlbumPost, 'id' | 'text' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
+    & Pick<AlbumPost, 'id' | 'text' | 'numComments' | 'likes' | 'externalUrl' | 'artistNames' | 'rating' | 'imageUrl' | 'timeSubmitted' | 'albumId' | 'albumName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   ) | (
     { __typename?: 'ArtistPost' }
-    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
+    & Pick<ArtistPost, 'id' | 'text' | 'likes' | 'imageUrl' | 'numComments' | 'externalUrl' | 'timeSubmitted' | 'artistId' | 'artistName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   ) | (
     { __typename?: 'TrackPost' }
-    & Pick<TrackPost, 'id' | 'text' | 'likes' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
+    & Pick<TrackPost, 'id' | 'text' | 'likes' | 'numComments' | 'artistNames' | 'externalUrl' | 'vote' | 'imageUrl' | 'timeSubmitted' | 'trackId' | 'trackName'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   ) | (
     { __typename?: 'Poll' }
-    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'length' | 'likes'>
+    & Pick<Poll, 'id' | 'question' | 'timeSubmitted' | 'numComments' | 'length' | 'likes'>
     & { options?: Maybe<Array<Maybe<(
       { __typename?: 'PollOption' }
       & Pick<PollOption, 'option' | 'votes'>
@@ -1132,7 +1137,7 @@ export type GetPostsOfFollowingQuery = (
     )> }
   ) | (
     { __typename?: 'Playlist' }
-    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'likes' | 'timeSubmitted'>
+    & Pick<Playlist, 'id' | 'playlistPicture' | 'title' | 'description' | 'numComments' | 'likes' | 'timeSubmitted'>
     & { tracks?: Maybe<Array<Maybe<(
       { __typename?: 'PlaylistTrack' }
       & Pick<PlaylistTrack, 'id' | 'artists' | 'name' | 'trackImageUrl' | 'externalUrl'>
@@ -2674,6 +2679,7 @@ export const GetPostsOfFollowingDocument = gql`
       playlistPicture
       title
       description
+      numComments
       likes
       tracks {
         id
@@ -2693,6 +2699,7 @@ export const GetPostsOfFollowingDocument = gql`
       id
       question
       timeSubmitted
+      numComments
       length
       likes
       options {
@@ -2708,6 +2715,7 @@ export const GetPostsOfFollowingDocument = gql`
     ... on AlbumPost {
       id
       text
+      numComments
       likes
       externalUrl
       artistNames
@@ -2726,6 +2734,7 @@ export const GetPostsOfFollowingDocument = gql`
       id
       text
       likes
+      numComments
       artistNames
       externalUrl
       vote
@@ -2744,6 +2753,7 @@ export const GetPostsOfFollowingDocument = gql`
       text
       likes
       imageUrl
+      numComments
       externalUrl
       timeSubmitted
       artistId

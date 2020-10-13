@@ -97,7 +97,7 @@ export const CommentsAndLikes: React.FC<
           }}
         />
 
-        <IconDescription>2</IconDescription>
+        <IconDescription>{item.numComments}</IconDescription>
       </Row>
     </View>
   );
