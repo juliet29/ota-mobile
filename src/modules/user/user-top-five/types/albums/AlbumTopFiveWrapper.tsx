@@ -50,7 +50,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
   const [index, setIndex] = useState(-1);
   const [editMode, setEditMode] = useState(false);
   const [updateTopFive, { loading: mloading }] = useUpdateUserTopFiveMutation();
-  // console.log("id", id);
+  //console.log("HELLOW THIS IS WORKING EFBEWBEBFWF F FNF NFFENH ", id);
 
   const { data, loading, error } = useGetOtherUserQuery({
     variables: {
@@ -62,7 +62,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
     // make sure everything has the right type
     array.map((value) => console.log(Object.keys(value).length));
     const goodArray = array.filter((value) => Object.keys(value).length !== 0);
-    console.log("goodArray", goodArray);
+    // //console.log("goodArray", goodArray);
     const dataArray = goodArray as TopFiveInput[];
     const data: TopFiveArrayInput = {
       dataArray,
@@ -77,7 +77,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
         ],
       });
     } catch (err) {
-      console.log("error in album top five wrapper", err);
+      //console.log("error in album top five wrapper", err);
       return <Caption>Submission Failed</Caption>;
     }
   };
@@ -86,12 +86,12 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
     return <ActivityIndicator />;
   }
   if (error || !data) {
-    // console.log(error);
+    // //console.log(error);
     return <></>;
   }
 
   useEffect(() => {
-    console.log("DATA CHANGED 1");
+    //console.log("DATA CHANGED 1");
     if (data && data.getOtherUser) {
       // might want to switch to get last 5 items in list ...
       const content =
@@ -109,25 +109,25 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
           })
         : null;
 
-      console.log("top albums fresh DATA CHANGED", topAlbums);
+      //console.log("top albums fresh DATA CHANGED", topAlbums);
 
       if (!topAlbums || topAlbums.length < 5) {
         const emptyNum = !topAlbums ? 5 : 5 - topAlbums.length;
-        console.log("empty num", emptyNum);
+        //console.log("empty num", emptyNum);
         const topAlbumsWithEmpty = !topAlbums
           ? new Array(emptyNum).fill({})
           : topAlbums.concat(new Array(emptyNum).fill({}));
-        console.log(topAlbumsWithEmpty);
+        //console.log(topAlbumsWithEmpty);
         setArray(topAlbumsWithEmpty);
         return;
       }
       setArray(topAlbums);
     }
-    console.log("final array b4 change", array);
+    //console.log("final array b4 change", array);
   }, [data]);
 
   useEffect(() => {
-    console.log("new arr", array);
+    //console.log("new arr", array);
   }, [array, setArray]);
 
   return (
@@ -146,7 +146,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                 size={20}
                 disabled={mloading}
                 onPress={() => {
-                  console.log("edit button pressed");
+                  //console.log("edit button pressed");
                   setEditMode(true);
                 }}
               />
@@ -172,11 +172,15 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                         : type === "album"
                         ? "AlbumPage"
                         : null;
-                    navigation.navigate(pageType, {
-                      id: item.id,
-                      name: item?.name,
-                      imageUrl: item.imageUrl,
-                    });
+                    // console.log("page type", pageType);
+                    // console.log("item url", item.imageUrl);
+                    if (item.imageUrl) {
+                      navigation.navigate(pageType, {
+                        id: item.id,
+                        name: item?.name,
+                        imageUrl: item.imageUrl,
+                      });
+                    }
                   }}>
                   {type === "track" ? (
                     <View
@@ -232,7 +236,14 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                           }}
                         />
                       ) : (
-                        <Avatar.Icon icon="plus-box" />
+                        <Avatar.Icon
+                          size={80}
+                          icon="plus-box"
+                          style={{
+                            backgroundColor:
+                              themeContext.colors.backgroundContrast,
+                          }}
+                        />
                       )}
                       <Caption
                         style={{
@@ -303,7 +314,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
               icon="content-save-all"
               size={20}
               onPress={() => {
-                console.log("save button pressed");
+                //console.log("save button pressed");
                 submitUpdateTopFive();
                 setEditMode(false);
               }}
@@ -353,7 +364,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                         </View>
                       }
                       onClose={() => {
-                        console.log("chip closed", index);
+                        //console.log("chip closed", index);
                         setArray(Object.assign([...array], { [index]: {} }));
                       }}>
                       {item.name}
@@ -371,7 +382,7 @@ export const AlbumTopFiveWrapper: React.FC<TopFiveWrapperProps> = ({
                       }}
                       icon="plus"
                       onPress={() => {
-                        console.log("add");
+                        //console.log("add");
                         setShowSearch(true);
                         setIndex(index);
                       }}>

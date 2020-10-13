@@ -16,6 +16,7 @@ import {
 import { FlatList } from "react-native-gesture-handler";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { StyledColumnView } from "../../styled-components/ReusedUI";
+import { timeSince } from "../../utils/timeSince";
 
 interface ArtistPostsViewProps {}
 
@@ -55,7 +56,7 @@ export const ArtistPostsView: React.FC<HomeStackNavProps<"ArtistPosts">> = ({
             <Card>
               <Card.Content style={{ alignItems: "center" }}>
                 <Caption>{item.item.user.username}</Caption>
-                <Text>{item.item.timeSubmitted}</Text>
+                <Text>{timeSince(item.item.timeSubmitted)}</Text>
                 <Paragraph>{item.item.text}</Paragraph>
               </Card.Content>
             </Card>

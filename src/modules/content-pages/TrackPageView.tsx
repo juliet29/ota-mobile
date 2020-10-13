@@ -25,6 +25,7 @@ import {
   UnroundCard,
   BoldWhiteCaption,
 } from "../../styled-components/StylishComponents";
+import { timeSince } from "../../utils/timeSince";
 
 interface TrackPageViewProps {}
 
@@ -111,7 +112,7 @@ export const TrackPageView: React.FC<HomeStackNavProps<"TrackPage">> = ({
                         <View style={{ flexGrow: 2 }}>
                           <UserTitle
                             username={item.item.user.username}
-                            timeSubmitted={item.item.timeSubmitted}
+                            timeSubmitted={timeSince(item.item.timeSubmitted)}
                             userId={+item.item.user.id}
                             userImage={item.item.user.profilePicture}
                             avatarSize={24}

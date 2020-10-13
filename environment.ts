@@ -13,6 +13,7 @@ const ENV = {
     //apiUrl: "http://localhost:4000", // web dev
     // apiUrl: "http://192.168.0.27:4000", // home
     // apiUrl: "http://10.250.122.90:4000", //harvard mobile dev
+    //apiUrl: "http://10.250.243.127:4000", //harvard 2 movile dev 10.250.243.127.
     apiUrl: "http://10.250.243.127:4000", //harvard 2 movile dev
     // apiUrl: "http://10.250.2.242:4000", // caffe nero
   },

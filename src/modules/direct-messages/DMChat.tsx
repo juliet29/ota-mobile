@@ -29,6 +29,7 @@ import {
   KeyboardAwareScrollView,
   KeyboardAwareFlatList,
 } from "react-native-keyboard-aware-scroll-view";
+import { timeSince } from "../../utils/timeSince";
 
 interface DMChatProps {}
 
@@ -102,7 +103,7 @@ export const DMChat: React.FC<DMChatProps & DMStackNavProps<"DMChat">> = ({
               renderItem={(item) => (
                 <List.Item
                   title={item.item.text}
-                  description={item.item.timeSubmitted}
+                  description={timeSince(item.item.timeSubmitted)}
                   style={
                     +item.item.sender.id !== currentUser.id
                       ? {

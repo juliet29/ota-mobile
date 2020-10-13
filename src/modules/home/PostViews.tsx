@@ -17,6 +17,7 @@ import {
   AlbumPost,
   ArtistPost,
   Playlist,
+  Scalars,
   TrackPost,
 } from "../../generated-components/apolloComponents";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
@@ -29,22 +30,11 @@ import {
   StyledColumnView,
   ThinLine,
 } from "../../styled-components/ReusedUI";
+import { timeSince } from "../../utils/timeSince";
 import { AddToMyListButton } from "../my-list/AddToMyListButton";
 import { CommentsAndLikes } from "./CommentsAndLikes";
 import { emptyImage, openURL } from "./FeedView";
 import { PostLikeButton } from "./PostLikeButton";
-
-interface AlbumPostProps {
-  item: AlbumPost;
-}
-
-interface TrackPostProps {
-  item: TrackPost;
-}
-
-interface ArtistPostProps {
-  item: ArtistPost;
-}
 
 interface ContentPostProps {
   item: ArtistPost | TrackPost | AlbumPost | Playlist;
@@ -54,6 +44,7 @@ export const ContentPostView: React.FC<
   ContentPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
   const themeContext = useContext(ThemeContext);
+  // //console..log("time since:", timeSince(item.timeSubmitted));
   return (
     <Card style={{ marginBottom: 15 }} theme={{ roundness: 15 }}>
       <Card.Content
@@ -103,7 +94,6 @@ export const ContentPostView: React.FC<
             }
           />
         </Row>
-
         <SimpleColumn>
           {/************* User Submission + Time  *************/}
           <LeftColumn>
@@ -112,7 +102,7 @@ export const ContentPostView: React.FC<
                 style={{ paddingLeft: 0 }}
                 title={item?.user.username}
                 titleStyle={{ fontWeight: "bold" }}
-                description={item?.timeSubmitted}
+                description={timeSince(item.timeSubmitted)}
                 descriptionStyle={{ color: themeContext.colors.accentTwo }}
                 onPress={() => {
                   navigation.navigate("UserPage", { id: +item?.user.id });
@@ -260,16 +250,33 @@ export const ContentPostView: React.FC<
  *
  *
  *
+// #######################################
+// #######################################
+// END OF USEFUL CODE
+// #######################################
+// #######################################
  *
  *
  *
  *
  */
 
+interface AlbumPostProps {
+  item: AlbumPost;
+}
+
+interface TrackPostProps {
+  item: TrackPost;
+}
+
+interface ArtistPostProps {
+  item: ArtistPost;
+}
+
 export const ArtistPostView: React.FC<
   ArtistPostProps & HomeStackNavProps<"Feed">
 > = ({ item, navigation, route }) => {
-  // console.log("artist post", item.user);
+  // //console..log("artist post", item.user);
   return (
     <Card>
       {/* TODO: make a global style for centering */}
@@ -394,7 +401,7 @@ export const AlbumPostView: React.FC<
         <Button
           mode="contained"
           onPress={() => {
-            // console.log("album button");
+            // //console..log("album button");
             navigation.navigate("AlbumPage", {
               id: item?.albumId,
               name: item?.albumName,
@@ -491,7 +498,7 @@ export const TrackPostView: React.FC<
         <Button
           mode="contained"
           onPress={() => {
-            // console.log(item.externalUrl);
+            // //console..log(item.externalUrl);
 
             openURL(`${item.externalUrl}`);
             // navigation.navigate("ArtistPage", {

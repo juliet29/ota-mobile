@@ -26,6 +26,7 @@ import { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import { UserTitle } from "./UserTitle";
 import { CommentsAndLikes } from "./CommentsAndLikes";
+import { timeSince } from "../../utils/timeSince";
 type OptionData = { option: string; votes?: number };
 interface PollViewProps {
   item: Poll;
@@ -83,7 +84,7 @@ export const PollView: React.FC<PollViewProps & HomeStackNavProps<"Feed">> = ({
           }}>
           <UserTitle
             username={item.user.username}
-            timeSubmitted={item.timeSubmitted}
+            timeSubmitted={timeSince(item.timeSubmitted)}
             userId={+item.user.id}
             userImage={item.user.profilePicture}
             avatarSize={24}
