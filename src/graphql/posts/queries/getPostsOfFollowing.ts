@@ -8,6 +8,7 @@ export const GET_POSTS_Of_FOLLOWING = gql`
         playlistPicture
         title
         description
+        numComments
         likes
         tracks {
           id
@@ -27,6 +28,7 @@ export const GET_POSTS_Of_FOLLOWING = gql`
         id
         question
         timeSubmitted
+        numComments
         length
         likes
         options {
@@ -43,6 +45,7 @@ export const GET_POSTS_Of_FOLLOWING = gql`
       ... on AlbumPost {
         id
         text
+        numComments
         likes
         externalUrl
         artistNames
@@ -61,6 +64,7 @@ export const GET_POSTS_Of_FOLLOWING = gql`
         id
         text
         likes
+        numComments
         artistNames
         externalUrl
         vote
@@ -79,6 +83,7 @@ export const GET_POSTS_Of_FOLLOWING = gql`
         text
         likes
         imageUrl
+        numComments
         externalUrl
         timeSubmitted
         artistId

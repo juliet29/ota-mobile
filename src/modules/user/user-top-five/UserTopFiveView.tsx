@@ -7,6 +7,8 @@ import { ArtistTopFiveWrapper } from "./types/artists/ArtistTopFiveWrapper";
 import { TrackTopFiveWrapper } from "./types/tracks/TrackTopFiveWrapper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { HomeParamList } from "../../../navigation/app/home/HomeParamList";
+import { BoldWhiteHeading } from "../../../styled-components/StylishComponents";
+import { View } from "react-native";
 
 export interface TopFiveEditProps {
   array: TopFiveArrayType[];
@@ -42,17 +44,19 @@ export const UserTopFiveView: React.FC<UserTopFiveViewProps> = ({
 }) => {
   // console.log(id);
   return (
-    <StyledColumnView>
-      <Subheading>Album Top Five</Subheading>
+    <View
+      style={{
+        margin: 20,
+      }}>
+      <BoldWhiteHeading>Top 5 Albums</BoldWhiteHeading>
+
       <AlbumTopFiveWrapper id={id} type={"album"} navigation={navigation} />
 
-      <Subheading>Artist Top Five</Subheading>
+      <BoldWhiteHeading>Top 5 Artists</BoldWhiteHeading>
       <AlbumTopFiveWrapper id={id} type={"artist"} navigation={navigation} />
 
-      <Subheading>Track Top Five</Subheading>
+      <BoldWhiteHeading>Top 5 Tracks</BoldWhiteHeading>
       <AlbumTopFiveWrapper id={id} type={"track"} navigation={navigation} />
-      {/* <ArtistTopFiveWrapper id={id} />
-      <TrackTopFiveWrapper id={id} /> */}
-    </StyledColumnView>
+    </View>
   );
 };

@@ -11,13 +11,17 @@ import { useGetTopArtistsQuery } from "../../generated-components/apolloComponen
 import { ScrollView, FlatList } from "react-native-gesture-handler";
 import { View, Image } from "react-native";
 import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface DiscoverArtistsProps {}
 
 export const DiscoverArtists: React.FC<
   DiscoverArtistsProps & HomeStackNavProps<"Feed">
 > = ({ navigation }) => {
+  const themeContext = useContext(ThemeContext);
   const { data, loading, error } = useGetTopArtistsQuery();
+  console.log("data artist", data);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -27,6 +31,16 @@ export const DiscoverArtists: React.FC<
     return <Caption>Error...</Caption>;
   }
 
+  // onlu unique artists
+  const flags = new Set();
+  const myUniqueArtists = data.getTopArtists.filter((entry) => {
+    if (flags.has(entry.artistId)) {
+      return false;
+    }
+    flags.add(entry.artistId);
+    return true;
+  });
+
   return (
     <View>
       <ScrollView horizontal={true}>
@@ -35,7 +49,7 @@ export const DiscoverArtists: React.FC<
             justifyContent: "space-around",
             flexDirection: "row",
           }}
-          data={data.getTopArtists}
+          data={myUniqueArtists}
           keyExtractor={(item, ix) => ix.toString().concat(item.artistName)}
           renderItem={({ item }) => (
             <View
@@ -43,7 +57,7 @@ export const DiscoverArtists: React.FC<
                 display: "flex",
                 justifyContent: "center",
                 alignContent: "center",
-                width: 200,
+                width: 120,
               }}>
               <Avatar.Image
                 size={80}
@@ -53,6 +67,9 @@ export const DiscoverArtists: React.FC<
               />
               <List.Item
                 title={item.artistName}
+                titleStyle={{
+                  color: themeContext.colors.accentTwo,
+                }}
                 onPress={() => {
                   navigation.navigate("ArtistPage", {
                     id: item?.artistId,

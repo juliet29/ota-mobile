@@ -1,7 +1,7 @@
 import React from "react";
 import { HomeStackNavProps } from "../../../navigation/app/home/HomeParamList";
 import { useGetArtistAlbumsQuery } from "../../../generated-components/apolloComponents";
-import { Image } from "react-native";
+import { Image, View } from "react-native";
 import {
   Card,
   Caption,
@@ -9,7 +9,9 @@ import {
   Button,
   ActivityIndicator,
 } from "react-native-paper";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import { RoundImage } from "../../../styled-components/ReusedUI";
+import { BoldWhiteCaption } from "../../../styled-components/StylishComponents";
 
 interface ArtistProps {
   id: string;
@@ -46,35 +48,35 @@ export const ArtistPageAlbums: React.FC<
   return (
     <FlatList
       data={data.getArtistAlbums.items}
+      numColumns={2}
       renderItem={(item) => (
-        <Card>
-          <Card.Content style={{ alignItems: "center" }}>
-            {
-              item?.item.images.map((element) => (
-                <Image
-                  style={{ width: 50, height: 50 }}
-                  resizeMode="contain"
-                  source={{
-                    uri: `${element.url}`,
-                  }}
-                />
-              ))[0]
-            }
-
-            <Text>{item.item.name}</Text>
-            <Caption>Rating</Caption>
-            <Button
-              onPress={() => {
-                navigation.navigate("AlbumPage", {
-                  id: item?.item.id,
-                  name: item?.item.name,
-                  imageUrl: item?.item.images.map((element) => element.url)[0],
-                });
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("AlbumPage", {
+              id: item?.item.id,
+              name: item?.item.name,
+              imageUrl: item?.item.images.map((element) => element.url)[0],
+            });
+          }}>
+          <View style={{ padding: 3 }}>
+            <RoundImage
+              style={{ width: 120, height: 120, opacity: 0.7 }}
+              resizeMode="contain"
+              source={{
+                uri: `${item.item.images.map((i) => i.url)[0]}`,
+              }}
+            />
+            <View
+              style={{
+                position: "absolute",
+                bottom: 0,
+                marginLeft: 10,
+                marginBottom: 3,
               }}>
-              See the Album
-            </Button>
-          </Card.Content>
-        </Card>
+              <BoldWhiteCaption>{item.item.name}</BoldWhiteCaption>
+            </View>
+          </View>
+        </TouchableOpacity>
       )}
       keyExtractor={(item, ix) => ix.toString()}
     />

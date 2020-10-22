@@ -10,6 +10,7 @@ export const GET_COMMENTS = gql`
       user {
         username
         id
+        profilePicture
       }
     }
   }

@@ -65,23 +65,47 @@ export const PickGenres: React.FC<PickGenresProps> = ({}) => {
   return (
     <ScrollView>
       <StyledColumnView>
-        <Title>Pick Your Favorite Genres</Title>
+        <Title
+          style={{
+            textAlign: "center",
+          }}>
+          Pick Your Favorite Genres
+        </Title>
         <Button
           mode="contained"
           disabled={selectedGenres.length == 0}
           onPress={submitEditGenres}>
           Save Changes
         </Button>
-        <Caption>Use Side Arrows to Skip for Now</Caption>
+        {/* <Caption>Use Side Arrows to Skip for Now</Caption> */}
         <FlatList
+          style={{
+            marginHorizontal: 3,
+          }}
+          contentContainerStyle={{
+            display: "flex",
+            alignItems: "center",
+          }}
           data={data.getGenres.genres}
-          numColumns={4}
+          numColumns={3}
           keyExtractor={(item, index) => item!?.toString() + index}
           renderItem={(item) => (
             <Chip
+              style={{
+                margin: 7,
+                borderRadius: 50,
+                height: 90,
+                width: 90,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: selectedGenres.includes(item.item)
+                  ? Colors.cyan400
+                  : Colors.white,
+              }}
               selectedColor={
                 selectedGenres.includes(item.item)
-                  ? Colors.deepPurple100
+                  ? Colors.white
                   : Colors.deepPurple700
               }
               onPress={() => updateSelectedGenres(item.item)}>

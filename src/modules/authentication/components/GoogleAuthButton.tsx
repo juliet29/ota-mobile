@@ -12,10 +12,12 @@ import {
 } from "../../../generated-components/apolloComponents";
 import { Alert } from "react-native";
 import { useLoginHook } from "./useLoginHook";
+import { useTheme } from "react-native-paper";
 
 interface GoogleAuthButtonProps {}
 
 export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({}) => {
+  const { colors } = useTheme();
   const [signOnUser, { loading, error }] = useGoogleSsoMutation();
   const [setLoginUser] = useLoginHook();
 
@@ -82,6 +84,9 @@ export const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({}) => {
   return (
     <Button
       mode="outlined"
+      icon="google"
+      color={colors.text}
+      style={{ borderColor: colors.text }}
       onPress={() => {
         signInWithGoogle();
       }}>

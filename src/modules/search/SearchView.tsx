@@ -15,6 +15,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { AlbumSearchType } from "./search-types/AlbumSearchType";
 import { PostSearchType } from "./search-types/PostSearchType";
 import { UserSearchType } from "./search-types/UserSearchType";
+import { ImageBackground } from "react-native";
+import { styles } from "../../styled-components/StyleSheet";
+import NiceSearchbar from "../../styled-components/StylishComponents";
 
 interface SearchViewProps {}
 
@@ -25,47 +28,52 @@ export const SearchView: React.FC<HomeStackNavProps<"SearchPage">> = ({
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <ScrollView>
-      <StyledColumnView>
-        <Searchbar
-          placeholder="Search"
-          onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
-          value={searchQuery}
-        />
-        {searchQuery ? (
-          <StyledColumnView>
-            <ArtistSearchType
-              searchQuery={searchQuery}
-              navigation={navigation}
-              route={route}
-            />
-            <TrackSearchType
-              searchQuery={searchQuery}
-              navigation={navigation}
-              route={route}
-            />
-            <AlbumSearchType
-              searchQuery={searchQuery}
-              navigation={navigation}
-              route={route}
-            />
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <ScrollView>
+        <StyledColumnView>
+          <NiceSearchbar
+            placeholder="Search"
+            onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
+            value={searchQuery}
+          />
+          {searchQuery ? (
+            <StyledColumnView>
+              <ArtistSearchType
+                searchQuery={searchQuery}
+                navigation={navigation}
+                route={route}
+              />
+              <TrackSearchType
+                searchQuery={searchQuery}
+                navigation={navigation}
+                route={route}
+              />
+              <AlbumSearchType
+                searchQuery={searchQuery}
+                navigation={navigation}
+                route={route}
+              />
 
-            <PostSearchType
-              searchQuery={searchQuery}
-              navigation={navigation}
-              route={route}
-            />
+              <PostSearchType
+                searchQuery={searchQuery}
+                navigation={navigation}
+                route={route}
+              />
 
-            <UserSearchType
-              searchQuery={searchQuery}
-              navigation={navigation}
-              route={route}
-            />
-          </StyledColumnView>
-        ) : (
-          <></>
-        )}
-      </StyledColumnView>
-    </ScrollView>
+              <UserSearchType
+                searchQuery={searchQuery}
+                navigation={navigation}
+                route={route}
+              />
+            </StyledColumnView>
+          ) : (
+            <></>
+          )}
+        </StyledColumnView>
+      </ScrollView>
+    </ImageBackground>
   );
 };

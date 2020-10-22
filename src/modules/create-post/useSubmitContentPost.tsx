@@ -2,10 +2,13 @@ import {
   AlbumPostInput,
   ArtistPostInput,
   GetPostsDocument,
+  GetPostsOfFollowingDocument,
+  GetUserPostsDocument,
   TrackPostInput,
   useCreateAlbumPostMutation,
   useCreateArtistPostMutation,
   useCreateTrackPostMutation,
+  useGetCurrentUserQuery,
 } from "../../generated-components/apolloComponents";
 import { useStoreState } from "../../state-management/hooks";
 
@@ -15,9 +18,17 @@ type useSubmitContentType = () => () => any;
 export const useSubmitContentPost: useSubmitContentType = () => {
   const content = useStoreState((state) => state.createPost.content);
   const postType = useStoreState((state) => state.createPost.postType);
+  const userState = useStoreState((state) => state.user.user);
+  const currUser = useGetCurrentUserQuery();
+  const id: number = currUser ? +currUser.data.getCurrentUser.id : 1;
+  console.log("id of mine", id);
+
   const [createArtistPost] = useCreateArtistPostMutation();
   const [createAlbumPost] = useCreateAlbumPostMutation();
   const [createTrackPost] = useCreateTrackPostMutation();
+
+  // console.log("content", content);
+  // console.log("userState", userState.id);
 
   const submitArtistPost = async () => {
     const {
@@ -37,7 +48,11 @@ export const useSubmitContentPost: useSubmitContentType = () => {
     try {
       const response = await createArtistPost({
         variables: { data },
-        refetchQueries: [{ query: GetPostsDocument }],
+        refetchQueries: [
+          { query: GetPostsDocument },
+          { query: GetPostsOfFollowingDocument },
+          { query: GetUserPostsDocument, variables: { id } },
+        ],
       });
       return response;
     } catch (err) {
@@ -68,7 +83,11 @@ export const useSubmitContentPost: useSubmitContentType = () => {
     try {
       const response = await createTrackPost({
         variables: { data },
-        refetchQueries: [{ query: GetPostsDocument }],
+        refetchQueries: [
+          { query: GetPostsDocument },
+          { query: GetPostsOfFollowingDocument },
+          { query: GetUserPostsDocument, variables: { id } },
+        ],
       });
       return response;
     } catch (err) {
@@ -77,6 +96,7 @@ export const useSubmitContentPost: useSubmitContentType = () => {
   };
 
   const submitAlbumPost = async () => {
+    // const id = userState.id;
     const {
       name: albumName,
       id: albumId,
@@ -98,7 +118,11 @@ export const useSubmitContentPost: useSubmitContentType = () => {
     try {
       const response = await createAlbumPost({
         variables: { data },
-        refetchQueries: [{ query: GetPostsDocument }],
+        refetchQueries: [
+          { query: GetPostsDocument },
+          { query: GetPostsOfFollowingDocument },
+          { query: GetUserPostsDocument, variables: { id } },
+        ],
       });
       return response;
     } catch (err) {

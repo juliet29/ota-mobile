@@ -9,6 +9,9 @@ import {
   useEditFirstLoginMutation,
   GetCurrentUserDocument,
 } from "../../../generated-components/apolloComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
+import { blueA800, blueA900 } from "../../../styled-components/colors";
 // import {  } from "react";
 
 interface UserOnBoardingProps {}
@@ -16,6 +19,7 @@ interface UserOnBoardingProps {}
 export const UserOnBoarding: React.FC<
   UserOnBoardingProps & HomeStackNavProps<"UserOnBoarding">
 > = ({ navigation }) => {
+  const themeContext = useContext(ThemeContext);
   const [next, setNext] = useState(true);
   const [ready, setReady] = useState(false);
 
@@ -48,7 +52,7 @@ export const UserOnBoarding: React.FC<
     <Swiper loop={false} style={styles.wrapper} showsButtons={next}>
       <View style={styles.slide1}>
         <View>
-          <Title>Welcome to OnTheAux*</Title>
+          <Title>Welcome to auxygn</Title>
         </View>
       </View>
       <View style={styles.slide2}>
@@ -80,23 +84,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#9DD6EB",
+    backgroundColor: blueA800,
   },
   slide2: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#97CAE5",
+    backgroundColor: blueA800,
   },
   slide3: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#92BBD9",
+    backgroundColor: blueA800,
   },
   slide4: {
     flex: 1,
-    backgroundColor: "#92BBD9",
+    backgroundColor: blueA800,
   },
   text: {
     color: "#fff",

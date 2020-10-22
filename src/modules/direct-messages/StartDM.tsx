@@ -12,6 +12,7 @@ import { useSearchUserQuery } from "../../generated-components/apolloComponents"
 import { FlatList } from "react-native-gesture-handler";
 import { emptyImage } from "../home/FeedView";
 import { DMStackNavProps } from "../../navigation/app/direct-messages/DMParamList";
+import NiceSearchbar from "../../styled-components/StylishComponents";
 
 interface StartDMProps {}
 
@@ -22,7 +23,7 @@ export const StartDM: React.FC<StartDMProps & DMStackNavProps<"DMFeed">> = ({
   const [searchQuery, setSearchQuery] = useState("");
   return (
     <StyledColumnView>
-      <Searchbar
+      <NiceSearchbar
         placeholder="Search Users"
         onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
         value={searchQuery}

@@ -16,12 +16,18 @@ import { MyList } from "../../modules/my-list/MyList";
 import { Discover } from "../../modules/discover/Discover";
 import { DMFeed } from "../../modules/direct-messages/DMFeed";
 import { DMStack } from "./direct-messages/DMStack";
+import { UserButton } from "../../modules/user/UserButton";
+import { SearchButton } from "../../modules/search/SearchButton";
+import { View } from "react-native";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 interface AppTabsProps {}
 
 const Tabs = createBottomTabNavigator<AppParamList>();
 
 export const AppTabs: React.FC<AppTabsProps> = ({}) => {
+  const themeContext = useContext(ThemeContext);
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
@@ -47,14 +53,45 @@ export const AppTabs: React.FC<AppTabsProps> = ({}) => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "black",
-        inactiveTintColor: "gray",
+        activeTintColor: themeContext.colors.accent,
+        inactiveTintColor: themeContext.colors.darkText,
+        activeBackgroundColor: themeContext.colors.background,
+        inactiveBackgroundColor: themeContext.colors.background,
+        tabStyle: {
+          backgroundColor: themeContext.colors.background,
+          height: 80,
+          paddingBottom: 20,
+        },
       }}>
-      <Tabs.Screen name="Home" component={HomeStack} />
+      <Tabs.Screen
+        name="Home"
+        component={HomeStack}
+        options={{
+          tabBarLabel: "Home",
+        }}
+      />
       <Tabs.Screen name="Discover" component={Discover} />
-      <Tabs.Screen name="CreatePost" component={CreatePostStack} />
-      <Tabs.Screen name="MyList" component={MyList} />
-      <Tabs.Screen name="DirectMessages" component={DMStack} />
+      <Tabs.Screen
+        name="CreatePost"
+        component={CreatePostStack}
+        options={{
+          tabBarLabel: "Create Post",
+        }}
+      />
+      <Tabs.Screen
+        name="MyList"
+        component={MyList}
+        options={{
+          tabBarLabel: "My List",
+        }}
+      />
+      <Tabs.Screen
+        name="DirectMessages"
+        component={DMStack}
+        options={{
+          tabBarLabel: "DMs",
+        }}
+      />
     </Tabs.Navigator>
   );
 };

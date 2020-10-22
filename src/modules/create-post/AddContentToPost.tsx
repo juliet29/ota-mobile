@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { Text } from "react-native";
+import { Text, ImageBackground } from "react-native";
 import {
   ActivityIndicator,
   Button,
@@ -11,6 +11,7 @@ import { useSearchSpotifyQuery } from "../../generated-components/apolloComponen
 import { useStoreState } from "../../state-management/hooks";
 import { StyledColumnView, Wrapper } from "../../styled-components/ReusedUI";
 import { SearchFlatLists } from "./SearchFlatLists";
+import { styles } from "../../styled-components/StyleSheet";
 
 interface AddContentToPostProps {}
 
@@ -28,26 +29,32 @@ export const AddContentToPost: React.FC<AddContentToPostProps> = ({}) => {
   // TODO: dont search if no data
 
   return (
-    <Wrapper style={{ backgroundColor: "white" }}>
-      <StyledColumnView>
-        <Title>SEARCH {postType.toUpperCase()}S</Title>
-        <Searchbar
-          placeholder="Search"
-          onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
-          value={searchQuery}
-        />
-        {error ? (
-          <Text></Text>
-        ) : !data ? (
-          <StyledColumnView>
-            <ActivityIndicator size="large" />
-          </StyledColumnView>
-        ) : (
-          <SearchFlatLists data={data} />
-        )}
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <Wrapper>
+        <StyledColumnView>
+          <Title>SEARCH {postType.toUpperCase()}S</Title>
+          <Searchbar
+            placeholder="Search"
+            onChangeText={(searchQuery) => setSearchQuery(searchQuery)}
+            value={searchQuery}
+          />
 
-        <Button onPress={() => navigation.goBack()}>Dismiss</Button>
-      </StyledColumnView>
-    </Wrapper>
+          {searchQuery ? (
+            !data ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <SearchFlatLists data={data} />
+            )
+          ) : (
+            <></>
+          )}
+
+          <Button onPress={() => navigation.goBack()}>Dismiss</Button>
+        </StyledColumnView>
+      </Wrapper>
+    </ImageBackground>
   );
 };

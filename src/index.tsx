@@ -15,15 +15,18 @@ import { getAccessToken } from "./utils/accessToken";
 import { AppWithHeaders } from "./utils/AppWithHeaders";
 import { AuthContext } from "./utils/AuthProvider";
 // import { setContext } from "apollo-link-context";
+import { theme, SCtheme } from "./styled-components/theme";
+import { ThemeProvider } from "styled-components";
 console.log("index running");
 
 // @ts-ignore
 const { apiUrl } = getEnvVars();
 console.log(`my url in index is ${apiUrl}`);
+console.log("def founts", DefaultTheme.fonts);
 
-const theme = {
-  ...DefaultTheme,
-};
+// const theme = {
+//   ...DefaultTheme,
+// };
 
 // for queries involving unions in shema
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -65,10 +68,12 @@ export const Providers: React.FC<ProvidersProps> = ({}) => {
       <AuthContext.Provider value={value as any}>
         <ApolloProvider client={client}>
           <PaperProvider theme={theme}>
-            {/* <SafeAreaProvider>
+            <ThemeProvider theme={SCtheme}>
+              {/* <SafeAreaProvider>
               {" "} */}
-            <AppWithHeaders />
-            {/* </SafeAreaProvider> */}
+              <AppWithHeaders />
+              {/* </SafeAreaProvider> */}
+            </ThemeProvider>
           </PaperProvider>
         </ApolloProvider>
       </AuthContext.Provider>

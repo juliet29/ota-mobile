@@ -9,6 +9,7 @@ import {
 } from "../../../generated-components/apolloComponents";
 import { FB_ID } from "../../../utils/Keys";
 import { useLoginHook } from "./useLoginHook";
+import { useTheme } from "react-native-paper";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,6 +22,7 @@ const discovery = {
 const useProxy = Platform.select({ web: false, default: true });
 
 export default function FacebookAuthButton() {
+  const { colors } = useTheme();
   const [signOnUser, { loading, error }] = useFacebookSsoMutation();
   const [setLoginUser] = useLoginHook();
 
@@ -83,15 +85,11 @@ export default function FacebookAuthButton() {
   return (
     <Button
       mode="outlined"
+      icon="facebook"
+      color={colors.text}
+      style={{ borderColor: colors.text }}
       // disabled={!request}
       onPress={() => {
-        // promptAsync({
-        //   useProxy,
-        //   windowFeatures: { width: 700, height: 600 },
-        // } as any);
-        // redirect to app tabs
-        // setUser("facebooklogin");
-        // TODO: give access token to user
         fbAppLogIn();
       }}>
       Sign in with Facebook

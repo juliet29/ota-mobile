@@ -22,6 +22,7 @@ import {
 import { EditNameValidationSchema } from "../../../utils/FormValidationSchemas";
 import { client } from "../../../index";
 import { useStoreState } from "../../../state-management/hooks";
+import { blueA900, deepPurple800 } from "../../../styled-components/colors";
 
 interface EditNamesProps {
   setNext: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,6 +75,12 @@ export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
         {({ handleChange, handleBlur, handleSubmit, values, resetForm }) => (
           <StyledColumnView>
             <TextInput
+              theme={{
+                roundness: 1,
+                colors: {
+                  text: deepPurple800,
+                },
+              }}
               label="name"
               onChangeText={handleChange("name")}
               onBlur={handleBlur("name")}
@@ -85,6 +92,12 @@ export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
             </HelperText>
 
             <TextInput
+              theme={{
+                roundness: 1,
+                colors: {
+                  text: deepPurple800,
+                },
+              }}
               label="username"
               onChangeText={handleChange("username")}
               onBlur={handleBlur("username")}
@@ -107,7 +120,7 @@ export const EditNames: React.FC<EditNamesProps> = ({ setNext }) => {
         )}
       </Formik>
 
-      <Caption>Use Side Arrows to Skip for Now</Caption>
+      {/* <Caption>Use Side Arrows to Skip for Now</Caption> */}
     </StyledColumnView>
   );
 };

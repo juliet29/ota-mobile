@@ -11,6 +11,8 @@ import { HomeStackNavProps } from "../../navigation/app/home/HomeParamList";
 import { emptyImage } from "./UserView";
 import { FlatList } from "react-native-gesture-handler";
 import { useGetFollowingorFollowersQuery } from "../../generated-components/apolloComponents";
+import { ImageBackground } from "react-native";
+import { styles } from "../../styled-components/StyleSheet";
 
 // interface FollowersProps {
 //   request: "following" | "followers";
@@ -39,32 +41,37 @@ export const Followers: React.FC<HomeStackNavProps<"FollowersPage">> = ({
   console.log(`request is  ${request} and its type is ${typeof request}`);
 
   return (
-    <StyledColumnView>
-      <Title>{request!?.toUpperCase()}</Title>
-      <FlatList
-        data={data.getFollowingorFollowers}
-        keyExtractor={(item, index) => item!?.toString() + index}
-        renderItem={(item) => (
-          <List.Item
-            onPress={() => {
-              navigation.navigate("UserPage", { id: +item.item.id });
-            }}
-            title={item.item.username}
-            left={(props) => (
-              <Avatar.Image
-                size={20}
-                source={{
-                  uri: `${
-                    item.item.profilePicture
-                      ? item.item.profilePicture
-                      : emptyImage
-                  }`,
-                }}
-              />
-            )}
-          />
-        )}
-      />
-    </StyledColumnView>
+    <ImageBackground
+      style={styles.wavyBackgroundStyle}
+      imageStyle={styles.wavyBackgroundImageStyle}
+      source={require("../../local-assets/wavy.png")}>
+      <StyledColumnView>
+        <Title>{request!?.toUpperCase()}</Title>
+        <FlatList
+          data={data.getFollowingorFollowers}
+          keyExtractor={(item, index) => item!?.toString() + index}
+          renderItem={(item) => (
+            <List.Item
+              onPress={() => {
+                navigation.navigate("UserPage", { id: +item.item.id });
+              }}
+              title={item.item.username}
+              left={(props) => (
+                <Avatar.Image
+                  size={20}
+                  source={{
+                    uri: `${
+                      item.item.profilePicture
+                        ? item.item.profilePicture
+                        : emptyImage
+                    }`,
+                  }}
+                />
+              )}
+            />
+          )}
+        />
+      </StyledColumnView>
+    </ImageBackground>
   );
 };

@@ -6,6 +6,8 @@ import {
   useAddToMyListMutation,
   GetMyListDocument,
 } from "../../generated-components/apolloComponents";
+import { useContext } from "react";
+import { ThemeContext } from "styled-components";
 
 // type AddToMyListButtonProps = MyListItem
 
@@ -13,6 +15,7 @@ export const AddToMyListButton: React.FC<MyListItem> = ({
   postId,
   postType,
 }) => {
+  const themeContext = useContext(ThemeContext);
   const [addToMyList, { loading }] = useAddToMyListMutation();
 
   const submitAddToMyList = async () => {
@@ -36,7 +39,9 @@ export const AddToMyListButton: React.FC<MyListItem> = ({
   return (
     <IconButton
       disabled={loading}
+      color={themeContext.colors.primary}
       icon="playlist-plus"
+      size={30}
       onPress={submitAddToMyList}
     />
   );
